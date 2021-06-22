@@ -39,7 +39,25 @@ Immutable collection with 0 or 1 value: `?`
 
 Appendable collection with 0..N values: `*`
 
+Any data type can be prepended with a quantifier: `*u32`, `[][]string`, `?ProductType` – these types are absolutely correct.
+
 You can access a distinct value of a collection with `!` operator, optionally followed by an index.
+
+Examples:
+
+```text
+strict_array: []u32
+array_of_arrays: [][]u32
+element_5 = strict_array!5
+element_0 = strict_array!0
+element_0_anotherway = strict_array!
+
+-- It could be an argument or any other collection
+maybe_value: ?string
+-- This ! operator will FAIL if maybe_value is backed by a read-only data structure
+-- And will WAIT if maybe_value is backed with a stream (*string)
+value = maybe_value!
+```
 
 ### Arrow Types
 
@@ -54,7 +72,7 @@ The absence of arguments is denoted by nothing: `-> ()` this arrow takes nothing
 Note that there's no `Unit` type in Aqua: you cannot assign the non-existing result to a value.
 
 ```python
--- Assume that arrow: -> ()
+-- Assume that arrow has type: -> ()
 
 -- This is possible:
 arrow()

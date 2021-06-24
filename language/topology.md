@@ -90,15 +90,74 @@ func doViaRelayMaybe(peer: string, relayMaybe: ?string):
     foo()
 ```
 
+Nested `on`s, or delegated in functions, should work just as you expect:
+
+```text
+-- From where we are, -> relay1 -> peer1
+on "peer1" via "relay1":
+  -- On peer1
+  foo()
+  -- now go -> relay1 -> relay2 -> peer2
+  on "peer2" via "relay2":
+    -- On peer2
+    foo()
+-- This is executed in the root scope, after we were on peer2
+-- How to get there?
+-- Compiler knows the path that just worked
+-- So it goes -> relay2 -> relay1 -> (where we were)
+foo()
+```
+
+### Callbacks
+
+What if you want to return something to the initial peer? For example, send the request to a bunch of services, and then render the responses as they come.
+
+This can be done with callback arguments in the entry function:
+
+```text
+func run(updateModel: Model -> (), logMessage: string -> ()):
+  on "some peer":
+    m <- fetchModel()
+    updateModel(m)
+  par on "other peer":
+    x <- getMessage()
+    logMessage(x)  
+```
+
+Callbacks has the [arrow type](types.md#arrow-types).
+
+If you pass just ordinary functions as arrow-type arguments, they will work as is you hardcode them.
+
+```text
+func foo():
+  on "peer 1":
+    doFoo()
+    
+func bar(cb: -> ()):
+  on "peer2":
+    cb()
+    
+func baz():
+  -- foo will go to peer 1
+  -- bar will go to peer 2
+  bar(foo)            
+```
+
+If you pass service call as a callback, it will be executed locally to the node where you called it. That might change.
+
+Lambda functions that capture topologic context of definition site are planned, not yet there.
+
+{% hint style="warning" %}
+Passing service function calls as arguments are very fragile, as it does not track that a service is resolved in the scope of calling. Abilities variance may fix that.
+{% endhint %}
+
+### Parallel execution and topology
+
+When blocks are executed in parallel, it's not always necessary to resolve topology to get to the next peer. Compiler will add topologic hops from the par branch only if data defined in that branch is used down the flow.
+
+{% hint style="danger" %}
+What if all branches do not return? Execution will halt. Be careful, use `co` if you don't care about the returned data.
+{% endhint %}
 
 
-arrows capture the context
-
-adding hops implicitely
-
-how callbacks are handled
-
-parallel execution and topology resolution
-
-Advanced topic: topologic transformation in terms of graph processing
 

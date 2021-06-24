@@ -10,17 +10,7 @@ If any branch is executed successfully, the flow execution continues.
 
 All the data defined in parallel branches is available in the subsequent code.
 
-### Parallel operations
-
-As of time of writing, there's only one parallel expression: `par`
-
-Its syntax is derived from π-calculus notation of parallelism: `A | B`
-
-```text
--- foo and bar will be executed in parallel, if possible
-foo()
-par bar()
-```
+### Implementation limitation
 
 Parallel execution has some implementation limitations:
 
@@ -28,9 +18,61 @@ Parallel execution has some implementation limitations:
 * No parallelism when executing a script on single peer \(fix planned\)
 * No concurrency in services: one service instance does only one job in a time. Keep services small \(wasm limitation\)
 
+We might overcome these limitations later, but for now, plan your application design having this in mind.
+
+### Parallel operations
+
+### par
+
+`par` syntax is derived from π-calculus notation of parallelism: `A | B`
+
+```text
+-- foo and bar will be executed in parallel, if possible
+foo()
+par bar()
+
+-- It's useful to combine `par` with `on` block,
+-- to delegate further execution to different peers.
+
+-- In this case execution will continue on two peers, independently
+on "peer 1":
+  x <- foo()
+par on "peer 2":
+  y <- bar()
+  
+-- Once any of the previous functions return x or y,
+-- execution continues. We don't know the order, so 
+-- if y is returned first, hello(x) will not execute  
+hello(x)
+hello(y)  
+
+-- You can fix it with par
+-- What's comes faster, will advance the execution flow
+hello(x)
+par hello(y)
+```
+
+`par` works in infix manner between the previously stated function and the next one.
+
+#### co
+
+`co` , short for `coroutine`, prefixes an operation to send it to background. From π-calculus perspective, it's the same as `A | null`, where `null`-process is the one that does nothing and completes instantly.
+
+```text
+-- Let's send foo to background and continue
+co foo()
+
+-- Do something on another peer, not blocking the flow on this one
+co on "some peer":
+  baz()
+  
+-- This foo does not wait for baz()  
+foo()  
+```
+
 ### Join behavior
 
-Join means that data was created by different parallel execution flows and then used on a single peer to perform computations.
+Join means that data was created by different parallel execution flows and then used on a single peer to perform computations. It works the same way for any parallel blocks, be it `par`, `co` or something else \(`for par`\).
 
 In Aqua, you can refer to previously defined variables. In case of sequential computations, they are available, if execution not failed:
 

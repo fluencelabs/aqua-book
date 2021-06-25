@@ -21,6 +21,7 @@
     * [Services](language/expressions/services.md)
     * [Type definitions](language/expressions/type-definitions.md)
     * [Overrideable constants](language/expressions/overrideable-constants.md)
+  * [CRDT Streams](language/crdt-streams.md)
   * [Abilities & Services](language/abilities-and-services.md)
   * [Imports & exports](language/statements-1.md)
 * [Aqua Patterns](aqua-patterns.md)

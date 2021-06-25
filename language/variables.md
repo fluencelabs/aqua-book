@@ -135,9 +135,93 @@ func bar():
 
 Visibility scopes follows the contracts of execution flow.
 
+By default, everything defined textually above is available below. With some exceptions.
+
+Functions have isolated scopes:
+
+```text
+func foo():
+   a = 5
+   
+func bar():
+   -- a is not defined in this function scope
+   a = 7   
+   foo() -- a inside fo is 5
+```
+
+[For loop](operators/iterative.md#export-data-from-for) does not export anything from it:
+
+```text
+func foo():
+  x = 5
+  for y <- ys:
+    -- Can use what was defined above
+    z <- bar(x)
+    
+  -- z is not defined in scope  
+  z = 7  
+```
+
+[Parallel](operators/parallel.md#join-behavior) branches have [no access](https://github.com/fluencelabs/aqua/issues/90) to each other's data:
+
+```text
+-- This will deadlock, as foo branch of execution will
+-- never send x to a parallel bar branch
+x <- foo()
+par y <- bar(x)
+
+-- After par is executed, all the can be used
+baz(x, y)
+```
+
+Recovery branches in [conditional flow](operators/conditional.md) has no access to the main branch. Main branch exports values, recovery branch does not:
+
+```text
+try:
+  x <- foo()
+otherwise:
+  -- this is not possible – will fail
+  bar(x)  
+  y <- baz()
+  
+-- y is not available below  
+willFail(y)  
+  
+```
+
 ### Streams as literals
 
-Stream is a special data that allows many writes. It worth a dedicated article.
+Stream is a special data that allows many writes. It has [a dedicated article](crdt-streams.md).
 
-Here we just explain how to initiate streams and use them as empty collection literals. Refer to conditional return.
+To use a stream, you need to initiate it at first:
+
+```text
+-- Appendable collection of strings, empty
+resp: *string
+
+-- Write strings to resp in parallel
+resp <- foo()
+par resp <- bar()
+
+for x <- xs:
+  -- Write to a stream that's defined above
+  resp <- baz()
+  
+try:
+  resp <- baz()
+otherwise:
+  on "other peer":
+    resp <- baz()
+    
+-- Now resp can be used in place of arrays and optional values
+-- assume fn: []string -> ()
+fn(resp) 
+
+-- Can call fn with empty stream: you can use it
+-- to construct empty values of any collection types
+nilString: *string
+fn(nilString)                      
+```
+
+One of the most frequently used patterns for streams is [Conditional return](operators/conditional.md#conditional-return).
 

@@ -12,14 +12,14 @@ Topology in Aqua is made declarative way. You need just to say where a piece of 
 
 `on` expression moves execution to the peer:
 
-```text
+```haskell
 on "my peer":
   foo()
 ```
 
 Foo is instructed to be executed on a peer with id `my peer`. `on` supports variables of type `string` :
 
-```text
+```haskell
 -- Foo, bar, baz are instructed to be executed on myPeer
 on myPeer:
   foo()
@@ -29,13 +29,17 @@ on myPeer:
 
 ### `%init_peer_id%`
 
-There's one custom peer ID that's always available in scope: `%init_peer_id%`. It points to the peer who initiated this request. But using `on %init_peer_id%` is an anti-pattern: there's no way to ensure that init peer is accessible from the part of the network you're currently in.
+There's one custom peer ID that's always available in scope: `%init_peer_id%`. It points to the peer who initiated this request. 
 
-More complex scenarios
+{% hint style="warning" %}
+But using `on %init_peer_id%` is an anti-pattern: there's no way to ensure that init peer is accessible from the part of the network you're currently in.
+{% endhint %}
+
+### More complex scenarios
 
 Consider this example:
 
-```text
+```go
 func foo():
   on "peer foo":
     do_foo()
@@ -58,20 +62,20 @@ Take a minute to think about:
 * On what node `bar(2)` runs?
 * What about `bar(3)`?
 
-Declarative topology definition always work the same way.
+Declarative topology definition always works the same way.
 
-* `dofoo` is executed on "peer foo", always.
+* `do_foo` is executed on "peer foo", always.
 * `bar(1)` is executed on the same node where `baz` was running. If `baz` is the first called function, then it's `init peer id`.
-* `bar(2)` is executed on `"peer baz"`, despite the fact that foo does topologic transition. `bar(2)` is in the scope of `"peer baz"`, so it will be executed there
+* `bar(2)` is executed on `"peer baz"`, despite the fact that foo does topologic transition. `bar(2)` is in the scope of `on "peer baz"`, so it will be executed there
 * `bar(3)` is executed where `bar(1)` was: in the root scope of `baz`, wherever it was called
 
 ### Accessing peers `via` other peers
 
-In the distributed network it's a very common situation when a peer is only accessible indirectly. For example, a browser: it has no public network interface, you cannot open a socket to a browser at will. This leads to a `relay` pattern: there should be a well connected peer that relays requests from a peer to the network and vice versa.
+In the distributed network it's a very common situation when a peer is only accessible indirectly. For example, a browser: it has no public network interface, you cannot open a socket to a browser at will. This leads to a `relay` pattern: there should be a well-connected peer that relays requests from a peer to the network and vice versa.
 
 Relays are handled with `via`:
 
-```text
+```haskell
 -- When we go to some peer and from some peer,
 -- compiler will add an additional hop to some relay
 on "some peer" via "some relay":
@@ -92,7 +96,7 @@ func doViaRelayMaybe(peer: string, relayMaybe: ?string):
 
 Nested `on`s, or delegated in functions, should work just as you expect:
 
-```text
+```haskell
 -- From where we are, -> relay1 -> peer1
 on "peer1" via "relay1":
   -- On peer1
@@ -114,7 +118,7 @@ What if you want to return something to the initial peer? For example, send the 
 
 This can be done with callback arguments in the entry function:
 
-```text
+```go
 func run(updateModel: Model -> (), logMessage: string -> ()):
   on "some peer":
     m <- fetchModel()
@@ -124,11 +128,11 @@ func run(updateModel: Model -> (), logMessage: string -> ()):
     logMessage(x)  
 ```
 
-Callbacks has the [arrow type](types.md#arrow-types).
+Callbacks have the [arrow type](types.md#arrow-types).
 
-If you pass just ordinary functions as arrow-type arguments, they will work as is you hardcode them.
+If you pass just ordinary functions as arrow-type arguments, they will work as if you hardcode them.
 
-```text
+```haskell
 func foo():
   on "peer 1":
     doFoo()
@@ -143,9 +147,9 @@ func baz():
   bar(foo)            
 ```
 
-If you pass service call as a callback, it will be executed locally to the node where you called it. That might change.
+If you pass a service call as a callback, it will be executed locally on the node where you called it. That might change.
 
-Lambda functions that capture topologic context of definition site are planned, not yet there.
+Lambda functions that capture the topologic context of the definition site are planned, not yet there.
 
 {% hint style="warning" %}
 Passing service function calls as arguments are very fragile, as it does not track that a service is resolved in the scope of calling. Abilities variance may fix that.

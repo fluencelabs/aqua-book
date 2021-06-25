@@ -1,6 +1,6 @@
 # Types
 
-### Scalars
+## Scalars
 
 Scalar types follow the Wasm IT notation.
 
@@ -12,24 +12,24 @@ Scalar types follow the Wasm IT notation.
 * Records \(product type\): see below
 * Arrays: see Collection Types below
 
-### Literals
+## Literals
 
 You can pass booleans \(true, false\), numbers, double-quoted strings as literals.
 
-### Products
+## Products
 
 ```python
 data ProductName:
   field_name: string
-  
+
 data OtherProduct:
   prod: ProductName
-  flag: bool  
+  flag: bool
 ```
 
 Fields are accessible with the `.` operator, e.g. `product.field`.
 
-### Collection Types
+## Collection Types
 
 Aqua has three different types with variable length, denoted by quantifiers `[]`, `*`, and `?`.
 
@@ -41,7 +41,7 @@ Appendable collection with 0..N values: `*`
 
 You can access a distinct value of a collection with `!` operator, optionally followed by an index.
 
-### Arrow Types
+## Arrow Types
 
 Every function has an arrow type that maps a list of input types to an optional output type.
 
@@ -63,7 +63,7 @@ arrow()
 x <- arrow()
 ```
 
-### Type Alias
+## Type Alias
 
 For convinience, you can alias a type:
 
@@ -71,7 +71,7 @@ For convinience, you can alias a type:
 alias MyAlias = ?string
 ```
 
-### Type Variance
+## Type Variance
 
 Aqua is made for composing data on the open network. That means that you want to compose things if they do compose, even if you don't control its source code.
 
@@ -79,11 +79,9 @@ Therefore Aqua follows the structural typing paradigm: if a type contains all th
 
 For arrow types, Aqua checks variance on arguments, contravariance on the return type.
 
-### Type of a Service and a file
+## Type of a Service and a file
 
 A service type is a product of arrows. File is a product of all defined constants and functions \(treated as arrows\). Type definitions in the file does not go to the file type.
 
 {% embed url="https://github.com/fluencelabs/aqua/blob/main/types/src/main/scala/aqua/types/Type.scala" caption="See the types system implementation" %}
-
-
 

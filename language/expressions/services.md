@@ -4,11 +4,11 @@
 
 Service definition.
 
-Service is a program running on a peer. Every service has an interface that consists of a list of functions. To call a service, the service must be identified: so, every service has an ID that must be resolved in the peer scope.
+A service is a program running on a peer. Every service has an interface that consists of a list of functions. To call a service, the service must be identified: so, every service has an ID that must be resolved in the peer scope.
 
 In the service definition, you enumerate all the functions, their names, argument, and return types, and optionally provide the default Service ID.
 
-Services that are a part of protocol come along with IDs. Example of predefined service:
+Services that are a part of the protocol, i.e. are available from the peer node, come along with IDs. Example of predefined service:
 
 ```text
 service Peer("peer"):

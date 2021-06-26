@@ -15,8 +15,8 @@ All the data defined in parallel branches is available in the subsequent code.
 Parallel execution has some implementation limitations:
 
 * Parallel means independent execution on different peers
-* No parallelism when executing a script on single peer \(fix planned\)
-* No concurrency in services: one service instance does only one job in a time. Keep services small \(wasm limitation\)
+* No parallelism when executing a script on single peer \(although a fix is planned\)
+* No concurrency in services: one service instance does only one job in a time. Keep services small \(Wasm limitation\)
 
 We might overcome these limitations later, but for now, plan your application design having this in mind.
 

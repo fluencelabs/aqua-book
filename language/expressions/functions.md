@@ -1,10 +1,10 @@
 # Functions
 
-Function in Aqua is a block of code expressing a workflow, a coordination scenario that works across many peers.
+A function in Aqua is a block of code expressing a workflow, i.e., a coordination scenario that works across one or more peers.
 
 A function may take arguments of any type and may return a value.
 
-A function can call other functions, take functions as arguments of [arrow type](../types.md#arrow-types), be provided as an arrow argument.
+A function can call other functions, take functions as arguments of [arrow type](../types.md#arrow-types) and be provided as an arrow argument.
 
 Essentially, a function is an arrow. The function call is an expression that connects named arguments to an arrow, and gives a name to the result.
 

@@ -3,15 +3,13 @@
 Aqua is an opinionated domain-specific language with colons and indentation.
 
 ```text
--- Comments begin with double-dash, ends on the end of line
+-- Comments begin with double-dash and end with the line (inline)
 func foo(): -- Comments are allowed almost everywhere
   -- Body of the block expression is indented
   bar(5)
 ```
 
-Values in Aqua have types. Types of values are designated by a colon, like in function arguments definition below. Type of return \(yielded when a function is executed\) is denoted by an arrow pointing to the right.
-
-Yielding is denoted by an arrow pointing to the left.
+Values in Aqua have types, which re designated by a colon, `:`,  as seen in function signature below. The type of a return, which is yielded when a function is executed, is denoted by an arrow pointing to the right `->` , whereas yielding is denoted by an arrow pointing to the left `<-`.
 
 ```text
 -- Define a function that yields a string

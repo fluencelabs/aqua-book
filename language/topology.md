@@ -1,26 +1,26 @@
 ---
-description: Define where the code is to be executed & how to get there
+description: Define where the code is to be executed and how to get there
 ---
 
 # Topology
 
-In Aqua, topology is the major thing. Aqua lets developers to describe the whole distributed workflow in a single script, link data, recover from errors, implement complex patterns like backpressure, and more.
+Aqua lets developers to describe the whole distributed workflow in a single script, link data, recover from errors, implement complex patterns like backpressure, and more. Hence,  topology is at the heart of Aqua. 
 
-Topology in Aqua is made declarative way. You need just to say where a piece of code must be executed, on what peer, and optionally – how to get there. Compiler will add all the required network hops.
+Topology in Aqua is declarative:  You just need to say where a piece of code must be executed, on what peer, and optionally how to get there. he Aqua compiler will add all the required network hops.
 
 ### On expression
 
-`on` expression moves execution to the peer:
+`on` expression moves execution to the specified peer:
 
 ```haskell
 on "my peer":
   foo()
 ```
 
-Foo is instructed to be executed on a peer with id `my peer`. `on` supports variables of type `string` :
+Here, `foo` is instructed to be executed on a peer with id `my peer`. `on` supports variables of type `string` :
 
 ```haskell
--- Foo, bar, baz are instructed to be executed on myPeer
+-- foo, bar, baz are instructed to be executed on myPeer
 on myPeer:
   foo()
   bar()
@@ -29,10 +29,10 @@ on myPeer:
 
 ### `%init_peer_id%`
 
-There's one custom peer ID that's always available in scope: `%init_peer_id%`. It points to the peer who initiated this request. 
+There is one custom peer ID that is always in scope: `%init_peer_id%`. It points to the peer that initiated this request. 
 
 {% hint style="warning" %}
-But using `on %init_peer_id%` is an anti-pattern: there's no way to ensure that init peer is accessible from the part of the network you're currently in.
+Using `on %init_peer_id%` is an anti-pattern: There is no way to ensure that init peer is accessible from the currently used part of the network.
 {% endhint %}
 
 ### More complex scenarios
@@ -67,22 +67,22 @@ Declarative topology definition always works the same way.
 * `do_foo` is executed on "peer foo", always.
 * `bar(1)` is executed on the same node where `baz` was running. If `baz` is the first called function, then it's `init peer id`.
 * `bar(2)` is executed on `"peer baz"`, despite the fact that foo does topologic transition. `bar(2)` is in the scope of `on "peer baz"`, so it will be executed there
-* `bar(3)` is executed where `bar(1)` was: in the root scope of `baz`, wherever it was called
+* `bar(3)` is executed where `bar(1)` was: in the root scope of `baz`, wherever it was called from
 
 ### Accessing peers `via` other peers
 
-In the distributed network it's a very common situation when a peer is only accessible indirectly. For example, a browser: it has no public network interface, you cannot open a socket to a browser at will. This leads to a `relay` pattern: there should be a well-connected peer that relays requests from a peer to the network and vice versa.
+In a distributed network it is quite common that a peer is not directly accessible. For example, a browser has no public network interface and you cannot open a socket to a browser at will. Such constraints warrant a `relay` pattern: there should be a well-connected peer that relays requests from a peer to the network and vice versa.
 
 Relays are handled with `via`:
 
 ```haskell
--- When we go to some peer and from some peer,
--- compiler will add an additional hop to some relay
+-- When we go to some peer from some other peer,
+-- the compiler will add an additional hop to some relay
 on "some peer" via "some relay":
   foo()
   
 -- More complex path: first go to relay2, then to relay1,
--- then to peer. When going out of peer, do it reversed way  
+-- then to peer. When going out of peer, do it in reverse  
 on "peer" via relay1 via relay2:
   foo()
   
@@ -94,7 +94,7 @@ func doViaRelayMaybe(peer: string, relayMaybe: ?string):
     foo()
 ```
 
-Nested `on`s, or delegated in functions, should work just as you expect:
+`on`s nested or delegated in functions work just as you expect:
 
 ```haskell
 -- From where we are, -> relay1 -> peer1
@@ -114,7 +114,7 @@ foo()
 
 ### Callbacks
 
-What if you want to return something to the initial peer? For example, send the request to a bunch of services, and then render the responses as they come.
+What if you want to return something to the initial peer? For example, send a request to a bunch of services and then render the responses as they come.
 
 This can be done with callback arguments in the entry function:
 
@@ -149,15 +149,15 @@ func baz():
 
 If you pass a service call as a callback, it will be executed locally on the node where you called it. That might change.
 
-Lambda functions that capture the topologic context of the definition site are planned, not yet there.
+Lambda functions that capture the topologic context of the definition site are planned but not implemented yet.
 
 {% hint style="warning" %}
-Passing service function calls as arguments are very fragile, as it does not track that a service is resolved in the scope of calling. Abilities variance may fix that.
+Passing service function calls as arguments is very fragile as it does not track that a service is resolved in the scope of calling. Abilities variance may fix that.
 {% endhint %}
 
 ### Parallel execution and topology
 
-When blocks are executed in parallel, it's not always necessary to resolve topology to get to the next peer. Compiler will add topologic hops from the par branch only if data defined in that branch is used down the flow.
+When blocks are executed in parallel, it is not always necessary to resolve the topology to get to the next peer. The compiler will add topologic hops from the par branch only if data defined in that branch is used down the flow.
 
 {% hint style="danger" %}
 What if all branches do not return? Execution will halt. Be careful, use `co` if you don't care about the returned data.

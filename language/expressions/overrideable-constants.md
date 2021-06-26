@@ -10,7 +10,7 @@ description: Static configuration pieces that affect compilation
 
 Constant definition.
 
-Constants can be used all across the functions, exported and imported. If a constant is defined using `?=` , it can be overriden by-value via compiler flags or imported values.
+Constants can be used all across functions, exported and imported. If a constant is defined using `?=` , it can be overriden by value via compiler flags or imported values.
 
 ```text
 -- This can be overriten with -const "target_peer_id = \"other peer id\""

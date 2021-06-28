@@ -65,7 +65,7 @@ Every function has an arrow type that maps a list of input types to an optional 
 
 It can be denoted as: `Type1, Type2 -> Result`
 
-In the type definition, absense of result is denoted with `()`: `string -> ()`
+In the type definition, absence of result is denoted with `()`: `string -> ()`
 
 The absence of arguments is denoted by nothing: `-> ()` this arrow takes nothing as an argument and has no return type.
 
@@ -83,7 +83,7 @@ x <- arrow()
 
 ### Type Alias
 
-For convinience, you can alias a type:
+For convenience, you can alias a type:
 
 ```python
 alias MyAlias = ?string

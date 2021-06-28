@@ -41,6 +41,7 @@ Appendable collection with 0..N values: `*`
 
 Any data type can be prepended with a quantifier, e.g. `*u32`, `[][]string`, `?ProductType` are all correct type specifications.
 
+
 You can access a distinct value of a collection with `!` operator, optionally followed by an index.
 
 Examples:
@@ -95,11 +96,68 @@ Aqua is made for composing data on the open network. That means that you want to
 
 Therefore Aqua follows the structural typing paradigm: if a type contains all the expected data, then it fits. For example, you can pass `u8` in place of `u16` or `i16`. Or `?bool` in place of `[]bool`. Or `*string` instead of `?string` or `[]string`. The same holds for products.
 
+
 For arrow types, Aqua checks the variance on arguments and contravariance on the return type.
 
-### Type of a Service and a File
+```text
+-- We expect u32
+xs: *u32
 
-A service type is a product of arrows. File is a product of all defined constants and functions \(treated as arrows\). Type definitions in the file does not go to the file type. See the [type system implementation](https://github.com/fluencelabs/aqua/blob/main/types/src/main/scala/aqua/types/Type.scala) for more detail.
+-- u16 is less then u32
+foo1: -> u16
+-- works
+xs <- foo1()
+
+-- i32 has sign, so cannot fit into u32
+foo2: -> i32
+-- will fail
+xs <- foo2()
+
+-- Function takes an arrow as an argument
+func bar(callback: u32 -> u32): ...
+
+
+foo3: u16 -> u16
+
+-- Will not work
+bar(foo3)  
+
+foo4: u16 -> u64
+
+-- Works
+bar(foo4)
+```
+
+Arrow type `A: D -> C` is a subtype of `A1: D1 -> C1`, if `D1` is a subtype of `D` and `C` is a subtype of `C1`.
+
+### Type Of A Service And A File
+
+A service type is a product of arrows.
+
+```text
+service MyService:
+  foo(arg: string) -> bool
+  
+-- type of this service is:
+data MyServiceType:
+  foo: string -> bool  
+```
+
+The file is a product of all defined constants and functions \(treated as arrows\). Type definitions in the file do not go to the file type.
+
+```text
+-- MyFile.aqua
+
+func foo(arg: string) -> bool:
+  ...
+  
+const flag ?= true  
+
+-- type of MyFile.aqua
+data MyServiceType:
+  foo: string -> bool
+  flag: bool  
+```
 
 {% embed url="https://github.com/fluencelabs/aqua/blob/main/types/src/main/scala/aqua/types/Type.scala" caption="See the types system implementation" %}
 

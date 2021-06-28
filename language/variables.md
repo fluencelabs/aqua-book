@@ -2,7 +2,21 @@
 
 Aqua is all about combining data and computations. The runtime for the compiled Aqua code, [AquaVM](https://github.com/fluencelabs/aquavm), tracks what data comes from what origin, which constitutes the foundation for distributed systems security. That approach, driven by π-calculus and security considerations of open-by-default networks and distributed applications as custom application protocols, also puts constraints on the language that configures it.
 
-Namely, values form VDS \(Verifiable Data Structures\). All operations on values must retain security invariants. Hence values are immutable, except [writeable collections](types.md#collection-types) \(streams\).
+Values in Aqua are backed by VDS \(Verifiable Data Structures\) in the runtime. All operations on values must keep the authenticity of data, prooved by signatures under the hood.
+
+That's why values are immutable. Changing the value effectively makes a new one:
+
+```text
+x = "hello"
+y = "world"
+
+-- despite the sources of x and y, z's origin is "peer 1"
+-- and we can trust value of z as much as we trust "peer 1"
+on "peer 1":
+  z <- concat(x, y)
+```
+
+More on that in the Security section. Now let's see how we can work with values inside the language.
 
 ### Arguments
 
@@ -19,7 +33,7 @@ func foo(arg: i32, log: string -> ()):
 
 ### Return values
 
-That's the second way to get data with a name.
+You can assign results of an arrow call to a name, and use this returned value in the code below. 
 
 ```text
 -- Imagine a Stringify service that's always available
@@ -43,10 +57,11 @@ func foo(arg: i32, log: *string):
 
 ### Literals
 
-Aqua supports just a few literals: numbers, quoted strings, booleans. You [cannot make a structure](https://github.com/fluencelabs/aqua/issues/167) in Aqua.
+Aqua supports just a few literals: numbers, quoted strings, booleans. You [cannot init a structure](https://github.com/fluencelabs/aqua/issues/167) in Aqua, only obtain it as a result of a function call.
 
 ```text
 -- String literals cannot contain double quotes
+-- No single-quoted strings allowed, no escape chars.
 foo("double quoted string literal")
 
 -- Booleans are true or false
@@ -66,7 +81,7 @@ bar(-0.2)
 
 ### Getters
 
-In Aqua, you can use a getter to peak into a field of a product, or indexed element in an array. 
+In Aqua, you can use a getter to peak into a field of a product or indexed element in an array. 
 
 ```text
 data Sub:
@@ -90,8 +105,9 @@ func foo(e: Example):
 
 Note that the `!` operator may fail or halt:
 
-* If it is called on an immutable collection, it will fail if the collection is shorter and has no given index; you can handle it with [try](operators/conditional.md#try) or [otherwise](operators/conditional.md#otherwise).
+* If it is called on an immutable collection, it will fail if the collection is shorter and has no given index; you can handle the error with [try](operators/conditional.md#try) or [otherwise](operators/conditional.md#otherwise).
 * If it is called on an appendable stream, it will wait for some parallel append operation to fulfill, see [Join behavior](operators/parallel.md#join-behavior).
+
 
 {% hint style="warning" %}
 The `!` operator can currently only be used with literal indices.  
@@ -103,13 +119,14 @@ We expect to address this limitation soon.
 
 Assignments, `=`, only give a name to a value with applied getter or to a literal.
 
+
 ```text
 func foo(arg: bool, e: Example):
   -- Rename the argument
   a = arg
   -- Assign the name b to value of e.child
   b = e.child
-  -- Create a literal
+  -- Create a named literal
   c = "just string value"
 ```
 
@@ -117,7 +134,7 @@ func foo(arg: bool, e: Example):
 
 Constants are like assignments but in the root scope. They can be used in all function bodies, textually below the place of const definition. Constant values must resolve to a literal.
 
-You can change the compilation results with overriding a constant but the  override needs to be of the same type or subtype.
+You can change the compilation results with overriding a constant but the override needs to be of the same type or subtype.
 
 ```text
 -- This flag is always true
@@ -135,7 +152,7 @@ func bar():
 
 ### Visibility scopes
 
-Visibility scopes follows the contracts of execution flow.
+Visibility scopes follow the contracts of execution flow.
 
 By default, everything defined textually above is available below. With some exceptions.
 
@@ -151,7 +168,7 @@ func bar():
    foo() -- a inside fo is 5
 ```
 
-[For loop](operators/iterative.md#export-data-from-for) does not export anything from it:
+[For loop](flow/iterative.md#export-data-from-for) does not export anything from it:
 
 ```text
 func foo():
@@ -164,7 +181,7 @@ func foo():
   z = 7  
 ```
 
-[Parallel](operators/parallel.md#join-behavior) branches have [no access](https://github.com/fluencelabs/aqua/issues/90) to each other's data:
+[Parallel](flow/parallel.md#join-behavior) branches have [no access](https://github.com/fluencelabs/aqua/issues/90) to each other's data:
 
 ```text
 -- This will deadlock, as foo branch of execution will
@@ -225,5 +242,5 @@ nilString: *string
 fn(nilString)                      
 ```
 
-One of the most frequently used patterns for streams is [Conditional return](operators/conditional.md#conditional-return).
+One of the most frequently used patterns for streams is [Conditional return](flow/conditional.md#conditional-return).
 

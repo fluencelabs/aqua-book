@@ -23,11 +23,11 @@ data ProductName:
   field_name: string
   
 data OtherProduct:
-  prod: ProductName
+  product: ProductName
   flag: bool  
 ```
 
-Fields are accessible with the `.` operator, e.g. `product.field`.
+Fields are accessible with the  dot operator `.` ,  e.g. `product.field`.
 
 ### Collection Types
 
@@ -39,7 +39,8 @@ Immutable collection with 0 or 1 value: `?`
 
 Appendable collection with 0..N values: `*`
 
-Any data type can be prefixed with a quantifier: `*u32`, `[][]string`, `?ProductType` – these types are absolutely correct.
+Any data type can be prepended with a quantifier, e.g. `*u32`, `[][]string`, `?ProductType` are all correct type specifications.
+
 
 You can access a distinct value of a collection with `!` operator, optionally followed by an index.
 
@@ -65,11 +66,11 @@ Every function has an arrow type that maps a list of input types to an optional 
 
 It can be denoted as: `Type1, Type2 -> Result`
 
-In the type definition, absence of result is denoted with `()`: `string -> ()`
+In the type definition, the absence of a result is denoted with `()`, e.g., `string -> ()`
 
-The absence of arguments is denoted by nothing: `-> ()` this arrow takes nothing as an argument and has no return type.
+The absence of arguments is denoted `-> ()`.That is, this mapping takes no argument and has no return type.
 
-Note that there's no `Unit` type in Aqua: you cannot assign the non-existing result to a value.
+Note that there's no `Unit` type in Aqua: you cannot assign a non-existing result to a value.
 
 ```python
 -- Assume that arrow has type: -> ()
@@ -93,9 +94,10 @@ alias MyAlias = ?string
 
 Aqua is made for composing data on the open network. That means that you want to compose things if they do compose, even if you don't control its source code.
 
-Therefore Aqua follows the structural typing paradigm: if a type contains all the expected data then it fits. For example, you can pass `u8` in place of `u16` or `i16`. Or `?bool` in place of `[]bool`. Or `*string` instead of `?string` or `[]string`.
+Therefore Aqua follows the structural typing paradigm: if a type contains all the expected data, then it fits. For example, you can pass `u8` in place of `u16` or `i16`. Or `?bool` in place of `[]bool`. Or `*string` instead of `?string` or `[]string`. The same holds for products.
 
-For arrow types, Aqua checks variance on arguments, contravariance on the return type.
+
+For arrow types, Aqua checks the variance on arguments and contravariance on the return type.
 
 ```text
 -- We expect u32
@@ -128,7 +130,7 @@ bar(foo4)
 
 Arrow type `A: D -> C` is a subtype of `A1: D1 -> C1`, if `D1` is a subtype of `D` and `C` is a subtype of `C1`.
 
-### Type of a Service and a file
+### Type Of A Service And A File
 
 A service type is a product of arrows.
 

@@ -1,6 +1,6 @@
 # Values
 
-Aqua is all about the composition of data and computations. Underlying runtime \([AquaVM](https://github.com/fluencelabs/aquavm)\) tracks what data comes from what origin, which constitutes the foundation for distributed systems security. That approach, driven by π-calculus and security considerations of open-by-default networks and distributed applications as custom application protocols, puts constraints on the Aqua language.
+Aqua is all about combining data and computations. The runtime for the compiled Aqua code, [AquaVM](https://github.com/fluencelabs/aquavm), tracks what data comes from what origin, which constitutes the foundation for distributed systems security. That approach, driven by π-calculus and security considerations of open-by-default networks and distributed applications as custom application protocols, also puts constraints on the language that configures it.
 
 Values in Aqua are backed by VDS \(Verifiable Data Structures\) in the runtime. All operations on values must keep the authenticity of data, prooved by signatures under the hood.
 
@@ -64,7 +64,7 @@ Aqua supports just a few literals: numbers, quoted strings, booleans. You [canno
 -- No single-quoted strings allowed, no escape chars.
 foo("double quoted string literal")
 
--- Booleans are true and false
+-- Booleans are true or false
 if x == false:
   foo("false is a literal")
   
@@ -103,16 +103,22 @@ func foo(e: Example):
   bar(e.arr!2.sub) -- string   
 ```
 
-Note that `!` operator may fail or halt:
+Note that the `!` operator may fail or halt:
 
-* If it is called on an immutable collection, it will fail if the collection is shorter and has no given index; you can handle it with [try](flow/conditional.md#try) or [otherwise](flow/conditional.md#otherwise).
-* If it is called on an appendible stream, it will wait for some parallel append operation to fulfill, see [Join behavior](flow/parallel.md#join-behavior).
+* If it is called on an immutable collection, it will fail if the collection is shorter and has no given index; you can handle the error with [try](operators/conditional.md#try) or [otherwise](operators/conditional.md#otherwise).
+* If it is called on an appendable stream, it will wait for some parallel append operation to fulfill, see [Join behavior](operators/parallel.md#join-behavior).
 
-`!` operator cannot be used with non-literal indices: you can use `!2`, but not `!x`. It's planned to be fixed.
+
+{% hint style="warning" %}
+The `!` operator can currently only be used with literal indices.  
+That is,`!2` is valid but`!x` is not valid.  
+We expect to address this limitation soon.
+{% endhint %}
 
 ### Assignments
 
-Assignments do nothing new, just give a name to a value with applied getter, or name a literal.
+Assignments, `=`, only give a name to a value with applied getter or to a literal.
+
 
 ```text
 func foo(arg: bool, e: Example):
@@ -126,11 +132,9 @@ func foo(arg: bool, e: Example):
 
 ### Constants
 
-Constants are like assignments but in the root scope. Can be used in all function bodies, textually below the place of const definition.
+Constants are like assignments but in the root scope. They can be used in all function bodies, textually below the place of const definition. Constant values must resolve to a literal.
 
-You can change the compilation results by overriding a constant. Override should be of the same type \(or a subtype\).
-
-Constant values must resolve to a literal.
+You can change the compilation results with overriding a constant but the override needs to be of the same type or subtype.
 
 ```text
 -- This flag is always true
@@ -189,7 +193,7 @@ par y <- bar(x)
 baz(x, y)
 ```
 
-Recovery branches in [conditional flow](flow/conditional.md) has no access to the main branch. Main branch exports values, recovery branch does not:
+Recovery branches in [conditional flow](operators/conditional.md) have no access to the main branch as the main branch exports values, whereas the recovery branch does not:
 
 ```text
 try:
@@ -206,12 +210,12 @@ willFail(y)
 
 ### Streams as literals
 
-Stream is a special data that allows many writes. It has [a dedicated article](crdt-streams.md).
+Stream is a special data structure that allows many writes. It has [a dedicated article](crdt-streams.md).
 
 To use a stream, you need to initiate it at first:
 
 ```text
--- Appendable collection of strings, empty
+-- Initiate an (empty) appendable collection of strings
 resp: *string
 
 -- Write strings to resp in parallel

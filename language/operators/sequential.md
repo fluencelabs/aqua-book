@@ -1,12 +1,12 @@
 # Sequential
 
-By default, Aqua code is executed line by line, sequentially.
+By default, Aqua code is executed sequentially line by line.
 
 ### Contract
 
 Data from the first branch is available in the second branch.
 
-Second branch is executed iff the first branch succeeded.
+Second branch is executed iff the first branch executed successfully.
 
 If any branch errored, then the whole sequence is errored.
 

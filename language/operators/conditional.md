@@ -16,7 +16,7 @@ Block is considered failed iff the second branch fails to execute.
 
 #### try
 
-Tries to perform operations, or swallows the error \(if there's no catch, otherwise after the try block\).
+Tries to perform operations or consumes the error if there's no catch or otherwise statement after the try block.
 
 ```text
 try:
@@ -66,7 +66,7 @@ if x != false:
   baz()  
 ```
 
-Currently, you may only use one `==`, `!=` operator in the `if` expression, or compare with true.
+Currently, you may only use one `==`, `!=` operator in the `if` expression or compare with true.
 
 Both operators can be a variable. Variable types must intersect.
 
@@ -96,7 +96,7 @@ otherwise:
 
 ### Conditional return
 
-In Aqua, functions may have only one return expression, which is very last. And conditional expressions cannot define the same variable:
+In Aqua, functions may have only one return expression, which is on the last line of the function block,  and conditional expressions cannot define the same variable:
 
 ```text
 try:

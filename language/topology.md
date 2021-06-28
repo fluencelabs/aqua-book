@@ -4,9 +4,9 @@ description: Define where the code is to be executed & how to get there
 
 # Topology
 
-In Aqua, topology is the major thing. Aqua lets developers to describe the whole distributed workflow in a single script, link data, recover from errors, implement complex patterns like backpressure, and more.
+In Aqua, topology is the major thing. Aqua lets developers describe the whole distributed workflow in a single script, link data, recover from errors, implement complex patterns like consensus algorithms, and more.
 
-Topology in Aqua is made declarative way. You need just to say where a piece of code must be executed, on what peer, and optionally – how to get there. Compiler will add all the required network hops.
+Topology in Aqua is made declarative way. You need just to say where a piece of code must be executed, on what peer, and optionally – how to get there. The compiler will add all the required network hops.
 
 ### On expression
 
@@ -102,6 +102,8 @@ on "peer1" via "relay1":
   -- On peer1
   foo()
   -- now go -> relay1 -> relay2 -> peer2
+  -- going to relay1 to exit peer1
+  -- going to relay2 to enable access to peer2
   on "peer2" via "relay2":
     -- On peer2
     foo()
@@ -112,9 +114,31 @@ on "peer1" via "relay1":
 foo()
 ```
 
+With `on` and `on ... via`, significant indentation changes the place where the code will be executed, and paths that are taken when execution flow "bubbles up" \(see the last call of `foo`\). It's more efficient to keep the flow as flat as it could. Consider the following change of indentation in the previous script, and how it affects execution:
+
+```haskell
+-- From where we are, -> relay1 -> peer1
+on "peer1" via "relay1":
+  -- On peer1
+  foo()
+-- now go -> relay1 -> relay2 -> peer2
+-- going to relay1 to exit peer1
+-- going to relay2 to enable access to peer2
+on "peer2" via "relay2":
+  -- On peer2
+  foo()
+-- This is executed in the root scope, after we were on peer2
+-- How to get there?
+-- Compiler knows the path that just worked
+-- So it goes -> relay2 -> (where we were)
+foo()
+```
+
+When the `on` scope is ended, it does not affect any further topology moves. Until you stop indentation, `on` affects the topology and may add additional topology moves, which means more roundtrips and unnecessary latency.
+
 ### Callbacks
 
-What if you want to return something to the initial peer? For example, send the request to a bunch of services, and then render the responses as they come.
+What if you want to return something to the initial peer? E.g. implement a request-response pattern. Or send a bunch of requests to different peers, and render responses as they come, in any order.
 
 This can be done with callback arguments in the entry function:
 
@@ -149,7 +173,19 @@ func baz():
 
 If you pass a service call as a callback, it will be executed locally on the node where you called it. That might change.
 
-Lambda functions that capture the topologic context of the definition site are planned, not yet there.
+Functions that capture the topologic context of the definition site are planned, not yet there. **Proposed** syntax:
+
+```text
+func baz():
+  foo = do (x: u32):
+    -- Executed there, where foo is called
+    Srv.call(x)
+    <- x
+  -- When foo is called, it will get back to this context
+  bar(foo)
+```
+
+{% embed url="https://github.com/fluencelabs/aqua/issues/183" caption="Issue for adding \`do\` expression" %}
 
 {% hint style="warning" %}
 Passing service function calls as arguments are very fragile, as it does not track that a service is resolved in the scope of calling. Abilities variance may fix that.
@@ -157,7 +193,7 @@ Passing service function calls as arguments are very fragile, as it does not tra
 
 ### Parallel execution and topology
 
-When blocks are executed in parallel, it's not always necessary to resolve topology to get to the next peer. Compiler will add topologic hops from the par branch only if data defined in that branch is used down the flow.
+When blocks are executed in parallel, it's not always necessary to resolve topology to get to the next peer. The compiler will add topologic hops from the par branch only if data defined in that branch is used down the flow.
 
 {% hint style="danger" %}
 What if all branches do not return? Execution will halt. Be careful, use `co` if you don't care about the returned data.

@@ -1,17 +1,17 @@
 # Basics
 
-Aqua is an opinionated domain-specific language with colons and indentation.
+Aqua is an opinionated domain-specific language. It's structured with significant indentation.
 
 ```text
 -- Comments begin with double-dash, ends on the end of line
-func foo(): -- Comments are allowed almost everywhere
+func foo(): -- Comments can follow the code
   -- Body of the block expression is indented
   bar(5)
 ```
 
-Values in Aqua have types. Types of values are designated by a colon, like in function arguments definition below. Type of return \(yielded when a function is executed\) is denoted by an arrow pointing to the right.
+Values in Aqua have types. Types of values are designated by a colon `:`, like in the function arguments definition below. The type of return \(yielded when a function is executed\) is denoted by an arrow pointing to the right `->`.
 
-Yielding is denoted by an arrow pointing to the left.
+Yielding is denoted by an arrow pointing to the left `<-`.
 
 ```text
 -- Define a function that yields a string
@@ -36,7 +36,7 @@ Data:
 Execution:
 
 * [Topology](topology.md) – how to express where the code should be executed
-* [Execution flow](operators/) – control structures
+* [Execution flow](flow/) – control structures
 
 Computations:
 

@@ -1,4 +1,4 @@
-# Imports And Exports
+# Imports & exports
 
 Aqua source file has head and body. The body contains function definitions, services, types, constants. Header manages what is imported from other files, and what is exported from this one.
 

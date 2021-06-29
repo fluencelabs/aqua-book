@@ -18,7 +18,7 @@ on "peer 1":
 
 More on that in the Security section. Now let's see how we can work with values inside the language.
 
-## Arguments
+### Arguments
 
 Function arguments are available within the whole function body.
 
@@ -26,14 +26,14 @@ Function arguments are available within the whole function body.
 func foo(arg: i32, log: string -> ()):
   -- Use data arguments
   bar(arg)
-
+  
   -- Arguments can have arrow type and be used as strings
   log("Wrote arg to responses")
 ```
 
-## Return values
+### Return values
 
-You can assign results of an arrow call to a name, and use this returned value in the code below.
+You can assign results of an arrow call to a name, and use this returned value in the code below. 
 
 ```text
 -- Imagine a Stringify service that's always available
@@ -47,7 +47,7 @@ func bar(arg: i32) -> string:
   -- Starting from there, you can use x
   -- Pass x out of the function scope as the return value
   <- x
-
+  
 
 func foo(arg: i32, log: *string):
   -- Use bar to convert arg to string, push that string
@@ -55,7 +55,7 @@ func foo(arg: i32, log: *string):
   log <- bar(arg)
 ```
 
-## Literals
+### Literals
 
 Aqua supports just a few literals: numbers, quoted strings, booleans. You [cannot init a structure](https://github.com/fluencelabs/aqua/issues/167) in Aqua, only obtain it as a result of a function call.
 
@@ -67,7 +67,7 @@ foo("double quoted string literal")
 -- Booleans are true or false
 if x == false:
   foo("false is a literal")
-
+  
 -- Numbers are different
 -- Any number:
 bar(1)  
@@ -79,9 +79,9 @@ bar(-1)
 bar(-0.2)
 ```
 
-## Getters
+### Getters
 
-In Aqua, you can use a getter to peak into a field of a product or indexed element in an array.
+In Aqua, you can use a getter to peak into a field of a product or indexed element in an array. 
 
 ```text
 data Sub:
@@ -91,7 +91,7 @@ data Example:
   field: u32
   arr: []Sub
   child: Sub
-
+  
 func foo(e: Example):
   bar(e.field) -- u32
   bar(e.child) -- Sub
@@ -100,13 +100,14 @@ func foo(e: Example):
   bar(e.arr!) -- gets the 0 element
   bar(e.arr!.sub) -- string
   bar(e.arr!2) -- gets the 2nd element
-  bar(e.arr!2.sub) -- string
+  bar(e.arr!2.sub) -- string   
 ```
 
 Note that the `!` operator may fail or halt:
 
-* If it is called on an immutable collection, it will fail if the collection is shorter and has no given index; you can handle the error with [try](https://github.com/fluencelabs/aqua-book/tree/4177e00f9313f0e1eb0a60015e1c19a956c065bd/language/operators/conditional.md#try) or [otherwise](https://github.com/fluencelabs/aqua-book/tree/4177e00f9313f0e1eb0a60015e1c19a956c065bd/language/operators/conditional.md#otherwise).
-* If it is called on an appendable stream, it will wait for some parallel append operation to fulfill, see [Join behavior](https://github.com/fluencelabs/aqua-book/tree/4177e00f9313f0e1eb0a60015e1c19a956c065bd/language/operators/parallel.md#join-behavior).
+* If it is called on an immutable collection, it will fail if the collection is shorter and has no given index; you can handle the error with [try](operators/conditional.md#try) or [otherwise](operators/conditional.md#otherwise).
+* If it is called on an appendable stream, it will wait for some parallel append operation to fulfill, see [Join behavior](operators/parallel.md#join-behavior).
+
 
 {% hint style="warning" %}
 The `!` operator can currently only be used with literal indices.  
@@ -114,9 +115,10 @@ That is,`!2` is valid but`!x` is not valid.
 We expect to address this limitation soon.
 {% endhint %}
 
-## Assignments
+### Assignments
 
 Assignments, `=`, only give a name to a value with applied getter or to a literal.
+
 
 ```text
 func foo(arg: bool, e: Example):
@@ -128,7 +130,7 @@ func foo(arg: bool, e: Example):
   c = "just string value"
 ```
 
-## Constants
+### Constants
 
 Constants are like assignments but in the root scope. They can be used in all function bodies, textually below the place of const definition. Constant values must resolve to a literal.
 
@@ -148,7 +150,7 @@ func bar():
   foo(setting)
 ```
 
-## Visibility scopes
+### Visibility scopes
 
 Visibility scopes follow the contracts of execution flow.
 
@@ -159,7 +161,7 @@ Functions have isolated scopes:
 ```text
 func foo():
    a = 5
-
+   
 func bar():
    -- a is not defined in this function scope
    a = 7   
@@ -174,9 +176,9 @@ func foo():
   for y <- ys:
     -- Can use what was defined above
     z <- bar(x)
-
+    
   -- z is not defined in scope  
-  z = 7
+  z = 7  
 ```
 
 [Parallel](flow/parallel.md#join-behavior) branches have [no access](https://github.com/fluencelabs/aqua/issues/90) to each other's data:
@@ -191,7 +193,7 @@ par y <- bar(x)
 baz(x, y)
 ```
 
-Recovery branches in [conditional flow](https://github.com/fluencelabs/aqua-book/tree/4177e00f9313f0e1eb0a60015e1c19a956c065bd/language/operators/conditional.md) have no access to the main branch as the main branch exports values, whereas the recovery branch does not:
+Recovery branches in [conditional flow](operators/conditional.md) have no access to the main branch as the main branch exports values, whereas the recovery branch does not:
 
 ```text
 try:
@@ -200,12 +202,13 @@ otherwise:
   -- this is not possible – will fail
   bar(x)  
   y <- baz()
-
+  
 -- y is not available below  
-willFail(y)
+willFail(y)  
+  
 ```
 
-## Streams as literals
+### Streams as literals
 
 Stream is a special data structure that allows many writes. It has [a dedicated article](crdt-streams.md).
 
@@ -222,13 +225,13 @@ par resp <- bar()
 for x <- xs:
   -- Write to a stream that's defined above
   resp <- baz()
-
+  
 try:
   resp <- baz()
 otherwise:
   on "other peer":
     resp <- baz()
-
+    
 -- Now resp can be used in place of arrays and optional values
 -- assume fn: []string -> ()
 fn(resp) 
@@ -236,7 +239,7 @@ fn(resp)
 -- Can call fn with empty stream: you can use it
 -- to construct empty values of any collection types
 nilString: *string
-fn(nilString)
+fn(nilString)                      
 ```
 
 One of the most frequently used patterns for streams is [Conditional return](flow/conditional.md#conditional-return).

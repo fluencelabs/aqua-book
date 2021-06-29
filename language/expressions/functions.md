@@ -16,7 +16,7 @@ service MySrv:
 
 func do_something(): -- arrow of type: -> ()
   MySrv "srv id"
-  MySrv.foo()
+  MySrv.foo()  
 ```
 
 * list all expressions

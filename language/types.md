@@ -1,6 +1,6 @@
 # Types
 
-## Scalars
+### Scalars
 
 Scalar types follow the Wasm IT notation.
 
@@ -12,24 +12,24 @@ Scalar types follow the Wasm IT notation.
 * Records \(product type\): see below
 * Arrays: see Collection Types below
 
-## Literals
+### Literals
 
 You can pass booleans \(true, false\), numbers, double-quoted strings as literals.
 
-## Products
+### Products
 
 ```python
 data ProductName:
   field_name: string
-
+  
 data OtherProduct:
   product: ProductName
-  flag: bool
+  flag: bool  
 ```
 
-Fields are accessible with the dot operator `.` , e.g. `product.field`.
+Fields are accessible with the  dot operator `.` ,  e.g. `product.field`.
 
-## Collection Types
+### Collection Types
 
 Aqua has three different types with variable length, denoted by quantifiers `[]`, `*`, and `?`.
 
@@ -40,6 +40,7 @@ Immutable collection with 0 or 1 value: `?`
 Appendable collection with 0..N values: `*`
 
 Any data type can be prepended with a quantifier, e.g. `*u32`, `[][]string`, `?ProductType` are all correct type specifications.
+
 
 You can access a distinct value of a collection with `!` operator, optionally followed by an index.
 
@@ -59,7 +60,7 @@ maybe_value: ?string
 value = maybe_value!
 ```
 
-## Arrow Types
+### Arrow Types
 
 Every function has an arrow type that maps a list of input types to an optional output type.
 
@@ -81,7 +82,7 @@ arrow()
 x <- arrow()
 ```
 
-## Type Alias
+### Type Alias
 
 For convenience, you can alias a type:
 
@@ -89,11 +90,12 @@ For convenience, you can alias a type:
 alias MyAlias = ?string
 ```
 
-## Type Variance
+### Type Variance
 
 Aqua is made for composing data on the open network. That means that you want to compose things if they do compose, even if you don't control its source code.
 
 Therefore Aqua follows the structural typing paradigm: if a type contains all the expected data, then it fits. For example, you can pass `u8` in place of `u16` or `i16`. Or `?bool` in place of `[]bool`. Or `*string` instead of `?string` or `[]string`. The same holds for products.
+
 
 For arrow types, Aqua checks the variance on arguments and contravariance on the return type.
 
@@ -128,17 +130,17 @@ bar(foo4)
 
 Arrow type `A: D -> C` is a subtype of `A1: D1 -> C1`, if `D1` is a subtype of `D` and `C` is a subtype of `C1`.
 
-## Type Of A Service And A File
+### Type Of A Service And A File
 
 A service type is a product of arrows.
 
 ```text
 service MyService:
   foo(arg: string) -> bool
-
+  
 -- type of this service is:
 data MyServiceType:
-  foo: string -> bool
+  foo: string -> bool  
 ```
 
 The file is a product of all defined constants and functions \(treated as arrows\). Type definitions in the file do not go to the file type.
@@ -148,14 +150,16 @@ The file is a product of all defined constants and functions \(treated as arrows
 
 func foo(arg: string) -> bool:
   ...
-
+  
 const flag ?= true  
 
 -- type of MyFile.aqua
 data MyServiceType:
   foo: string -> bool
-  flag: bool
+  flag: bool  
 ```
 
 {% embed url="https://github.com/fluencelabs/aqua/blob/main/types/src/main/scala/aqua/types/Type.scala" caption="See the types system implementation" %}
+
+
 

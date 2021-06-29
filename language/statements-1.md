@@ -1,8 +1,8 @@
-# Imports & exports
+# Imports And Exports
 
-Aqua source file has head and body. The body contains function definitions, services, types, constants. Header manages what is imported from other files, and what is exported from this one.
+An Aqua source file has a head and a body. The body contains function definitions, services, types, constants. The header manages what is imported from other files and what is exported.
 
-### Import expression
+### Import Expression
 
 The main way to import a file is via `import` expression:
 
@@ -17,9 +17,9 @@ Aqua compiler takes a source directory and a list of import directories \(usuall
 
 Everything defined in the file is imported into the current namespace.
 
-### `Use` expression
+### `Use` Expression
 
-Use expression makes it possible to import a subset of a file, or to alias the imports to avoid collisions.
+The `use` expression makes it possible to import a subset of a file, or to alias imports to avoid namespace collisions.
 
 {% embed url="https://github.com/fluencelabs/aqua/issues/30" %}
 

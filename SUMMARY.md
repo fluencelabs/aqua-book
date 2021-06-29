@@ -1,11 +1,9 @@
 # Table of contents
 
-* [Aqua](README.md)
-* [Tour De Aqua](tour-de-aqua.md)
+* [Introduction](README.md)
 * [Getting Started](getting-started/README.md)
   * [Installation](getting-started/installation.md)
-  * [Debugging And Testing](getting-started/debugging-and-testing.md)
-  * [Tools](getting-started/tools.md)
+  * [Quick Start](getting-started/quick-start.md)
 * [Language](language/README.md)
   * [Basics](language/basics.md)
   * [Types](language/types.md)
@@ -18,7 +16,7 @@
     * [Iterative](language/flow/iterative.md)
   * [Abilities & Services](language/abilities-and-services.md)
   * [CRDT Streams](language/crdt-streams.md)
-  * [Imports & exports](language/statements-1.md)
+  * [Imports And Exports](language/statements-1.md)
   * [Expressions](language/expressions/README.md)
     * [Header](language/expressions/header.md)
     * [Functions](language/expressions/functions.md)
@@ -27,8 +25,5 @@
     * [Overrideable constants](language/expressions/overrideable-constants.md)
 * [Runtimes](runtimes/README.md)
   * [Aqua VM](runtimes/aqua-vm.md)
-* [Aqua Patterns](aqua-patterns.md)
 * [Library \(BuiltIns\)](library-builtins.md)
-* [Appendix](appendix.md)
-* [Foundations: π-calculus](foundations-p-calculus.md)
 

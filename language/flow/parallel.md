@@ -126,7 +126,7 @@ What will happen when execution comes to `baz`?
 
 Actually, the script will be executed twice: first time it will be sent from `peer1`, and second time – from `peer2`. Or another way round: `peer2` then `peer1`, we don't know who is faster.
 
-When execution will get to `baz` for the first time, [Aqua VM](../../runtimes/aqua-vm.md) will realize that it lacks some data that is expected to be computed above in the parallel branch. And halt.
+When execution will get to `baz` for the first time, [Aqua VM]() will realize that it lacks some data that is expected to be computed above in the parallel branch. And halt.
 
 After the second branch executes, VM will be woken up again, reach the same piece of code and realize that now it has enough data to proceed.
 

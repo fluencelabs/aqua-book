@@ -6,6 +6,7 @@ In Aqua, two operations correspond to it: you can call a service function \(it's
 
 ### `for` expression
 
+
 In short, `for` looks like the following:
 
 ```haskell
@@ -13,13 +14,13 @@ xs: []string
 
 for x <- xs:
   y <- foo(x)
-  
+
 -- x and y are not accessible there, you can even redefine them
 x <- bar()
-y <- baz()  
+y <- baz()
 ```
 
-### Contract
+## Contract
 
 * Iterations of `for` loop are executed sequentially by default.
 * Variables defined inside `for` loop are not available outside.
@@ -27,7 +28,7 @@ y <- baz()
 * `for` can be executed on a variable of any [Collection type](../types.md#collection-types).
 
 ### Conditional `for`
-
+For can be executed on a variable of any [Collection type](../types.md#collection-types).
 You can make several trials in a loop, and break once any trial succeeded.
 
 ```haskell
@@ -50,11 +51,11 @@ xs: []string
 for x <- xs par:
   on x:
     foo()
-    
+
 -- Once the fastest x succeeds, execution continues
 -- If you want to make the subsequent execution independent from for,
 -- mark it with par, e.g.:
-par continueWithBaz()        
+par continueWithBaz()
 ```
 
 The contract is changed as in [Conditional](conditional.md#contract) flow.
@@ -71,9 +72,9 @@ return: *string
 for x <- xs par:
   on x:
     return <- foo()
-    
+
 -- Wait for 6 fastest results -- see Join behavior    
-baz(return!5, return)    
+baz(return!5, return)
 ```
 
 ### `for` on streams

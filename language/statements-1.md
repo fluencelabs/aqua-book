@@ -21,7 +21,5 @@ Everything defined in the file is imported into the current namespace.
 
 The `use` expression makes it possible to import a subset of a file, or to alias imports to avoid namespace collisions.
 
-{% embed url="https://github.com/fluencelabs/aqua/issues/30" %}
-
-
+{% embed url="https://github.com/fluencelabs/aqua/issues/30" caption="" %}
 

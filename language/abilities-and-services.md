@@ -4,9 +4,9 @@ While [Execution flow](flow/) organizes the flow from peer to peer, Abilities & 
 
 Ability is a concept of "what is possible in this context": like a peer-specific trait or a typeclass. It will be better explained once abilities passing is implemented.
 
-{% embed url="https://github.com/fluencelabs/aqua/issues/33" %}
+{% embed url="https://github.com/fluencelabs/aqua/issues/33" caption="" %}
 
-### Services
+## Services
 
 A Service interfaces functions \(often provided via WebAssembly interface\) executable on a peer. Example of service definition:
 
@@ -27,41 +27,43 @@ Some services may be singletons available on all peers. Such services are called
 -- Built-in service has a constant ID, so it's always resolved
 service Op("op"):
   noop()
-  
+
 func foo():
   -- Call the noop function of "op" service locally
-  Op.noop()  
+  Op.noop()
 ```
 
 #### Service Resolution
+
 
 A peer may host many services of the same type. To distinguish services from each other, Aqua requires Service resolution to be done: that means, the developer must provide an ID of the service to be used on the peer.
 
 ```haskell
 service MyService:
   noop()
-  
+
 func foo():
   -- Will fail
   MyService.noop()
-  
+
   -- Resolve MyService: it has id "noop"
   MyService "noop"
-  
+
   -- Can use it now 
   MyService.noop()
-  
+
   on "other peer":
     -- Should fail: we haven't resolved MyService ID on other peer
     MyService.noop()
-    
+
     -- Resolve MyService on peer "other peer"
     MyService "other noop"
     MyService.noop()
-  
+
   -- Moved back to initial peer, here MyService is resolved to "noop"
   MyService.noop()
 ```
 
 There's no way to call an external function in Aqua without defining all the data types and the service type. One of the most convenient ways to do it is to generate Aqua types from Wasm code in Marine. 
+
 

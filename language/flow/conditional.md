@@ -2,16 +2,16 @@
 
 Aqua supports branching: you can return one value or another, recover from the error, or check a boolean expression.
 
-### Contract
+## Contract
 
 * The second arm of the conditional operator is executed if and only if the first arm failed.
 * The second arm has no access to the first arm's data.
 * A conditional block is considered "executed" if and only if any arm was executed successfully.
 * A conditional block is considered "failed" if and only if the second \(recovery\) arm fails to execute.
 
-### Conditional operations
+## Conditional operations
 
-#### try
+### try
 
 Tries to perform operations, or swallows the error \(if there's no catch, otherwise after the try block\).
 
@@ -24,7 +24,7 @@ try:
    x <- foo()
 ```
 
-#### catch
+### catch
 
 Catches the standard error from `try` block.
 
@@ -44,7 +44,7 @@ data LastError:
   peer_id: string -- On what peer the error happened
 ```
 
-#### if
+### if
 
 If corresponds to `match`, `mismatch` extension of π-calculus.
 
@@ -53,21 +53,21 @@ x = true
 if x:
   -- always executed
   foo()
-  
+
 if x == false:
   -- never executed
   bar()
-  
+
 if x != false:
   -- executed
-  baz()  
+  baz()
 ```
 
 Currently, you may only use one `==`, `!=` operator in the `if` expression, or compare with true.
 
 Both operands can be variables.
 
-#### else
+### else
 
 Just the second branch of `if`, in case the condition does not hold.
 
@@ -75,12 +75,12 @@ Just the second branch of `if`, in case the condition does not hold.
 if true:
   foo()
 else:
-  bar()  
+  bar()
 ```
 
 If you want to set a variable based on condition, see Conditional return.
 
-#### otherwise
+### otherwise
 
 You may add `otherwise` to provide recovery for any block or expression:
 
@@ -91,7 +91,7 @@ otherwise:
   y <- bar()
 ```
 
-### Conditional return
+## Conditional return
 
 In Aqua, functions may have only one return expression, which is very last. And conditional expressions cannot define the same variable:
 
@@ -99,7 +99,7 @@ In Aqua, functions may have only one return expression, which is very last. And 
 try:
   x <- foo()
 otherwise:
-  x <- bar() -- Error: name x was already defined in scope, can't compile  
+  x <- bar() -- Error: name x was already defined in scope, can't compile
 ```
 
 So to get the value based on condition, we need to use a [writeable collection](../types.md#collection-types).
@@ -111,7 +111,7 @@ try:
   resultBox <- foo()
 otherwise:
   resultBox <- bar()
-  
+
 -- now result contains only one value, let's extract it!
 result = resultBox!
 

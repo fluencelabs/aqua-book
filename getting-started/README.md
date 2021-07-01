@@ -4,9 +4,3 @@
 
 In addition to the language specification, Aqua provides a compiler, which produces Aqua Intermediary Representation \(AIR\) and an execution stack, Aqua VM, that is part of every Fluence node implementation to execute AIR. 
 
-
-
-
-
-
-

@@ -8,7 +8,7 @@
   * chain-forward pattern
 * Note on Marine, Wasm IT
 
-Given an abundance of active and abandoned programming languages, why create another one ? The need for Aqua arises from the desire to maximize the potential afforded by peer-to-peer networks as a distributed hosting environment for services composable into applications and backends.  
+Given an abundance of active and abandoned programming languages, why create another one ? The need for Aqua arises from the desire to maximize the potential afforded by peer-to-peer networks as a distributed hosting environment for services composable into applications and backends.
 
 Figure x: need one new graphic to illustrate both aspects
 
@@ -19,11 +19,11 @@ That is, Aqua provides the capabilities necessary to implement and execute a "fu
 * Programmable network requests
 * Extensible beyond peer-native services to Web2 resources
 
-At the heart of the peer-to-peer programming model --  is this Fluence or Aquamarine ?
+At the heart of the peer-to-peer programming model -- is this Fluence or Aquamarine ?
 
-*  _particle_
+* _particle_
 
-###  A Taste Of Aqua
+## A Taste Of Aqua
 
 or a different example?
 
@@ -37,6 +37,4 @@ func greeter(name: string, greet: bool, node: string, service_id: string) -> str
       res <- Greeting.greeting(name, greet)
     <- res
 ```
-
-
 

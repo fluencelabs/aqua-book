@@ -33,7 +33,7 @@ func foo(arg: i32, log: string -> ()):
 
 ## Return values
 
-You can assign the results of an arrow call to a name, and use this returned value in the code below.
+You can assign the results of an arrow call to a name and use this returned value in the code below.
 
 ```haskell
 -- Imagine a Stringify service that's always available

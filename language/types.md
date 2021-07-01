@@ -23,11 +23,11 @@ data ProductName:
   field_name: string
 
 data OtherProduct:
-  prod: ProductName
+  product: ProductName
   flag: bool
 ```
 
-Fields are accessible with the `.` operator, e.g. `product.field`.
+Fields are accessible with the dot operator `.` , e.g. `product.field`.
 
 ## Collection Types
 
@@ -39,7 +39,25 @@ Immutable collection with 0 or 1 value: `?`
 
 Appendable collection with 0..N values: `*`
 
+Any data type can be prepended with a quantifier, e.g. `*u32`, `[][]string`, `?ProductType` are all correct type specifications.
+
 You can access a distinct value of a collection with `!` operator, optionally followed by an index.
+
+Examples:
+
+```text
+strict_array: []u32
+array_of_arrays: [][]u32
+element_5 = strict_array!5
+element_0 = strict_array!0
+element_0_anotherway = strict_array!
+
+-- It could be an argument or any other collection
+maybe_value: ?string
+-- This ! operator will FAIL if maybe_value is backed by a read-only data structure
+-- And will WAIT if maybe_value is backed with a stream (*string)
+value = maybe_value!
+```
 
 ## Arrow Types
 
@@ -47,14 +65,14 @@ Every function has an arrow type that maps a list of input types to an optional 
 
 It can be denoted as: `Type1, Type2 -> Result`
 
-In the type definition, absense of result is denoted with `()`: `string -> ()`
+In the type definition, the absence of a result is denoted with `()`, e.g., `string -> ()`
 
-The absence of arguments is denoted by nothing: `-> ()` this arrow takes nothing as an argument and has no return type.
+The absence of arguments is denoted `-> ()`.That is, this mapping takes no argument and has no return type.
 
-Note that there's no `Unit` type in Aqua: you cannot assign the non-existing result to a value.
+Note that there's no `Unit` type in Aqua: you cannot assign a non-existing result to a value.
 
 ```python
--- Assume that arrow: -> ()
+-- Assume that arrow has type: -> ()
 
 -- This is possible:
 arrow()
@@ -65,7 +83,7 @@ x <- arrow()
 
 ## Type Alias
 
-For convinience, you can alias a type:
+For convenience, you can alias a type:
 
 ```python
 alias MyAlias = ?string
@@ -75,13 +93,69 @@ alias MyAlias = ?string
 
 Aqua is made for composing data on the open network. That means that you want to compose things if they do compose, even if you don't control its source code.
 
-Therefore Aqua follows the structural typing paradigm: if a type contains all the expected data, than it fits. For example, you can pass `u8` in place of `u16` or `i16`. Or `?bool` in place of `[]bool`. Or `*string` instead of `?string` or `[]string`. The same holds for products.
+Therefore Aqua follows the structural typing paradigm: if a type contains all the expected data, then it fits. For example, you can pass `u8` in place of `u16` or `i16`. Or `?bool` in place of `[]bool`. Or `*string` instead of `?string` or `[]string`. The same holds for products.
 
-For arrow types, Aqua checks variance on arguments, contravariance on the return type.
+For arrow types, Aqua checks the variance on arguments and contravariance on the return type.
 
-## Type of a Service and a file
+```text
+-- We expect u32
+xs: *u32
 
-A service type is a product of arrows. File is a product of all defined constants and functions \(treated as arrows\). Type definitions in the file does not go to the file type.
+-- u16 is less then u32
+foo1: -> u16
+-- works
+xs <- foo1()
+
+-- i32 has sign, so cannot fit into u32
+foo2: -> i32
+-- will fail
+xs <- foo2()
+
+-- Function takes an arrow as an argument
+func bar(callback: u32 -> u32): ...
+
+
+foo3: u16 -> u16
+
+-- Will not work
+bar(foo3)  
+
+foo4: u16 -> u64
+
+-- Works
+bar(foo4)
+```
+
+Arrow type `A: D -> C` is a subtype of `A1: D1 -> C1`, if `D1` is a subtype of `D` and `C` is a subtype of `C1`.
+
+## Type Of A Service And A File
+
+A service type is a product of arrows.
+
+```text
+service MyService:
+  foo(arg: string) -> bool
+
+-- type of this service is:
+data MyServiceType:
+  foo: string -> bool
+```
+
+The file is a product of all defined constants and functions \(treated as arrows\). Type definitions in the file do not go to the file type.
+
+```text
+-- MyFile.aqua
+
+func foo(arg: string) -> bool:
+  ...
+
+const flag ?= true  
+
+-- type of MyFile.aqua
+data MyServiceType:
+  foo: string -> bool
+  flag: bool
+```
 
 {% embed url="https://github.com/fluencelabs/aqua/blob/main/types/src/main/scala/aqua/types/Type.scala" caption="See the types system implementation" %}
 

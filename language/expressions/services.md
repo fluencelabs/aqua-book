@@ -14,7 +14,7 @@ Services that are a part of the protocol, i.e. are available from the peer node,
 service Peer("peer"):
   foo() -- no arguments, no return
   bar(i: bool) -> bool
-  
+
 func usePeer() -> bool:
   Peer.foo() -- results in a call of service "peer", function "foo", on current peer ID
   z <- Peer.bar(true)
@@ -27,7 +27,7 @@ Example of a custom service:
 service MyService:
   foo()
   bar(i: bool, z: i32) -> string
-  
+
 func useMyService(k: i32) -> string:
   -- Need to tell the compiler what does "my service" mean in this scope
   MyService "my service id"
@@ -36,7 +36,7 @@ func useMyService(k: i32) -> string:
     -- Need to redefine MyService in scope of this peer as well
     MyService "another service id"
     z <- MyService.bar(false, k)
-  <- z  
+  <- z
 ```
 
 Service definitions have types. Type of a service is a product type of arrows. See [Types](../types.md#type-of-a-service-and-a-file).

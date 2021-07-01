@@ -4,8 +4,6 @@ description: Static configuration pieces that affect compilation
 
 # Overrideable constants
 
-
-
 `const`
 
 Constant definition.

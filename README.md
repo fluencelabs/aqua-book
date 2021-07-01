@@ -4,5 +4,3 @@
 
 In addition to the language specification, Aqua provides a compiler, intermediate representation \(AIR\) and an execution stack, Aqua VM.
 
-
-

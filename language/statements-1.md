@@ -2,7 +2,7 @@
 
 An Aqua source file has a head and a body. The body contains function definitions, services, types, constants. The header manages what is imported from other files and what is exported.
 
-### Import Expression
+## Import Expression
 
 The main way to import a file is via `import` expression:
 
@@ -17,7 +17,7 @@ Aqua compiler takes a source directory and a list of import directories \(usuall
 
 Everything defined in the file is imported into the current namespace.
 
-### `use` Expression
+## `use` Expression
 
 The `use` expression makes it possible to import a subset of a file, or to alias imports to avoid namespace collisions.
 

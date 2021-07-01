@@ -36,7 +36,7 @@ func bar(peer: string, relay: string):
 
 But the most powerful use of streams pertains to their use with parallel execution, which incurs non-determinism.
 
-### Streams: Lifecycle And Guarantees
+## Streams: Lifecycle And Guarantees
 
 A stream's lifecycle can be separated into three stages:
 
@@ -80,4 +80,5 @@ And then the results are sent to the first peer, to call Op.identity there. This
 
 When the join is complete, the stream is consumed by the concatenation service to produce a scalar value, which is returned.
 
-During execution, involved peers have different views on the state of execution: each of the `for` parallel branches have no view or access to the other branches' data and eventually, the execution flows to the initial peer. The initial peer then merges writes to the `resp` stream and to the `resp2` stream, respectively. These writes are done in conflict-free fashion. Furthermore,  the respective heads of the `resp`, `resp2` streams will not change from each peer's point of view as they are immutable and new values can only be appended. However, different peers may have a different order of the stream values depending on the order of receiving these values.
+During execution, involved peers have different views on the state of execution: each of the `for` parallel branches have no view or access to the other branches' data and eventually, the execution flows to the initial peer. The initial peer then merges writes to the `resp` stream and to the `resp2` stream, respectively. These writes are done in conflict-free fashion. Furthermore, the respective heads of the `resp`, `resp2` streams will not change from each peer's point of view as they are immutable and new values can only be appended. However, different peers may have a different order of the stream values depending on the order of receiving these values.
+

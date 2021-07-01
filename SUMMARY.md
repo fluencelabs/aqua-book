@@ -5,7 +5,6 @@
   * [Installation](getting-started/installation.md)
   * [Quick Start](getting-started/quick-start.md)
 * [Language](language/README.md)
-  * [Basics](language/basics.md)
   * [Types](language/types.md)
   * [Values](language/variables.md)
   * [Topology](language/topology.md)

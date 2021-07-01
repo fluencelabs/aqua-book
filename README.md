@@ -8,7 +8,7 @@ At the core of Fluence is the open-source language **Aqua** that allows for the 
 
 This book is dedicated to all things Aqua and currently in its **alpha** version and we expect to expand both Aqua's breadth and depth coverage over the coming weeks. 
 
-You can stay in touch or contact us via the following channels: 
+Stay in touch or contact us via the following channels: 
 
 * [Discord](https://discord.gg/)
 * [Telegram](https://t.me/fluence_project)

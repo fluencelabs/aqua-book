@@ -4,12 +4,11 @@ description: Define where the code is to be executed and how to get there
 
 # Topology
 
+Aqua lets developers to describe the whole distributed workflow in a single script, link data, recover from errors, implement complex patterns like backpressure, and more. Hence, topology is at the heart of Aqua.
 
-Aqua lets developers to describe the whole distributed workflow in a single script, link data, recover from errors, implement complex patterns like backpressure, and more. Hence,  topology is at the heart of Aqua. 
+Topology in Aqua is declarative: You just need to say where a piece of code must be executed, on what peer, and optionally how to get there. he Aqua compiler will add all the required network hops.
 
-Topology in Aqua is declarative:  You just need to say where a piece of code must be executed, on what peer, and optionally how to get there. he Aqua compiler will add all the required network hops.
-
-### On expression
+## On expression
 
 `on` expression moves execution to the specified peer:
 
@@ -28,15 +27,15 @@ on myPeer:
   baz()
 ```
 
-### `%init_peer_id%`
+## `%init_peer_id%`
 
-There is one custom peer ID that is always in scope: `%init_peer_id%`. It points to the peer that initiated this request. 
+There is one custom peer ID that is always in scope: `%init_peer_id%`. It points to the peer that initiated this request.
 
 {% hint style="warning" %}
 Using `on %init_peer_id%` is an anti-pattern: There is no way to ensure that init peer is accessible from the currently used part of the network.
 {% endhint %}
 
-### More complex scenarios
+## More complex scenarios
 
 Consider this example:
 
@@ -44,16 +43,16 @@ Consider this example:
 func foo():
   on "peer foo":
     do_foo()
-    
+
 func bar(i: i32):
   do_bar()
-  
+
 func baz():
   bar(1)
   on "peer baz":
     foo()
     bar(2)
-  bar(3)            
+  bar(3)
 ```
 
 Take a minute to think about:
@@ -70,7 +69,7 @@ Declarative topology definition always works the same way.
 * `bar(2)` is executed on `"peer baz"`, despite the fact that foo does topologic transition. `bar(2)` is in the scope of `on "peer baz"`, so it will be executed there
 * `bar(3)` is executed where `bar(1)` was: in the root scope of `baz`, wherever it was called from
 
-### Accessing peers `via` other peers
+## Accessing peers `via` other peers
 
 In a distributed network it is quite common that a peer is not directly accessible. For example, a browser has no public network interface and you cannot open a socket to a browser at will. Such constraints warrant a `relay` pattern: there should be a well-connected peer that relays requests from a peer to the network and vice versa.
 
@@ -81,12 +80,12 @@ Relays are handled with `via`:
 -- the compiler will add an additional hop to some relay
 on "some peer" via "some relay":
   foo()
-  
+
 -- More complex path: first go to relay2, then to relay1,
 -- then to peer. When going out of peer, do it in reverse  
 on "peer" via relay1 via relay2:
   foo()
-  
+
 -- You can pass any collection of strings to relay,
 -- and it will go through it if it's defined,
 -- or directly if not  
@@ -137,7 +136,7 @@ foo()
 
 When the `on` scope is ended, it does not affect any further topology moves. Until you stop indentation, `on` affects the topology and may add additional topology moves, which means more roundtrips and unnecessary latency.
 
-### Callbacks
+## Callbacks
 
 What if you want to return something to the initial peer? For example, implement a request-response pattern. Or send a bunch of requests to different peers, and render responses as they come, in any order.
 
@@ -150,7 +149,7 @@ func run(updateModel: Model -> (), logMessage: string -> ()):
     updateModel(m)
   par on "other peer":
     x <- getMessage()
-    logMessage(x)  
+    logMessage(x)
 ```
 
 Callbacks have the [arrow type](types.md#arrow-types).
@@ -161,15 +160,15 @@ If you pass just ordinary functions as arrow-type arguments, they will work as i
 func foo():
   on "peer 1":
     doFoo()
-    
+
 func bar(cb: -> ()):
   on "peer2":
     cb()
-    
+
 func baz():
   -- foo will go to peer 1
   -- bar will go to peer 2
-  bar(foo)            
+  bar(foo)
 ```
 
 If you pass a service call as a callback, it will be executed locally on the node where you called it. That might change.
@@ -192,13 +191,11 @@ func baz():
 Passing service function calls as arguments is very fragile as it does not track that a service is resolved in the scope of the call. Abilities variance may fix that.
 {% endhint %}
 
-### Parallel execution and topology
+## Parallel execution and topology
 
 When blocks are executed in parallel, it is not always necessary to resolve the topology to get to the next peer. The compiler will add topologic hops from the par branch only if data defined in that branch is used down the flow.
 
 {% hint style="danger" %}
 What if all branches do not return? Execution will halt. Be careful, use `co` if you don't care about the returned data.
 {% endhint %}
-
-
 

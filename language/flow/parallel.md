@@ -2,7 +2,7 @@
 
 Parallel execution is where everything becomes shiny.
 
-### Contract
+## Contract
 
 Parallel arms have no access to each other's data. Sync points must be explicit \(see Join behavior\).
 
@@ -10,7 +10,7 @@ If any arm is executed successfully, the flow execution continues.
 
 All the data defined in parallel arms is available in the subsequent code.
 
-### Implementation limitation
+## Implementation limitation
 
 Parallel execution has some implementation limitations:
 
@@ -20,9 +20,9 @@ Parallel execution has some implementation limitations:
 
 We might overcome these limitations later, but for now, plan your application design having this in mind.
 
-### Parallel operations
+## Parallel operations
 
-### par
+## par
 
 `par` syntax is derived from π-calculus notation of parallelism: `A | B`
 
@@ -39,7 +39,7 @@ on "peer 1":
   x <- foo()
 par on "peer 2":
   y <- bar()
-  
+
 -- Once any of the previous functions return x or y,
 -- execution continues. We don't know the order, so 
 -- if y is returned first, hello(x) will not execute  
@@ -54,7 +54,7 @@ par hello(y)
 
 `par` works in infix manner between the previously stated function and the next one.
 
-#### co
+### co
 
 `co` , short for `coroutine`, prefixes an operation to send it to background. From π-calculus perspective, it's the same as `A | null`, where `null`-process is the one that does nothing and completes instantly.
 
@@ -65,7 +65,7 @@ co foo()
 -- Do something on another peer, not blocking the flow on this one
 co on "some peer":
   baz()
-  
+
 -- This foo does not wait for baz()  
 foo()  
 
@@ -80,7 +80,7 @@ bar()
 bax(x)
 ```
 
-### Join behavior
+## Join behavior
 
 Join means that data was created by different parallel execution flows and then used on a single peer to perform computations. It works the same way for any parallel blocks, be it `par`, `co` or something else \(`for par`\).
 
@@ -91,16 +91,16 @@ In Aqua, you can refer to previously defined variables. In case of sequential co
 on peer1:
   -- Go to peer1, execute foo, remember x
   x <- foo()
-  
+
 -- x is available at this point
-  
+
 on peer2:
   -- Go to peer2, execute bar, remember y
   y <- bar()
 
 -- Both x and y are available at this point
 -- Use them in a function
-baz(x, y)        
+baz(x, y)
 ```
 
 Let's make this script parallel: execute `foo` and `bar` on different peers in parallel, then use both to compute `baz`.
@@ -110,9 +110,9 @@ Let's make this script parallel: execute `foo` and `bar` on different peers in p
 on peer1:
   -- Go to peer1, execute foo, remember x
   x <- foo()
-  
+
 -- Notice par on the next line: it means, go to peer2 in parallel with peer1
-  
+
 par on peer2:
   -- Go to peer2, execute bar, remember y
   y <- bar()

@@ -4,7 +4,7 @@
 
 In Aqua, two operations corresponds to it: you can call a service function \(it's just available when it's needed\), and you can use `for` loop to iterate on collections.
 
-### For expression
+## For expression
 
 In short, `for` looks like the following:
 
@@ -13,13 +13,13 @@ xs: []string
 
 for x <- xs:
   y <- foo(x)
-  
+
 -- x and y are not accessible there, you can even redefine them
 x <- bar()
-y <- baz()  
+y <- baz()
 ```
 
-### Contract
+## Contract
 
 Iterations of `for` loop are executed sequentially by default.
 
@@ -29,7 +29,7 @@ For loop's code has access to all variables above.
 
 For can be executed on a variable of any [Collection type](../types.md#collection-types).
 
-### Conditional for
+## Conditional for
 
 You can make several trials in a loop, and break once any trial succeeded.
 
@@ -43,7 +43,7 @@ for x <- xs try:
 
 Contract is changed as in [Parallel](parallel.md#contract) flow.
 
-### Parallel for
+## Parallel for
 
 Running many operations in parallel is the most commonly used pattern for `for`.
 
@@ -53,16 +53,16 @@ xs: []string
 for x <- xs par:
   on x:
     foo()
-    
+
 -- Once the fastest x succeeds, execution continues
 -- If you want to make the subsequent execution independent from for,
 -- mark it with par, e.g.:
-par continueWithBaz()        
+par continueWithBaz()
 ```
 
 Contract is changed as in [Conditional](conditional.md#contract) flow.
 
-### Export data from for
+## Export data from for
 
 The way to export data from `for` is the same as in [Conditional return](conditional.md#conditional-return) and [Race patterns](parallel.md#join-behavior).
 
@@ -74,12 +74,12 @@ return: *string
 for x <- xs par:
   on x:
     return <- foo()
-    
+
 -- Wait for 6 fastest results -- see Join behavior    
-baz(return!5, return)    
+baz(return!5, return)
 ```
 
-### For on streams
+## For on streams
 
 For on streams is one of the most complex and powerful parts of Aqua. See [CRDT streams](../crdt-streams.md) for details.
 

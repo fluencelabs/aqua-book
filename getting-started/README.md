@@ -6,9 +6,3 @@
 * container
 * VSCode extension\(s\)
 
-
-
-
-
-
-

@@ -1,10 +1,10 @@
 # Quick Start
 
-Every Fluence reference node comes with a set of builtin services which are accessible to Aqua programs. Let's use those readily available services to get the timestamp of a few of our  peer-to-peer neighborhood nodes with Aqua.
+Every Fluence reference node comes with a set of builtin services that are accessible to Aqua programs. Let's use those readily available services to get the timestamp of a few of our peer-to-peer neighbourhood nodes with Aqua.
 
 {% tabs %}
 {% tab title="Timestamps With Aqua" %}
-```text
+```haskell
 -- timestamp_getter.aqua
 -- bring the builtin services into scope
 import "builtin.aqua"
@@ -40,13 +40,13 @@ func ts_getter(node: string) -> []u64:
 {% endtab %}
 
 {% tab title="Compiling Aqua Script" %}
-```
+```bash
 aqua-cli -i aqua-scripts -o air-scripts -a
 ```
 {% endtab %}
 
 {% tab title="Result" %}
-```
+```bash
 fldist run_air -p air-scripts/timestamp_getter.ts_getter.air  -d '{"node":"12D3KooWHLxVhUQyAuZe6AHMB29P7wkvTNMn7eDMcsqimJYLKREf"}'  --generated
 [
   [
@@ -66,30 +66,30 @@ fldist run_air -p air-scripts/timestamp_getter.ts_getter.air  -d '{"node":"12D3K
 {% endtab %}
 {% endtabs %}
 
-The Aqua script essentially creates a workflow originating from our client peer to enumerate our neighbor peers from the Kademlia neighborhood based on our reference node specification, calls on the builtin timestamp service on each peer in parallel,  joins the results stream after we collect ten timestamps and return our u64 array of timestamps back to the client peer.
+The Aqua script essentially creates a workflow originating from our client peer to enumerate our neighbour peers from the Kademlia neighbourhood based on our reference node specification, calls on the builtin timestamp service on each peer in parallel,  joins the results stream after we collect ten timestamps and return our u64 array of timestamps back to the client peer.
 
- See the [ts-oracle example](https://github.com/fluencelabs/examples/tree/main/ts-oracle) for the corresponding Aqua files in the `aqua-script` directory.  Now that we  have our script, let's compile it with the aqua-cli tool and find our AIR file in the air-scripts directory:
+ See the [ts-oracle example](https://github.com/fluencelabs/examples/tree/main/ts-oracle) for the corresponding Aqua files in the `aqua-script` directory.  Now that we  have our script, let's compile it with the `aqua-cli` tool and find our AIR file in the `air-scripts` directory:
 
 {% tabs %}
 {% tab title="Compile" %}
-```text
+```bash
 aqua-cli -i aqua-scripts -o air-scripts -a
 ```
 {% endtab %}
 
 {% tab title="Result" %}
-```
+```bash
 # in the air-script dir you should have the following file
 timestamp_getter.ts_getter.air
 ```
 {% endtab %}
 {% endtabs %}
 
-Once we have our AIR file we can either use a Typescript or command line client. Let's use the command line client `flidst`:
+Once we have our AIR file we can either use a Typescript or command-line client. Let's use the command line client `flidst`:
 
 {% tabs %}
 {% tab title="Run Air scripts" %}
-```text
+```bash
 # if you don't have fldist on your machine: 
 # npm -g install @fluencelabs/fldist
 # execute the AIR script from our compile phase with a peer id
@@ -98,7 +98,7 @@ fldist run_air -p air-scripts/timestamp_getter.ts_getter.air  -d '{"node":"12D3K
 {% endtab %}
 
 {% tab title="Output" %}
-```
+```bash
 # here we go: ten timestamps in micro seconds obtained in parallel
 [
   [
@@ -118,5 +118,5 @@ fldist run_air -p air-scripts/timestamp_getter.ts_getter.air  -d '{"node":"12D3K
 {% endtab %}
 {% endtabs %}
 
-And that's it.  We now have ten timestamps right from our Kademlia neighbors.
+And that's it.  We now have ten timestamps right from our Kademlia neighbours.
 

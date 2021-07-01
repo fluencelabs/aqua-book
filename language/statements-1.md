@@ -6,7 +6,7 @@ An Aqua source file has a head and a body. The body contains function definition
 
 The main way to import a file is via `import` expression:
 
-```text
+```haskell
 import "@fluencelabs/aqua-lib/builtin.aqua"
 
 func foo():
@@ -17,7 +17,7 @@ Aqua compiler takes a source directory and a list of import directories \(usuall
 
 Everything defined in the file is imported into the current namespace.
 
-### `Use` Expression
+### `use` Expression
 
 The `use` expression makes it possible to import a subset of a file, or to alias imports to avoid namespace collisions.
 

@@ -1,32 +1,31 @@
 # Parallel
 
-Parallel execution is where everything becomes shiny.
+Parallel execution is where Aqua fully shines.
 
 ### Contract
 
-Parallel arms have no access to each other's data. Sync points must be explicit \(see Join behavior\).
-
-If any arm is executed successfully, the flow execution continues.
-
-All the data defined in parallel arms is available in the subsequent code.
+* Parallel arms have no access to each other's data. Sync points must be explicit \(see [Join behavior](parallel.md#join-behavior)\).
+* If any arm is executed successfully, the flow execution continues.
+* All the data defined in parallel arms is available in the subsequent code.
 
 ### Implementation limitation
 
 Parallel execution has some implementation limitations:
 
 * Parallel means independent execution on different peers
-* No parallelism when executing a script on a single peer \(fix planned\)
-* No concurrency in services: one service instance does only one job simultaneously. Keep services small \(wasm limitation\)
+* No parallelism when executing a script on a single peer
+* No concurrency in services: every service instance does only one job simultaneously.
+* Keep services small in terms of computation and memory \(WebAssembly limitation\)
 
-We might overcome these limitations later, but for now, plan your application design having this in mind.
+These limitations might be overcome in future Aqua updates, but for now, plan your application design having this in mind.
 
 ### Parallel operations
 
-### par
+#### par
 
 `par` syntax is derived from π-calculus notation of parallelism: `A | B`
 
-```text
+```haskell
 -- foo and bar will be executed in parallel, if possible
 foo()
 par bar()
@@ -52,13 +51,13 @@ hello(x)
 par hello(y)
 ```
 
-`par` works in infix manner between the previously stated function and the next one.
+`par` works in an infix manner between the previously stated function and the next one.
 
 #### co
 
-`co` , short for `coroutine`, prefixes an operation to send it to background. From π-calculus perspective, it's the same as `A | null`, where `null`-process is the one that does nothing and completes instantly.
+`co` , short for `coroutine`, prefixes an operation to send it to the background. From π-calculus perspective, it's the same as `A | null`, where `null`-process is the one that does nothing and completes instantly.
 
-```text
+```haskell
 -- Let's send foo to background and continue
 co foo()
 
@@ -86,7 +85,7 @@ Join means that data was created by different parallel execution flows and then 
 
 In Aqua, you can refer to previously defined variables. In case of sequential computations, they are available, if execution not failed:
 
-```text
+```haskell
 -- Start execution somewhere
 on peer1:
   -- Go to peer1, execute foo, remember x
@@ -105,7 +104,7 @@ baz(x, y)
 
 Let's make this script parallel: execute `foo` and `bar` on different peers in parallel, then use both to compute `baz`.
 
-```text
+```haskell
 -- Start execution somewhere
 on peer1:
   -- Go to peer1, execute foo, remember x
@@ -124,15 +123,15 @@ baz(x, y)
 
 What will happen when execution comes to `baz`?
 
-Actually, the script will be executed twice: first time it will be sent from `peer1`, and second time – from `peer2`. Or another way round: `peer2` then `peer1`, we don't know who is faster.
+Actually, the script will be executed twice: the first time it will be sent from `peer1`, and the second time – from `peer2`. Or another way round: `peer2` then `peer1`, we don't know who is faster.
 
-When execution will get to `baz` for the first time, [Aqua VM](../../runtimes/aqua-vm.md) will realize that it lacks some data that is expected to be computed above in the parallel branch. And halt.
+When execution will get to `baz` for the first time, Aqua VM will realize that it lacks some data that is expected to be computed above in the parallel branch. And halt.
 
 After the second branch executes, VM will be woken up again, reach the same piece of code and realize that now it has enough data to proceed.
 
 This way you can express race \(see [Collection types](../types.md#collection-types) and [Conditional return](conditional.md#conditional-return) for other uses of this pattern\):
 
-```text
+```haskell
 -- Initiate a stream to write into it several times
 results: *string
 

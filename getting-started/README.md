@@ -6,13 +6,6 @@ In addition to the language specification, Aqua provides a compiler, which produ
 
 
 
-* [Aqua Repo](https://github.com/fluencelabs/aqua)
-* [Aqua Playground](https://github.com/fluencelabs/aqua-playground)
-* [Aqua VM](https://github.com/fluencelabs/aquavm)
-* [VSCode Extension](https://github.com/fluencelabs/aqua-vscode)
-
-
-
 
 
 

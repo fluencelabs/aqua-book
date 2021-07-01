@@ -4,9 +4,9 @@ description: Define where the code is to be executed and how to get there
 
 # Topology
 
-Aqua lets developers to describe the whole distributed workflow in a single script, link data, recover from errors, implement complex patterns like backpressure, and more. Hence, topology is at the heart of Aqua.
+Aqua lets developers describe the whole distributed workflow in a single script, link data, recover from errors, implement complex patterns like backpressure, and more. Hence, the network topology is at the heart of Aqua.
 
-Topology in Aqua is declarative: You just need to say where a piece of code must be executed, on what peer, and optionally how to get there. he Aqua compiler will add all the required network hops.
+Topology in Aqua is declarative: You just need to say where a piece of code must be executed, on what peer, and optionally how to get there. The Aqua compiler will add all the required network hops.
 
 ## On expression
 
@@ -57,8 +57,8 @@ func baz():
 
 Take a minute to think about:
 
-* Where `do_foo` is executed?
-* Where `bar(1)` is executed?
+* Where is `do_foo` executed?
+* Where is `bar(1)` executed?
 * On what node `bar(2)` runs?
 * What about `bar(3)`?
 
@@ -175,7 +175,7 @@ If you pass a service call as a callback, it will be executed locally on the nod
 
 Functions that capture the topologic context of the definition site are planned, not yet there. **Proposed** syntax:
 
-```text
+```haskell
 func baz():
   foo = do (x: u32):
     -- Executed there, where foo is called
@@ -188,7 +188,7 @@ func baz():
 {% embed url="https://github.com/fluencelabs/aqua/issues/183" caption="Issue for adding \`do\` expression" %}
 
 {% hint style="warning" %}
-Passing service function calls as arguments is very fragile as it does not track that a service is resolved in the scope of the call. Abilities variance may fix that.
+Passing service function calls as arguments is very fragile as it does not track that the service is resolved in the scope of the call. Abilities variance may fix that.
 {% endhint %}
 
 ## Parallel execution and topology

@@ -1,23 +1,23 @@
 # Type definitions
 
-`data`
+### `data`
 
 [Product type](../types.md#products) definition. See [Types](../types.md) for details.
 
-```text
+```haskell
 data SomeType:
   fieldName: FieldType
   otherName: OtherType
   third: []u32
 ```
 
-`alias`
+### `alias`
 
 Aliasing a type to a name.
 
 It may help with self-documented code and refactoring.
 
-```text
+```haskell
 alias PeerId: string
 alias MyDomain: DomainType
 ```

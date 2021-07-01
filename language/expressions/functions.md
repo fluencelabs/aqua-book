@@ -10,15 +10,21 @@ Essentially, a function is an arrow. The function call is an expression that con
 
 Finally, all a function does is call its arguments or service functions.
 
-```text
+```haskell
 service MySrv:
   foo()
 
 func do_something(): -- arrow of type: -> ()
   MySrv "srv id"
-  MySrv.foo()  
+  MySrv.foo()
 ```
+
+{% hint style="warning" %}
+TODO
 
 * list all expressions
 * for each, explain the contract and provide a use case
+{% endhint %}
+
+
 

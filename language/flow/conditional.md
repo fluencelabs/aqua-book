@@ -4,13 +4,10 @@ Aqua supports branching: you can return one value or another, recover from the e
 
 ## Contract
 
-The second arm of the conditional operator is executed iff the first arm failed.
-
-The second arm has no access to the first arm's data.
-
-A conditional block is considered executed iff any arm was executed successfully.
-
-A conditional block is considered failed iff the second \(recovery\) arm fails to execute.
+* The second arm of the conditional operator is executed if and only if the first arm failed.
+* The second arm has no access to the first arm's data.
+* A conditional block is considered "executed" if and only if any arm was executed successfully.
+* A conditional block is considered "failed" if and only if the second \(recovery\) arm fails to execute.
 
 ## Conditional operations
 
@@ -18,7 +15,7 @@ A conditional block is considered failed iff the second \(recovery\) arm fails t
 
 Tries to perform operations, or swallows the error \(if there's no catch, otherwise after the try block\).
 
-```text
+```haskell
 try:
    -- If foo fails with an error, execution will continue
    -- You should write your logic in a non-blocking fashion:
@@ -31,7 +28,7 @@ try:
 
 Catches the standard error from `try` block.
 
-```text
+```haskell
 try:
    foo()
 catch e:
@@ -40,7 +37,7 @@ catch e:
 
 Type of `e` is:
 
-```text
+```haskell
 data LastError:
   instruction: string -- What AIR instruction failed
   msg: string -- Human-readable error message
@@ -51,7 +48,7 @@ data LastError:
 
 If corresponds to `match`, `mismatch` extension of π-calculus.
 
-```text
+```haskell
 x = true
 if x:
   -- always executed
@@ -74,7 +71,7 @@ Both operands can be variables.
 
 Just the second branch of `if`, in case the condition does not hold.
 
-```text
+```haskell
 if true:
   foo()
 else:
@@ -87,7 +84,7 @@ If you want to set a variable based on condition, see Conditional return.
 
 You may add `otherwise` to provide recovery for any block or expression:
 
-```text
+```haskell
 x <- foo()
 otherwise:
   -- if foo can't be executed, then do bar()
@@ -98,7 +95,7 @@ otherwise:
 
 In Aqua, functions may have only one return expression, which is very last. And conditional expressions cannot define the same variable:
 
-```text
+```haskell
 try:
   x <- foo()
 otherwise:
@@ -107,7 +104,7 @@ otherwise:
 
 So to get the value based on condition, we need to use a [writeable collection](../types.md#collection-types).
 
-```text
+```haskell
 -- result may have 0 or more values of type string, and is writeable
 resultBox: *string
 try:

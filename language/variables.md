@@ -6,7 +6,7 @@ Values in Aqua are backed by VDS \(Verifiable Data Structures\) in the runtime. 
 
 That's why values are immutable. Changing the value effectively makes a new one:
 
-```text
+```haskell
 x = "hello"
 y = "world"
 
@@ -22,7 +22,7 @@ More on that in the Security section. Now let's see how we can work with values 
 
 Function arguments are available within the whole function body.
 
-```text
+```haskell
 func foo(arg: i32, log: string -> ()):
   -- Use data arguments
   bar(arg)
@@ -33,9 +33,9 @@ func foo(arg: i32, log: string -> ()):
 
 ## Return values
 
-You can assign results of an arrow call to a name, and use this returned value in the code below.
+You can assign the results of an arrow call to a name and use this returned value in the code below.
 
-```text
+```haskell
 -- Imagine a Stringify service that's always available
 service Stringify("stringify"):
   i32ToStr(arg: i32) -> string
@@ -59,7 +59,7 @@ func foo(arg: i32, log: *string):
 
 Aqua supports just a few literals: numbers, quoted strings, booleans. You [cannot init a structure](https://github.com/fluencelabs/aqua/issues/167) in Aqua, only obtain it as a result of a function call.
 
-```text
+```haskell
 -- String literals cannot contain double quotes
 -- No single-quoted strings allowed, no escape chars.
 foo("double quoted string literal")
@@ -83,7 +83,7 @@ bar(-0.2)
 
 In Aqua, you can use a getter to peak into a field of a product or indexed element in an array.
 
-```text
+```haskell
 data Sub:
   sub: string
 
@@ -105,8 +105,8 @@ func foo(e: Example):
 
 Note that the `!` operator may fail or halt:
 
-* If it is called on an immutable collection, it will fail if the collection is shorter and has no given index; you can handle the error with [try](https://github.com/fluencelabs/aqua-book/tree/d54b086ab43f89c9f5622d26a22574a47d0cde19/language/operators/conditional.md#try) or [otherwise](https://github.com/fluencelabs/aqua-book/tree/d54b086ab43f89c9f5622d26a22574a47d0cde19/language/operators/conditional.md#otherwise).
-* If it is called on an appendable stream, it will wait for some parallel append operation to fulfill, see [Join behavior](https://github.com/fluencelabs/aqua-book/tree/d54b086ab43f89c9f5622d26a22574a47d0cde19/language/operators/parallel.md#join-behavior).
+* If it is called on an immutable collection, it will fail if the collection is shorter and has no given index; you can handle the error with [try](https://github.com/fluencelabs/aqua-book/tree/4177e00f9313f0e1eb0a60015e1c19a956c065bd/language/operators/conditional.md#try) or [otherwise](https://github.com/fluencelabs/aqua-book/tree/4177e00f9313f0e1eb0a60015e1c19a956c065bd/language/operators/conditional.md#otherwise).
+* If it is called on an appendable stream, it will wait for some parallel append operation to fulfill, see [Join behavior](https://github.com/fluencelabs/aqua-book/tree/4177e00f9313f0e1eb0a60015e1c19a956c065bd/language/operators/parallel.md#join-behavior).
 
 {% hint style="warning" %}
 The `!` operator can currently only be used with literal indices.  
@@ -116,9 +116,9 @@ We expect to address this limitation soon.
 
 ## Assignments
 
-Assignments, `=`, only give a name to a value with applied getter or to a literal.
+Assignments, `=`, only give a name to a value with an applied getter or to a literal.
 
-```text
+```haskell
 func foo(arg: bool, e: Example):
   -- Rename the argument
   a = arg
@@ -132,9 +132,9 @@ func foo(arg: bool, e: Example):
 
 Constants are like assignments but in the root scope. They can be used in all function bodies, textually below the place of const definition. Constant values must resolve to a literal.
 
-You can change the compilation results with overriding a constant but the override needs to be of the same type or subtype.
+You can change the compilation results by overriding a constant but the override needs to be of the same type or subtype.
 
-```text
+```haskell
 -- This flag is always true
 const flag = true
 
@@ -156,7 +156,7 @@ By default, everything defined textually above is available below. With some exc
 
 Functions have isolated scopes:
 
-```text
+```haskell
 func foo():
    a = 5
 
@@ -168,7 +168,7 @@ func bar():
 
 [For loop](flow/iterative.md#export-data-from-for) does not export anything from it:
 
-```text
+```haskell
 func foo():
   x = 5
   for y <- ys:
@@ -181,7 +181,7 @@ func foo():
 
 [Parallel](flow/parallel.md#join-behavior) branches have [no access](https://github.com/fluencelabs/aqua/issues/90) to each other's data:
 
-```text
+```haskell
 -- This will deadlock, as foo branch of execution will
 -- never send x to a parallel bar branch
 x <- foo()
@@ -191,9 +191,9 @@ par y <- bar(x)
 baz(x, y)
 ```
 
-Recovery branches in [conditional flow](https://github.com/fluencelabs/aqua-book/tree/d54b086ab43f89c9f5622d26a22574a47d0cde19/language/operators/conditional.md) have no access to the main branch as the main branch exports values, whereas the recovery branch does not:
+Recovery branches in [conditional flow](https://github.com/fluencelabs/aqua-book/tree/4177e00f9313f0e1eb0a60015e1c19a956c065bd/language/operators/conditional.md) have no access to the main branch as the main branch exports values, whereas the recovery branch does not:
 
-```text
+```haskell
 try:
   x <- foo()
 otherwise:
@@ -211,7 +211,7 @@ Stream is a special data structure that allows many writes. It has [a dedicated 
 
 To use a stream, you need to initiate it at first:
 
-```text
+```haskell
 -- Initiate an (empty) appendable collection of strings
 resp: *string
 

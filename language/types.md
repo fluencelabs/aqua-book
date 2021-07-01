@@ -18,7 +18,7 @@ You can pass booleans \(true, false\), numbers, double-quoted strings as literal
 
 ## Products
 
-```python
+```haskell
 data ProductName:
   field_name: string
 
@@ -45,7 +45,7 @@ You can access a distinct value of a collection with `!` operator, optionally fo
 
 Examples:
 
-```text
+```haskell
 strict_array: []u32
 array_of_arrays: [][]u32
 element_5 = strict_array!5
@@ -71,7 +71,7 @@ The absence of arguments is denoted `-> ()`.That is, this mapping takes no argum
 
 Note that there's no `Unit` type in Aqua: you cannot assign a non-existing result to a value.
 
-```python
+```haskell
 -- Assume that arrow has type: -> ()
 
 -- This is possible:
@@ -85,7 +85,7 @@ x <- arrow()
 
 For convenience, you can alias a type:
 
-```python
+```haskell
 alias MyAlias = ?string
 ```
 
@@ -97,7 +97,7 @@ Therefore Aqua follows the structural typing paradigm: if a type contains all th
 
 For arrow types, Aqua checks the variance on arguments and contravariance on the return type.
 
-```text
+```haskell
 -- We expect u32
 xs: *u32
 
@@ -132,7 +132,7 @@ Arrow type `A: D -> C` is a subtype of `A1: D1 -> C1`, if `D1` is a subtype of `
 
 A service type is a product of arrows.
 
-```text
+```haskell
 service MyService:
   foo(arg: string) -> bool
 
@@ -143,7 +143,7 @@ data MyServiceType:
 
 The file is a product of all defined constants and functions \(treated as arrows\). Type definitions in the file do not go to the file type.
 
-```text
+```haskell
 -- MyFile.aqua
 
 func foo(arg: string) -> bool:

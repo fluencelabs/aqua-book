@@ -4,21 +4,18 @@ By default, Aqua code is executed line by line, sequentially.
 
 ## Contract
 
-Data from the first arm is available in the second branch.
-
-Second arm is executed iff the first arm succeeded.
-
-If any arm failed, then the whole sequence is failed.
-
-If all arms executed successfully, then the whole sequence is executed successfully.
+* Data from the first arm is available in the second branch.
+* The second arm is executed if and only if the first arm succeeded.
+* If any arm failed, then the whole sequence is failed.
+* If all arms executed successfully, then the whole sequence is executed successfully.
 
 ## Sequential operations
 
 ### call arrow
 
-Any runnable piece of code in Aqua is an arrow from its domain to codomain.
+Any runnable piece of code in Aqua is an arrow from its domain to the codomain.
 
-```text
+```haskell
 -- Call a function
 foo()
 
@@ -32,13 +29,13 @@ y <- Peer.identify()
 z <- Op.identity(y)
 ```
 
-When you write `<-`, this means not just "assign results of the function on the right to variable on the left". It means that all the effects are executed: [service](../abilities-and-services.md) may change state, [topology](../topology.md) may be shifted. But you end up being \(semantically\) on the same peer where you have called the arrow.
+When you write `<-`, this means not just "assign results of the function on the right to variable on the left". It means that all the effects are executed: [service](../abilities-and-services.md) may change state, the [topology](../topology.md) may be shifted. But you end up being \(semantically\) on the same peer where you have called the arrow.
 
 ### on
 
 `on` denotes the peer where the code must be executed. `on` is handled sequentially, and the code inside is executed line by line by default.
 
-```text
+```haskell
 func foo():
   -- Will be executed where `foo` was executed
   bar()
@@ -60,5 +57,5 @@ func foo():
   bar()
 ```
 
-See more in [Topology](../topology.md) section.
+See more in the [Topology](../topology.md) section.
 

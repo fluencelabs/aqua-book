@@ -1,22 +1,22 @@
 # CRDT Streams
 
-In Aqua, ordinary value is a name that points to a single result:
+In Aqua, an ordinary value is a name that points to a single result:
 
-```text
+```haskell
 value <- foo()
 ```
 
-Stream is a name that points to a number of results \(zero or more\):
+A stream , on the other hand, is a name that points to zero or more results:
 
-```text
+```haskell
 value: *string
 value <- foo()
 value <- foo()
 ```
 
-Stream is a kind of [collection](types.md#collection-types), and can be used where other collections are:
+Stream is a kind of [collection](types.md#collection-types) and can be used in place of other collections:
 
-```text
+```haskell
 func foo(peer: string, relay: ?string):
   on peer via relay:
     Op.noop()
@@ -34,19 +34,19 @@ func bar(peer: string, relay: string):
   foo(peer, relayMaybe)
 ```
 
-But the most powerful uses of streams come along with parallelism, which incurs non-determinism.
+But the most powerful use of streams pertains to their use with parallel execution, which incurs non-determinism.
 
-## Streams lifecycle and guarantees
+### Streams: Lifecycle And Guarantees
 
-Streams lifecycle can be divided into three stages:
+A stream's lifecycle can be separated into three stages:
 
 * Source: \(Parallel\) Writes to a stream
-* Map: Handling the stream values
-* Sink: Converting the resulting stream into scalar
+* Map: Handles the stream values
+* Sink: Converts the resulting stream into a scalar
 
 Consider the following example:
 
-```text
+```haskell
 func foo(peers: []string) -> string:
   resp: *string
 
@@ -70,15 +70,14 @@ func foo(peers: []string) -> string:
   <- r
 ```
 
-In this case, for each peer in peers, something is going to be written into resp stream.
+In this case, for each peer in peers, something is going to be written into `resp` stream.
 
-Every peer p in peers does not know anything about how the other iterations proceed.
+Every peer `p` in peers does not know anything about how the other iterations proceed.
 
-Once something is written to resp stream, the second for is triggered. It's the mapping stage.
+Once something is written to `resp` stream, the second for is triggered. This is the mapping stage.
 
-And then the results are sent to the first peer, to call Op.identity there. This Op.identity waits until element number 5 is defined on resp2 stream.
+And then the results are sent to the first peer, to call Op.identity there. This Op.identity waits until element number 5 is defined on `resp2` stream.
 
-When it is, stream as a whole is consumed to produce a scalar value, which is returned.
+When the join is complete, the stream is consumed by the concatenation service to produce a scalar value, which is returned.
 
-During execution, involved peers have different views on the state of execution: parallel branches of for have no access to each other's data. Finally, execution flows to the initial peer. Initial peer merges writes to the resp stream, and merges writes to the resp2 stream. It's done in conflict-free fashion. More than that, head of resp, resp2 streams will not change from each peer's point of view: it's immutable, and new values are only appended. However, different peers may have different order of the stream values, depending on the order of receiving these values.
-
+During execution, involved peers have different views on the state of execution: each of the `for` parallel branches have no view or access to the other branches' data and eventually, the execution flows to the initial peer. The initial peer then merges writes to the `resp` stream and to the `resp2` stream, respectively. These writes are done in conflict-free fashion. Furthermore,  the respective heads of the `resp`, `resp2` streams will not change from each peer's point of view as they are immutable and new values can only be appended. However, different peers may have a different order of the stream values depending on the order of receiving these values.

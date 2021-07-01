@@ -1,14 +1,15 @@
 # Iterative
 
-π-calculus has a notion of repetitive process: `!P = P | !P`. That means, you can always fork a new `P` process if you need it.
+π-calculus has a notion of the repetitive process: `!P = P | !P`. That means, you can always fork a new `P` process if you need it.
 
-In Aqua, two operations corresponds to it: you can call a service function \(it's just available when it's needed\), and you can use `for` loop to iterate on collections.
+In Aqua, two operations correspond to it: you can call a service function \(it's just available when it's needed\), and you can use `for` loop to iterate on collections.
 
-## For expression
+### `for` expression
+
 
 In short, `for` looks like the following:
 
-```text
+```haskell
 xs: []string
 
 for x <- xs:
@@ -21,19 +22,16 @@ y <- baz()
 
 ## Contract
 
-Iterations of `for` loop are executed sequentially by default.
+* Iterations of `for` loop are executed sequentially by default.
+* Variables defined inside `for` loop are not available outside.
+* `for` loop's code has access to all variables above.
+* `for` can be executed on a variable of any [Collection type](../types.md#collection-types).
 
-Variables defined inside for loop are not available outside.
-
-For loop's code has access to all variables above.
-
+### Conditional `for`
 For can be executed on a variable of any [Collection type](../types.md#collection-types).
-
-## Conditional for
-
 You can make several trials in a loop, and break once any trial succeeded.
 
-```text
+```haskell
 xs: []string
 
 for x <- xs try:
@@ -41,9 +39,9 @@ for x <- xs try:
   foo(x)
 ```
 
-Contract is changed as in [Parallel](parallel.md#contract) flow.
+The contract is changed as in [Parallel](parallel.md#contract) flow.
 
-## Parallel for
+### Parallel `for`
 
 Running many operations in parallel is the most commonly used pattern for `for`.
 
@@ -60,13 +58,13 @@ for x <- xs par:
 par continueWithBaz()
 ```
 
-Contract is changed as in [Conditional](conditional.md#contract) flow.
+The contract is changed as in [Conditional](conditional.md#contract) flow.
 
-## Export data from for
+### Export data from `for`
 
 The way to export data from `for` is the same as in [Conditional return](conditional.md#conditional-return) and [Race patterns](parallel.md#join-behavior).
 
-```text
+```haskell
 xs: []string
 return: *string
 
@@ -79,7 +77,7 @@ for x <- xs par:
 baz(return!5, return)
 ```
 
-## For on streams
+### `for` on streams
 
-For on streams is one of the most complex and powerful parts of Aqua. See [CRDT streams](../crdt-streams.md) for details.
+`for` on streams is one of the most advanced and powerful parts of Aqua. See [CRDT streams](../crdt-streams.md) for details.
 

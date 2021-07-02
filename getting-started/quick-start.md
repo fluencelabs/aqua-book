@@ -9,7 +9,7 @@ Every Fluence reference node comes with a set of builtin services that are acces
 -- bring the builtin services into scope
 import "builtin.aqua"
 
--- create and identity service to join our results
+-- create an identity service to join our results
 service Op2("op"):
     identity(s: u64)
      array(a: string, b: u64) -> string

@@ -4,7 +4,7 @@ Every Fluence reference node comes with a set of builtin services that are acces
 
 {% tabs %}
 {% tab title="Timestamps With Aqua" %}
-```text
+```haskell
 -- timestamp_getter.aqua
 -- bring the builtin services into scope
 import "builtin.aqua"
@@ -63,14 +63,14 @@ Once we have our AIR file we can either use a Typescript or command line client.
 
 {% tabs %}
 {% tab title="Run Air scripts" %}
-```text
+```bash
 # execute the AIR script from our compile phase with a peer id
 fldist run_air -p air-scripts/timestamp_getter.ts_getter.air  -d '{"node":"12D3KooWHLxVhUQyAuZe6AHMB29P7wkvTNMn7eDMcsqimJYLKREf"}'  --generated
 ```
 {% endtab %}
 
 {% tab title="Result" %}
-```
+```bash
 # here we go: ten timestamps in micro seconds obtained in parallel
 [
   [
@@ -90,7 +90,7 @@ fldist run_air -p air-scripts/timestamp_getter.ts_getter.air  -d '{"node":"12D3K
 {% endtab %}
 
 {% tab title="Installing fldist" %}
-```
+```bash
 # if you don't have fldist on your machine: 
 npm -g install @fluencelabs/fldist
 ```

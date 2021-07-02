@@ -6,6 +6,7 @@ In Aqua, two operations correspond to it: you can call a service function \(it's
 
 ### `for` expression
 
+
 In short, `for` looks like the following:
 
 ```haskell
@@ -27,8 +28,8 @@ y <- baz()
 * `for` can be executed on a variable of any [Collection type](../types.md#collection-types).
 
 ### Conditional `for`
-
-For can be executed on a variable of any [Collection type](../types.md#collection-types). You can make several trials in a loop, and break once any trial succeeded.
+For can be executed on a variable of any [Collection type](../types.md#collection-types).
+You can make several trials in a loop, and break once any trial succeeded.
 
 ```haskell
 xs: []string

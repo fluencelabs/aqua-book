@@ -16,7 +16,7 @@ npm -g install @fluencelabs/aqua-lib
 
 Moreover, a VSCode syntax-highlighting extension is available. In VSCode, click on the Extensions button, search for `aqua`and install the extension.
 
-![aqua extension for VSCode](../.gitbook/assets/screen-shot-2021-06-29-at-1.06.39-pm.png)
+![Aqua Extension for VSCode](../.gitbook/assets/screen-shot-2021-06-29-at-1.06.39-pm.png)
 
 
 

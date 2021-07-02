@@ -40,7 +40,7 @@ func ts_getter(node: string) -> []u64:
 {% endtab %}
 {% endtabs %}
 
-The Aqua script essentially creates a workflow originating from our client peer to enumerate neighbor peers for our reference node, calls on the builtin timestamp service on each peer in parallel,  joins the results stream after we collect ten timestamps and return our u64 array of timestamps back to the client peer.
+The Aqua script essentially creates a workflow originating from our client peer to enumerate neighbor peers for our reference node, calls on the builtin timestamp service on each peer in parallel,  joins the results stream after we collect ten timestamps and return our u64 array of timestamps back to the client peer. 
 
  See the [ts-oracle example](https://github.com/fluencelabs/examples/tree/main/ts-oracle) for the corresponding Aqua files in the `aqua-script` directory.  Now that we  have our script, let's compile it with the `aqua-cli` tool and find our AIR file in the `air-scripts` directory:
 

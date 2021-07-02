@@ -86,7 +86,7 @@ x <- arrow()
 For convenience, you can alias a type:
 
 ```haskell
-alias MyAlias = ?string
+alias MyAlias : ?string
 ```
 
 ## Type Variance

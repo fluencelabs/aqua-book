@@ -141,6 +141,13 @@ func take_smaller(small: Smaller):
     
 func return_bigger(small: Smaller) -> Bigger:
     <- small
+    
+-- Will not work    
+func take_bigger(big: Bigger):
+    Service.take_smaller(big)
+
+func return_smaller(big: Bigger) -> Smaller:
+    <- big    
 ```
 
 Arrow type `A: D -> C` is a subtype of `A1: D1 -> C1`, if `D1` is a subtype of `D` and `C` is a subtype of `C1`.

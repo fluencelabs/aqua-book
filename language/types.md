@@ -124,6 +124,23 @@ foo4: u16 -> u64
 
 -- Works
 bar(foo4)
+
+-- Works for Product Types
+data Smaller:
+    field: i16
+    
+data Bigger:
+    field: i32
+    
+service Service("s"):
+    take_smaller(s: Smaller) -> Smaller
+    take_bigger(b: Bigger) -> Bigger
+    
+func take_smaller(small: Smaller):
+    Service.take_bigger(small)
+    
+func return_bigger(small: Smaller) -> Bigger:
+    <- small
 ```
 
 Arrow type `A: D -> C` is a subtype of `A1: D1 -> C1`, if `D1` is a subtype of `D` and `C` is a subtype of `C1`.

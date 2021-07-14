@@ -6,7 +6,7 @@ description: Define where the code is to be executed and how to get there
 
 Aqua lets developers describe the whole distributed workflow in a single script, link data, recover from errors, implement complex patterns like backpressure, and more. Hence, the network topology is at the heart of Aqua.
 
-Topology in Aqua is declarative: You just need to say where a piece of code must be executed, on what peer, and optionally how to get there. The Aqua compiler will add all the required network hops.
+Topology in Aqua is declarative: You just need to say where \(on what peer\) a piece of code must be executed, and optionally how to get there. The Aqua compiler will add all the required network hops.
 
 ## On expression
 
@@ -26,6 +26,10 @@ on myPeer:
   bar()
   baz()
 ```
+
+{% hint style="danger" %}
+`on` does not add network hops on its own: if there are no service calls inside the `on` scope, the node will not be reached. Use `via` to affect the topology without service calls.
+{% endhint %}
 
 ## `%init_peer_id%`
 

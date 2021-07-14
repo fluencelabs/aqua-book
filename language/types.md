@@ -43,6 +43,8 @@ Any data type can be prepended with a quantifier, e.g. `*u32`, `[][]string`, `?P
 
 You can access a distinct value of a collection with `!` operator, optionally followed by an index.
 
+It is possible to fill any collection with an empty one using `nil`.
+
 Examples:
 
 ```haskell
@@ -57,6 +59,13 @@ maybe_value: ?string
 -- This ! operator will FAIL if maybe_value is backed by a read-only data structure
 -- And will WAIT if maybe_value is backed with a stream (*string)
 value = maybe_value!
+
+-- Consider a function that takes a collection as an argument
+func foo(a: ?string, b: []u32, c: *bool): ...
+
+-- To call that function with empty collection, use nil:
+foo(nil, nil, nil)
+-- Nil fits into any collection
 ```
 
 ## Arrow Types

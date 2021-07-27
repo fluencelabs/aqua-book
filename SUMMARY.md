@@ -22,4 +22,5 @@
     * [Services](language/expressions/services.md)
     * [Type definitions](language/expressions/type-definitions.md)
     * [Overrideable constants](language/expressions/overrideable-constants.md)
+* [Changelog](changelog.md)
 

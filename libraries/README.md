@@ -9,9 +9,9 @@ As Aqua is itself compiled to TypeScript, there are usually two kinds of librari
 
 ## Available Aqua libraries
 
-* Builtin services API: [@fluencelabs/aqua-lib](changelog/aqua-lib.md) \(see on [NPM](https://www.npmjs.com/package/@fluencelabs/aqua-lib)\)
-* PubSub & DHT: [@fluencelabs/aqua-dht](changelog/aqua-dht.md) \(see on [NPM](https://www.npmjs.com/package/@fluencelabs/aqua-dht)\)
-* IPFS API: [@fluencelabs/aqua-ipfs](changelog/aqua-ipfs.md) \(see on [NPM](https://www.npmjs.com/package/@fluencelabs/aqua-ipfs)\)
+* Builtin services API: [@fluencelabs/aqua-lib](aqua-lib.md) \(see on [NPM](https://www.npmjs.com/package/@fluencelabs/aqua-lib)\)
+* PubSub & DHT: [@fluencelabs/aqua-dht](aqua-dht.md) \(see on [NPM](https://www.npmjs.com/package/@fluencelabs/aqua-dht)\)
+* IPFS API: [@fluencelabs/aqua-ipfs](aqua-ipfs.md) \(see on [NPM](https://www.npmjs.com/package/@fluencelabs/aqua-ipfs)\)
 
 To use library precompiled to TypeScript/JS, add `-ts` suffix, for example:  
 `@fluencelabs/aqua-lib` =&gt; `@fluencelabs/aqua-lib-ts` 

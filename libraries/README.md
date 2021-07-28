@@ -50,7 +50,7 @@ import "@fluencelabs/aqua-lib/builtin.aqua"
 
 Check out corresponding subpages for the API of available libraries.
 
-#### In TypeScript and JavaScript
+### In TypeScript and JavaScript
 
 {% hint style="info" %}
 For this example, we'll use  `@fluencelabs/aqua-dht-ts`

@@ -21,7 +21,32 @@ You can find the latest releases of `aqua-lib` [on NPM](https://www.npmjs.com/pa
 
 The most up-to-date documentation of the API is in the code comments, please [check it out on GitHub](https://github.com/fluencelabs/aqua-lib/blob/main/builtin.aqua)
 
-## Variable number of arguments
+## How to use it
+
+### In Aqua
+
+Add `@fluencelabs/aqua-lib` to your dependencies as described in [Libraries doc](./), and then import it in your Aqua script:
+
+```haskell
+import "@fluencelabs/aqua-lib"
+
+-- gather Peer.identify from all nodes in the neighbourhood
+func getPeersInfo() -> []Info:
+    infos: *Info
+    nodes <- Kademlia.neighborhood(%init_peer_id%, nil, nil)
+    for node in nodes:
+        on node:
+            infos <- Peer.identify()
+    <- infos
+```
+
+### In TypeScript
+
+`aqua-lib` is meant to be used to write Aqua scripts, and since`aqua-lib` doesn't export any top-level functions, it's not callable directly in the TypeScript. 
+
+## Patterns
+
+### Functions with variable number of arguments
 
 Currently, Aqua doesn't allow to define functions with a variable number of arguments. And  that limits `aqua-lib` API. But there's a way around that.
 

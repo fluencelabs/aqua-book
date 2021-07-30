@@ -14,7 +14,7 @@ As Aqua is itself compiled to TypeScript, there are usually two kinds of librari
 * IPFS API: [@fluencelabs/aqua-ipfs](aqua-ipfs.md) \(see on [NPM](https://www.npmjs.com/package/@fluencelabs/aqua-ipfs)\)
 
 To use library precompiled to TypeScript/JS, add `-ts` suffix, for example:  
-`@fluencelabs/aqua-lib` =&gt; `@fluencelabs/aqua-lib-ts` 
+`@fluencelabs/aqua-dht` =&gt; `@fluencelabs/aqua-dht-ts` 
 
 ## How to use Aqua libraries
 

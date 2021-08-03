@@ -63,8 +63,11 @@ service MyOp("op"):
   concat_strings(a: string, b: string, c: string, d: string) -> string
 ```
 
-Here's a list of other Op-s that are varargs under the hood
+#### List of operations with a variable number of arguments
+
+Here's a full list of other Op-s that you can apply this pattern to
 
 * `Op.concat` - can concatenate any number of arrays
-* `Op.array` - this one also supports any type of arguments
+* `Op.array` - wraps any number of arguments into an array
+* `Op.concat_string` - concatenates any number of strings
 

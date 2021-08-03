@@ -39,6 +39,10 @@ There is one custom peer ID that is always in scope: `%init_peer_id%`. It points
 Using `on %init_peer_id%` is an anti-pattern: There is no way to ensure that init peer is accessible from the currently used part of the network.
 {% endhint %}
 
+## `host_peer_id`
+
+This constant is resolved on compilation time to point on the relay \(the host the client is connected to\) if Aqua is compiled to be used behind the relay \(default mode, targets web browsers and other devices that needs a relay to receive incoming connections\), and on `%init_peer_id%` otherwise.
+
 ## More complex scenarios
 
 Consider this example:

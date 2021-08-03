@@ -47,21 +47,21 @@ Both **aqua-ipfs** and **aqua-ipfs-ts** can be used with TypeScript and JavaScri
 
 ## Concepts
 
-### Where files are stored?
+### Where Files Are Located
 
 On the disk, in the **particle file vault** directory: `/tmp/vault/$particle-id`.
 
-### How files are shared?
+### How Files Are Shared
 
-When node downloads file via `Ipfs.get_from`, it stores that file to **particle file vault** and returns `path` back. Other services can read or write to that `path` if there's a command to do so in the Aqua script. That is possible because **particle file vault** is shared between all services in the context of script execution.
+When a node downloads a file via `Ipfs.get_from`, the file is stored at the **particle file vault** and the `path` is returned. Other services can read or write to that `path` if there's a command to do so in the Aqua script. That is possible because **particle file vault** is shared between all services in the context of script execution.
 
 In effect, it's possible to share files between different services. In order to prevent data leakage, these files are accessible only by services used in the script.
 
 So, to share a file, the service puts it in the **particle file vault** and returns a path relative to the vault. 
 
-## How to use
+## How To Use
 
-### Process file from IPFS
+### Process File From IPFS
 
 Applications often need to apply different kinds of processing to files. Resize an image, extract JSON data, parse, compress, etc. 
 
@@ -96,12 +96,12 @@ func get_file_size(cid: CID, remote_ipfs: Multiaddr) -> u32:
 {% hint style="info" %}
 This is a simplified code that doesn't handle errors or topology. 
 
-For the full example, take a look at [process.aqua](https://github.com/fluencelabs/examples/blob/2f4679ad01ca64f2863a55389df034120d65d131/intro/4-ipfs-code-execution/aqua/src/process.aqua#L44-L73) in fluencelabs/examples.
+For the full example, take a look at [process.aqua](https://github.com/fluencelabs/examples/blob/2f4679ad01ca64f2863a55389df034120d65d131/intro/4-ipfs-code-execution/aqua/src/process.aqua#L44-L73).
 {% endhint %}
 
-### Upload files to IPFS
+### Upload Files To IPFS
 
-To upload file to the _associated_ IPFS node, use `Ipfs.put`. It reads a file from the **particle file vault** and uploads it to the _associated_ IPFS node.
+To upload a file to the _associated_ IPFS node, use `Ipfs.put`. It reads the file from the **particle file vault** and uploads it to the _associated_ IPFS node.
 
 Let's take a look at the example.
 
@@ -116,13 +116,13 @@ func store_file_size(cid: CID, remote_ipfs: Multiaddr) -> CID:
     <- put.hash
 ```
 
-### Get the address of the associated IPFS node
+### Get The Address Of The Associated IPFS Node
 
 To download something from the associated IPFS node, you need to know its multiaddress. 
 
 Use `Ipfs.get_external_api_multiaddr` function to achieve that.
 
-For example, after the processed file is uploaded to IPFS, you might want to download it in the browser. For that, in TS/JS code you would do something like
+For example, after the processed file is uploaded to IPFS, you might want to download it in the browser. For that, in TS code you would do something like this:
 
 ```typescript
 import { Multiaddr } from 'multiaddr';
@@ -139,25 +139,25 @@ const ipfs = create(rpcMaddr);
 let file = await ipfs.get(cid);
 ```
 
-## Fluence and IPFS
+## Fluence And IPFS
 
-### Predeployed ipfs-adapter
+### Pre-Deployed IPFS-Adapter
 
-Each Fluence node comes together with an associated IPFS daemon to handle file transfers and caching. When a Fluence node starts, an instance of `ipfs-adapter` service is created and connected to the associated IPFS daemon. 
+Each Fluence node comes with an associated IPFS daemon to handle file transfers and caching. When a Fluence node starts, an instance of `ipfs-adapter` service is created and connected to the associated IPFS daemon. 
 
 In effect, each Fluence node provides a WebAssembly service with an id `"ipfs-adapter"` that you can use to orchestrate file transfers between apps, download .wasm modules and deploy services from them. In that sense, Fluence provides a compute layer on top of IPFS, while IPFS takes care of file storage.
 
 When you're using the `@fluencelabs/aqua-ipfs` library, it connects to the `"ipfs-adapter"` service by default. 
 
 {% hint style="success" %}
-If your app requires some custom setup of the `ipfs-adapter` service, or you need to associate it with some external IPFS node, it's totally possible. Please mention us in [Discord](https://discord.gg/hDNdaBP45e) and we'll help you with that.
+It is possible to create a custom setup of the `ipfs-adapter` service or to associate it with an external IPFS node. Please contact us in [Discord](https://discord.gg/hDNdaBP45e) and we'll help you with that.
 
-Alternatively, [check out how IPFS is set up in Dockerfile](https://github.com/fluencelabs/node-distro/blob/main/Dockerfile#L24-L26).
+Alternatively, check out how IPFS is set up in our[ Dockerfile](https://github.com/fluencelabs/node-distro/blob/main/Dockerfile#L24-L26).
 {% endhint %}
 
-### How interaction with IPFS daemon works
+### How The Interaction With An IPFS Daemon Works
 
-Marine WASM runtime provides us with a secure yet powerful way to interact with external programs: run binaries on the host. That mechanic is called "mounted binaries".
+The Marine WASM runtime provides us with a secure yet powerful way to interact with external programs: run binaries on the host. That mechanic is called "mounted binaries".
 
 `ipfs-adapter` "mounts" IPFS CLI utility internally, and uses it to interact with associated IPFS daemon. That is: when you call `Ipfs.put(maddr)`, it's just `ipfs put $maddr` like you would do in the terminal, and when you call `Ipfs.connect` it's just `ipfs swarm connect`.
 

@@ -10,12 +10,22 @@ You can find the latest releases of `aqua-lib` [on NPM](https://www.npmjs.com/pa
 
 ## API
 
+The most up-to-date documentation of the API is in the code, please [check it out on GitHub](https://github.com/fluencelabs/aqua-lib/blob/main/builtin.aqua)
+
+The most up-to-date documentation of the API is in the code comments, please [check it out on GitHub](https://github.com/fluencelabs/aqua-lib/blob/main/builtin.aqua)
+
 The most up-to-date documentation of the API is in the code comments, please [check it out on GitHub](https://github.com/fluencelabs/aqua-lib/blob/main/builtin.aqua)
 
 ### Services
 
 `aqua-lib` defines a number of services available on peers in the Fluence Network:
 
+* `Op` - different kinds of data transformations
+* `Peer` - operations affecting a peer's internal state
+* `Kademlia` - api for libp2p Kademlia
+* `Srv` - service manipulation
+* `Dist` - module and blueprint distribution
+* `Script` - scheduled scripts API
 * `Op` - short for "Operations". Functions for data transformation.
 * `Peer` - functions affecting peer's internal state
 * `Kademlia` - functions to manipulate libp2p Kademlia
@@ -48,7 +58,7 @@ func getPeersInfo() -> []Info:
 
 ## Patterns
 
-### Functions with variable number of arguments
+### Functions With A Variable Number Of Arguments
 
 Currently, Aqua doesn't allow to define functions with a variable number of arguments. And  that limits `aqua-lib` API. But there's a way around that.
 

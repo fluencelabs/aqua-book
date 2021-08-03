@@ -7,7 +7,7 @@ As Aqua is itself compiled to TypeScript, there are usually two kinds of librari
 * With TypeScript API. Such libraries contain TS precompiled from Aqua, use them when you just want to call functions from TypeScript.
 * With Aqua API. You want to use them when writing your own Aqua scripts.
 
-## Available Aqua libraries
+## Available Aqua Libraries
 
 * Builtin services API: [@fluencelabs/aqua-lib](aqua-lib.md) \(see on [NPM](https://www.npmjs.com/package/@fluencelabs/aqua-lib)\)
 * PubSub & DHT: [@fluencelabs/aqua-dht](aqua-dht.md) \(see on [NPM](https://www.npmjs.com/package/@fluencelabs/aqua-dht)\)
@@ -16,14 +16,14 @@ As Aqua is itself compiled to TypeScript, there are usually two kinds of librari
 To use library precompiled to TypeScript/JS, add `-ts` suffix, for example:  
 `@fluencelabs/aqua-dht` =&gt; `@fluencelabs/aqua-dht-ts` 
 
-## How to use Aqua libraries
+## How To Use Aqua Libraries
 
-To use a library, you first need to download it. It's best done by adding the library to `dependencies` in `package.json` and then doing `npm install`.
+To use a library, you need to download it by adding the library to `dependencies` in `package.json` and then running `npm install`.
 
 {% hint style="info" %}
-If you're not familiar with NPM, `package.json` is a project definition. You can specify `dependencies` to be downloaded from [npmjs.org](https://npmjs.org), define custom commands \(`scripts`\) and run them, e.g. `npm run compile-aqua.`
+If you're not familiar with NPM, `package.json` is a project definition file. You can specify `dependencies` to be downloaded from [npmjs.org](https://npmjs.org) and define custom commands \(`scripts`\), which can be executed from the command line, e.g. `npm run compile-aqua.`
 
-To create an NPM project, run `npm init`and follow instructions.
+To create an NPM project, run `npm init`in a directory of your choice and follow the instructions.
 {% endhint %}
 
 Here's an example of adding `aqua-lib` to `package.json` dependencies:
@@ -68,7 +68,7 @@ To execute Aqua functions, you need to be connected to the Fluence network. The 
   }
 ```
 
-After `npm install` libraries are downloaded, you can use it in TS/JS code right away:
+After executing `npm install`, the libraries are downloaded for immediate use in TS/JS code:
 
 ```typescript
 import { initTopicAndSubscribe, findSubscribers } from "@fluencelabs/aqua-dht-ts";

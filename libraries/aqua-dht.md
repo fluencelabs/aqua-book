@@ -21,16 +21,16 @@ Both **aqua-dht-ts** and **aqua-dht** can be used with TypeScript and JavaScript
 
 * **topic** - `string` with associated `peer_id` and a list of **subscribers**. Associated `peer_id` can be thought of as a **topic creator**.
 * **topic creator** - `peer id` that created the topic. Other users can't create a topic with the same name.
-* **subscriber** - a peer that has called `subscribe` on a **topic**, optionally with associated **relay\_id** and **service\_id**. Any peer can be a subscriber, including nodes and clients.
+* **subscriber** - a peer that has called `subscribe` on a **topic**, optionally with an associated **relay\_id** and **service\_id**. Any peer can be a subscriber, including nodes and clients.
 * subscriber's **relay\_id** - subscriber is available on the network through this relay. 
 
 {% hint style="info" %}
-When a **subscriber** doesn't have a publicly available address \(e.g. it's a browser\), it connects to the network through a relay node. That means that _other_ peers only can access that **subscriber** through a relay. 
+When a **subscriber** doesn't have a publicly available IP address, e.g. the client peer is a browser, it connects to the network through a relay node. That means that _other_ peers only can connect to that **subscriber** through a relay. 
 
-In that case `subscribe` must be called with `relay_id`, so other peers can reach the **subscriber**. 
+In that case `subscribe` must be called with the`relay_id`, so other peers can reach the **subscriber**. 
 {% endhint %}
 
-* subscriber's **service\_id** - id of the service provided by that subscriber. Sometimes subscriber wants **publishers** of a specific **topic** to call functions on this **service\_id**, so it's possible to distinguish service calls.
+* subscriber's **service\_id** - id of the service provided by that subscriber. Sometimes a subscriber may want **publishers** of a specific **topic** to call functions on this **service\_id** in order to be able to distinguish among service calls.
 * **subscription** - a **dht record** associated with a **topic.** Holds information about a **subscriber**.
 * **subscription lifetime** - **subscriptions** have two are evicted \(removed\) [24 hours](https://github.com/fluencelabs/aqua-dht/blob/9a72961/service/src/main.rs#L39) after their creation or after [1 hour](https://github.com/fluencelabs/aqua-dht/blob/9a72961/service/src/main.rs#L38) of being unused.
 * **subscriptions limit** - each **topic** can have at most [20 subscribers](https://github.com/fluencelabs/aqua-dht/blob/9a72961/service/src/main.rs#L41). Each new subscriber will remove an old one, following a LIFO principle.
@@ -42,13 +42,13 @@ In that case `subscribe` must be called with `relay_id`, so other peers can reac
 * **script caller** - peer that executes a script by sending it to the network. In Aqua it's `%init_peer_id%`
 * **node** - usually a Fluence node hosted in the cloud. Nodes are long-lived, can host WebAssembly services and they participate in the Kademlia network.
 
-## How to use
+## How To Use Aqua-DHT
 
 {% hint style="info" %}
 There are [several simple examples](https://github.com/fluencelabs/aqua-dht/tree/9a72961/examples) in the fluencelabs/aqua-dht repo, give them a look.
 {% endhint %}
 
-### Create a topic
+### Create A Topic
 
 Before subscribing to a topic is possible, that topic must be created. That's exactly what `initTopic` does. 
 
@@ -76,9 +76,9 @@ let topic = "myTopic";
 await initTopic(client, client.relayPeerId!, "myTopic");
 ```
 
-### Subscribe to a topic
+### Subscribe To A Topic
 
-There are 4 functions that achieve subscriptions. Let's review them.
+There are four functions that achieve subscriptions. Let's review them.
 
 #### `initTopicAndSubscribe` & `subscribe`
 
@@ -117,13 +117,13 @@ These two functions work almost the same as their non-`Node` counterparts, excep
 
 Such subscriptions live 10 times longer than these by `subscribe`, because services can't renew subscriptions on their own.
 
-#### Renew subscription periodically
+#### Renew Subscription Periodically
 
 After a normal \(non-host\) subscription is created, it must be used at least once an hour to keep it from being marked **stale** and deleted. Also, peers must resubscribe themselves at least once per 24 hours to prevent subscription **expiration** and deletion.
 
-That might sound harsh, but it makes sense for short-lived browser-based peers that can go offline at any time, and change their relay nodes from time to time. Steady clean-up of **stale** and **expired** subscriptions is required to keep PubSub up-to-date and performant.
+While this collection schedule may seem aggressive, it keeps keep PubSub up-to-date and performant as short-lived client-peers, such as browsers, can go offline at any time or periodically change their relay nodes.
 
-### Call a function on subscribers
+### Call A Function On Subscribers
 
 #### `executeOnSubscribers`
 
@@ -133,7 +133,7 @@ That might sound harsh, but it makes sense for short-lived browser-based peers t
 func executeOnSubscribers(node_id: PeerId, topic: string, call: Record -> ())
 ```
 
-It saves typing when writing a custom Aqua script to call a function on each subscriber. Here's an example:
+It reduces boilerplate when writing a custom Aqua script to call a function on each subscriber. Here's an example:
 
 ```haskell
 import "@fluencelabs/aqua-dht/pubsub.aqua"
@@ -191,11 +191,11 @@ func send_everyone(relay: PeerId, topic: string, event: Event):
         call_subscriber(sub, event)
 ```
 
-### Handle function calls
+### Handle Function Calls
 
 `subscribeToEvent` function from the [Fluence JS SDK](https://github.com/fluencelabs/fluence-js) allows JS/TS peers to define their API through services and functions. 
 
-Let's take `SubscriberAPI` from the previous example, and extend it a little:
+Let's take the  `SubscriberAPI` from the previous example and extend it a little:
 
 ```haskell
 data Event:
@@ -209,7 +209,7 @@ data SubscriberAPI:
 
 ```
 
-Here's how to define such API in TS/JS:
+Here's how to define such an API in TS:
 
 ```typescript
 import { createClient, registerServiceFunction } from "@fluencelabs/fluence";
@@ -231,7 +231,7 @@ registerServiceFunction(client, service_id, 'do_something', args => {
 });
 ```
 
-### Overcome the limit of subscribers
+### Overcome The Subscriber Limit
 
 If your app requires to have more than 20 subscribers on a single topic, then it's time to think about a custom WebAssembly service that would store all these subscriptions in memory or on disk. Basically a simple subscriptions "directory".
 
@@ -261,13 +261,13 @@ func dir_subscribers(relay: PeerId, topic: string) -> [][]Record:
 
 ## Concepts
 
-### Kademlia neighbourhood
+### Kademlia Neighborhood
 
 Fluence nodes participate in the Kademlia network. Kademlia organizes peers in such a way that given any key, you can find a set of peers that are "responsible" for that key. That set contains up to 20 nodes.
 
-That set is called "neighbourhood" or "K-closest nodes" \(K=20\). In Aqua, it is accessible in `aqua-lib` via `Kad.neighbourhood` function.
+That set is called "neighborhood" or "K-closest nodes" \(K=20\). In Aqua, it is accessible in `aqua-lib` via the `Kad.neighbourhood` function.
 
-The two most important properties of the Kademlia neighbourhood are:   
+The two most important properties of the Kademlia neighborhood are:   
 1\) it exists for _any_ key   
 2\) it is more or less stable
 
@@ -277,7 +277,7 @@ A lot of DHTs rely on these properties to implement data replication. So does Aq
 
 #### On write
 
-When a subscription to a topic is created, it is written to the Kademlia neighbourhood of that topic. Here's a `subscribe` implementation in Aqua:
+When a subscription to a topic is created, it is written to the Kademlia neighborhood of that topic. Here's a `subscribe` implementation in Aqua:
 
 ```haskell
 func subscribe(node_id: PeerId, topic: string, value: string, relay_id: ?PeerId, service_id: ?string):
@@ -296,7 +296,7 @@ This ensures that data is replicated across several peers.
 
 #### At rest
 
-Subscriptions are also [replicated at rest](https://github.com/fluencelabs/fluence/tree/2320204/deploy/builtins/aqua-dht/scheduled). That is, once per hour all **stale** values are removed, and non-**stale** values are replicated to all nodes in the neighbourhood. 
+Subscriptions are also [replicated at rest](https://github.com/fluencelabs/fluence/tree/2320204/deploy/builtins/aqua-dht/scheduled). That is, once per hour all **stale** values are removed, and non-**stale** values are replicated to all nodes in the neighborhood. 
 
-This ensures that even if the neighbourhood for a topic has changed due to some peers go offline and others join the network, data is replicated to all nodes in the neighbourhood.
+This ensures that even if a neighborhood for a topic has changed due to some peers go offline and others join the network, data will be  replicated to all nodes in the neighborhood.
 

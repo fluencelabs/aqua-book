@@ -4,22 +4,24 @@ description: API of protocol-level service (a.k.a builtins)
 
 # @fluencelabs/aqua-lib
 
-## On NPM
+## Releases
 
-You can find the latest releases of `aqua-lib` [on NPM](https://www.npmjs.com/package/@fluencelabs/aqua-lib)
-
-## Services
-
-* `Op` - different kinds of data transformations
-* `Peer` - operations affecting peer's internal state
-* `Kademlia` - api for libp2p Kademlia
-* `Srv` - service manipulation
-* `Dist` - module & blupeint disitrbution
-* `Script` - scheduled scripts API
+You can find the latest releases of `aqua-lib` [on NPM](https://www.npmjs.com/package/@fluencelabs/aqua-lib) and changelogs are [on GitHub](https://github.com/fluencelabs/aqua-lib/releases)
 
 ## API
 
 The most up-to-date documentation of the API is in the code comments, please [check it out on GitHub](https://github.com/fluencelabs/aqua-lib/blob/main/builtin.aqua)
+
+### Services
+
+`aqua-lib` defines a number of services available on peers in the Fluence Network:
+
+* `Op` - short for "Operations". Functions for data transformation.
+* `Peer` - functions affecting peer's internal state
+* `Kademlia` - functions to manipulate libp2p Kademlia
+* `Srv` - short for "Service". Functions for service manipulation
+* `Dist` - short for "Distribution". Functions for module and blueprint disitrbution
+* `Script` - functions to run and remove scheduled \(recurring\) scripts
 
 ## How to use it
 

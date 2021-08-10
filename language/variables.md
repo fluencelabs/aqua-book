@@ -55,6 +55,28 @@ func foo(arg: i32, log: *string):
   log <- bar(arg)
 ```
 
+Aqua functions may return more than one value.
+
+```text
+-- Define return types as a comma separated list
+func myFunc() -> bool, string:
+  -- Function must return values for all defined types
+  <- true, "successful execution"
+  
+func otherFunc():
+  -- Call a function, don't use returns
+  myFunc()  
+  -- Get any number of results out of the function
+  flag <- myFunc()
+  
+  -- Push results to a stream
+  results: *string
+  is_ok, results <- myFunc()
+  if is_ok:
+    -- We know that it contains successful result
+    foo(results!)
+```
+
 ## Literals
 
 Aqua supports just a few literals: numbers, quoted strings, booleans. You [cannot init a structure](https://github.com/fluencelabs/aqua/issues/167) in Aqua, only obtain it as a result of a function call.

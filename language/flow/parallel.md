@@ -17,7 +17,7 @@ Parallel execution has some implementation limitations:
 * No concurrency in services: every service instance does only one job simultaneously.
 * Keep services small in terms of computation and memory \(WebAssembly limitation\)
 
-These limitations might be overcome in future Aqua updates. But for now, plan your application design having this in mind.
+These limitations might be overcome in future Aqua updates, but for now, plan your application design having this in mind.
 
 ## Parallel operations
 

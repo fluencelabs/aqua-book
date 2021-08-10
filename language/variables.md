@@ -57,7 +57,7 @@ func foo(arg: i32, log: *string):
 
 Aqua functions may return more than one value.
 
-```text
+```python
 -- Define return types as a comma separated list
 func myFunc() -> bool, string:
   -- Function must return values for all defined types

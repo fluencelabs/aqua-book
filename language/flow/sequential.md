@@ -7,7 +7,7 @@ By default, Aqua code is executed line by line, sequentially.
 * Data from the first arm is available in the second branch.
 * The second arm is executed if and only if the first arm succeeded.
 * If any arm failed, then the whole sequence is failed.
-* If all arms are executed successfully, then the whole sequence is executed successfully.
+* If all arms executed successfully, then the whole sequence is executed successfully.
 
 ## Sequential operations
 

@@ -19,13 +19,13 @@ service Op2("op"):
 -- the function arguement node is our peer id
 func ts_getter(node: string) -> []u64:
   -- create a streaming variable
-  res: *[]u64
+  res: *u64
   -- execute on the pecified peer
   on node:
     -- get the base58 representation of the peer id
     k <- Op.string_to_b58(node)
     -- find all (default 20) neighborhood peers from k
-    nodes <- Kademlia.neighborhood(k, false)
+    nodes <- Kademlia.neighborhood(k, nil, nil)
     -- for each peer in our neighborhood and in parallel
     for n <- nodes par:
       on n:

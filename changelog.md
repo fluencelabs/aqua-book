@@ -7,6 +7,16 @@ Aqua compiler's versioning scheme is the following: `0.BREAKING.ENHANCING.RELEAS
 * `ENHANCING` part is incremented for every syntax addition
 * `RELEASE` is the release number, shows internal compiler changes, bugfixes that keep the language untouched
 
+### [0.1.14](https://github.com/fluencelabs/aqua/releases/tag/0.1.14) – August 20, 2021
+
+* Aqua file header changes: `module`, `declares`, `use`, `export` expressions \([\#245](https://github.com/fluencelabs/aqua/pull/245)\), see [Imports and Exports](language/statements-1.md) for the docs. 
+* Experimental Scala.js build of the compiler \([\#247](https://github.com/fluencelabs/aqua/pull/247)\)
+
+### [0.1.13](https://github.com/fluencelabs/aqua/releases/tag/0.1.13) – August 10, 2021
+
+* Functions can export \(return\) several values, see [\#229](https://github.com/fluencelabs/aqua/pull/229)
+* Internal changes: migrate to Scala3 \([\#228](https://github.com/fluencelabs/aqua/pull/228)\), added Product type \([\#168](https://github.com/fluencelabs/aqua/pull/225)\)
+
 ### [0.1.12](https://github.com/fluencelabs/aqua/releases/tag/0.1.12) – August 4, 2021
 
 * Can have functions consisting of a return operand only, returning a literal or an argument

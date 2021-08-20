@@ -9,7 +9,7 @@ Aqua compiler's versioning scheme is the following: `0.BREAKING.ENHANCING.RELEAS
 
 ### [0.1.14](https://github.com/fluencelabs/aqua/releases/tag/0.1.14) – August 20, 2021
 
-* Aqua file header changes: `module`, `declares`, `use`, `export` expressions \([\#245](https://github.com/fluencelabs/aqua/pull/245)\), see [Imports and Exports](language/statements-1.md) for the docs. 
+* Aqua file header changes: `module`, `declares`, `use`, `export` expressions \([\#245](https://github.com/fluencelabs/aqua/pull/245)\), see [Imports and Exports](language/header.md) for the docs. 
 * Experimental Scala.js build of the compiler \([\#247](https://github.com/fluencelabs/aqua/pull/247)\)
 
 ### [0.1.13](https://github.com/fluencelabs/aqua/releases/tag/0.1.13) – August 10, 2021

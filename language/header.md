@@ -82,7 +82,7 @@ Another problem is libraries distribution. If a developer wants to deliver an `.
 `export` lets a developer decide what exactly is going to be exported, including imported functions.
 
 ```python
-import foo from "lib.aqua"
+import bar from "lib.aqua"
 
 -- Exported functions and services will be compiled for the host language
 -- You can use several `export` expressions

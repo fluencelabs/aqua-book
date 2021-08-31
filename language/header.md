@@ -11,6 +11,8 @@ By default, `.aqua` file exports and declares everything it contains. With `modu
 module ModuleName declares *
 ```
 
+`Module.Name` may contain dots.
+
 `ModuleName` can be used as the module's name when this file is `use`d. In this case, only what is enumerated in `declares` section will be available. `declares *` allows you to declare everything in the file as the module interface.
 
 ```text

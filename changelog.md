@@ -7,6 +7,16 @@ Aqua compiler's versioning scheme is the following: `0.BREAKING.ENHANCING.RELEAS
 * `ENHANCING` part is incremented for every syntax addition
 * `RELEASE` is the release number, shows internal compiler changes, bugfixes that keep the language untouched
 
+### [0.2.1](https://github.com/fluencelabs/aqua/releases/tag/0.2.1) – August 31, 2021
+
+* Javascript build of the compiler is now distributed via NPM: to run without Java, use `aqua-js` command \([\#256](https://github.com/fluencelabs/aqua/pull/256)\)
+* Now dots are allowed in the module declarations: `module Space.Module` & many bugfixes \([\#258](https://github.com/fluencelabs/aqua/pull/258)\)
+
+### [0.2.0](https://github.com/fluencelabs/aqua/releases/tag/0.2.0) – August 27, 2021
+
+* Now the compiler emits AIR with the new `(ap` instruction, hence it's not backwards compatible \([\#241](https://github.com/fluencelabs/aqua/pull/241)\)
+* Many performance optimizations and bugfixes \([\#255](https://github.com/fluencelabs/aqua/pull/255), [\#254](https://github.com/fluencelabs/aqua/pull/254), [\#252](https://github.com/fluencelabs/aqua/pull/252), [\#249](https://github.com/fluencelabs/aqua/pull/249)\)
+
 ### [0.1.14](https://github.com/fluencelabs/aqua/releases/tag/0.1.14) – August 20, 2021
 
 * Aqua file header changes: `module`, `declares`, `use`, `export` expressions \([\#245](https://github.com/fluencelabs/aqua/pull/245)\), see [Imports and Exports](language/header.md) for the docs. 

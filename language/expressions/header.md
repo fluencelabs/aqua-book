@@ -12,5 +12,5 @@ import "path/to/file.aqua"
 
 The to be imported file path is first resolved relative to the source file path followed by checking for an `-imports` directories.
 
-See [Imports & Exports](../header.md) for details.
+See [Imports & Exports](../header/) for details.
 

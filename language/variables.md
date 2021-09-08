@@ -79,7 +79,7 @@ func otherFunc():
 
 ## Literals
 
-Aqua supports just a few literals: numbers, quoted strings, booleans. You [cannot init a structure](https://github.com/fluencelabs/aqua/issues/167) in Aqua, only obtain it as a result of a function call.
+Aqua supports just a few literals: numbers, quoted strings, booleans, and `nil`. You [cannot init a structure](https://github.com/fluencelabs/aqua/issues/167) in Aqua, only obtain it as a result of a function call.
 
 ```haskell
 -- String literals cannot contain double quotes
@@ -99,6 +99,12 @@ bar(-1)
 
 -- Float:
 bar(-0.2)
+
+func takesMaybe(arg: ?string): ...
+
+-- nil can be passed in every place
+-- where a read-only collection fits
+takesMaybe(nil)
 ```
 
 ## Getters
@@ -156,18 +162,20 @@ Constants are like assignments but in the root scope. They can be used in all fu
 
 You can change the compilation results by overriding a constant but the override needs to be of the same type or subtype.
 
-```haskell
--- This flag is always true
-const flag = true
+Constants are always `UPPER_CASE`.
 
--- This setting can be overwritten via CLI flag
-const setting ?= "value"
+```haskell
+-- This FLAG is always true
+const FLAG = true
+
+-- This SETTING can be overwritten via CLI flag
+const SETTING ?= "value"
 
 func foo(arg: string): ...
 
 func bar():
-  -- Type of setting is string
-  foo(setting)
+  -- Type of SETTING is string
+  foo(SETTING)
 ```
 
 ## Visibility scopes

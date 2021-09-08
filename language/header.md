@@ -16,9 +16,9 @@ module ModuleName declares *
 `ModuleName` can be used as the module's name when this file is `use`d. In this case, only what is enumerated in `declares` section will be available. `declares *` allows you to declare everything in the file as the module interface.
 
 ```text
-module ModuleName declares constname, ServiceName, MyType, fn
+module ModuleName declares CONSTNAME, ServiceName, MyType, fn
 
-const constname = "smth"
+const CONSTNAME = "smth"
 
 service ServiceName:
   do_smth()
@@ -27,7 +27,7 @@ data MyType:
   result: i32  
 
 function fn() -> string:
-  <- constname
+  <- CONSTNAME
 ```
 
 ## Import Expression

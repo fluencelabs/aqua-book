@@ -31,17 +31,17 @@ on myPeer:
 `on` does not add network hops on its own: if there are no service calls inside the `on` scope, the node will not be reached. Use `via` to affect the topology without service calls.
 {% endhint %}
 
-## `%init_peer_id%`
+## `INIT_PEER_ID`
 
-There is one custom peer ID that is always in scope: `%init_peer_id%`. It points to the peer that initiated this request.
+There is one custom peer ID that is always in scope: `INIT_PEER_ID`. It points to the peer that initiated this request.
 
 {% hint style="warning" %}
-Using `on %init_peer_id%` is an anti-pattern: There is no way to ensure that init peer is accessible from the currently used part of the network.
+Using `on INIT_PEER_ID` is an anti-pattern: There is no way to ensure that init peer is accessible from the currently used part of the network.
 {% endhint %}
 
-## `host_peer_id`
+## `HOST_PEER_ID`
 
-This constant is resolved on compilation time to point on the relay \(the host the client is connected to\) if Aqua is compiled to be used behind the relay \(default mode, targets web browsers and other devices that needs a relay to receive incoming connections\), and on `%init_peer_id%` otherwise.
+This constant is resolved on compilation time to point on the relay \(the host the client is connected to\) if Aqua is compiled to be used behind the relay \(default mode, targets web browsers and other devices that needs a relay to receive incoming connections\), and on `INIT_PEER_ID` otherwise.
 
 ## More complex scenarios
 
@@ -73,7 +73,7 @@ Take a minute to think about:
 Declarative topology definition always works the same way.
 
 * `do_foo` is executed on "peer foo", always.
-* `bar(1)` is executed on the same node where `baz` was running. If `baz` is the first called function, then it's `init peer id`.
+* `bar(1)` is executed on the same node where `baz` was running. If `baz` is the first called function, then it's `INIT_PEER_ID`.
 * `bar(2)` is executed on `"peer baz"`, despite the fact that foo does topologic transition. `bar(2)` is in the scope of `on "peer baz"`, so it will be executed there
 * `bar(3)` is executed where `bar(1)` was: in the root scope of `baz`, wherever it was called from
 

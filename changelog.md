@@ -7,6 +7,15 @@ Aqua compiler's versioning scheme is the following: `0.BREAKING.ENHANCING.RELEAS
 * `ENHANCING` part is incremented for every syntax addition
 * `RELEASE` is the release number, shows internal compiler changes, bugfixes that keep the language untouched
 
+### [0.3.0](https://github.com/fluencelabs/aqua/releases/tag/0.3.0) – September 8, 2021
+
+* TypeScript output of the compiler now targets a completely rewritten [TypeScript SDK](https://doc.fluence.dev/docs/js-sdk) \([\#251](https://github.com/fluencelabs/aqua/pull/251)\)
+* Constants are now `UPPER_CASED`, including always-available `HOST_PEER_ID` and `INIT_PEER_ID` \([\#260](https://github.com/fluencelabs/aqua/pull/260)\)
+* The compiler is now distributed as [@fluencelabs/aqua](https://www.npmjs.com/package/@fluencelabs/aqua) package \(was `aqua-cli`\) \([\#278](https://github.com/fluencelabs/aqua/pull/278)\)
+* `aqua` is the name of the compiler CLI command now \(was `aqua-cli`\) \([\#278](https://github.com/fluencelabs/aqua/pull/278)\)
+* JVM version of the compiler is now available with `aqua-j` command; JS build is called by default – so no more need to have JVM installed \([\#278](https://github.com/fluencelabs/aqua/pull/278)\)
+* Now you can have a file that contains only a header with imports, uses, declares, and exports, and no new definitions \([\#274](https://github.com/fluencelabs/aqua/pull/274)\)
+
 ### [0.2.1](https://github.com/fluencelabs/aqua/releases/tag/0.2.1) – August 31, 2021
 
 * Javascript build of the compiler is now distributed via NPM: to run without Java, use `aqua-js` command \([\#256](https://github.com/fluencelabs/aqua/pull/256)\)

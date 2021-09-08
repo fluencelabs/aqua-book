@@ -10,7 +10,7 @@ Scalar types follow the Wasm IT notation.
 * Boolean: `bool`
 * String: `string`
 * Records \(product type\): see below
-* Arrays: see Collection Types below
+* Arrays: see [Collection Types](types.md#collection-types) below
 
 ## Literals
 
@@ -158,13 +158,15 @@ The file is a product of all defined constants and functions \(treated as arrows
 func foo(arg: string) -> bool:
   ...
 
-const flag ?= true  
+const FLAG ?= true  
 
 -- type of MyFile.aqua
 data MyServiceType:
   foo: string -> bool
   flag: bool
 ```
+
+See [Imports and Exports](header.md#module) for module declarations.
 
 {% embed url="https://github.com/fluencelabs/aqua/blob/main/types/src/main/scala/aqua/types/Type.scala" caption="See the types system implementation" %}
 

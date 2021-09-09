@@ -4,7 +4,7 @@ In Aqua, the default namespace of a module is the file name and all declarations
 
 For example, the default.aqua file:
 
-```text
+```python
 -- default_foo.aqua
 
 
@@ -14,13 +14,13 @@ func foo() -> string:
 
 Which we compile with
 
-```text
+```bash
 aqua -i aqua-scripts -o compiled-aqua
 ```
 
 to obtain Typescript wrapped AIR, `default_foo.ts` in the `compiled-aqua` directory:
 
-```text
+```typescript
 import { FluenceClient, PeerIdB58 } from '@fluencelabs/fluence';
 import { RequestFlowBuilder } from '@fluencelabs/fluence/dist/api.unstable';
 import { RequestFlow } from '@fluencelabs/fluence/dist/internal/RequestFlow';
@@ -91,7 +91,7 @@ By default, all declarations in a module, i.e., _data_, _service_ and _func_, ar
 
 Let's create an `export.aqua` file like so:
 
-```text
+```python
 module Export
 
 func foo() -> string:
@@ -100,20 +100,20 @@ func foo() -> string:
 
 When we compile `export.aqua`
 
-```text
+```bash
 aqua -i aqua-scripts -o compiled-aqua
 ```
 
 nothing gets compiled as expected:
 
-```text
+```bash
 2021.09.02 11:31:41 [INFO] Aqua Compiler 0.2.1-219
 2021.09.02 11:31:42 [INFO] Source /Users/bebo/localdev/aqua-245/documentation-examples/aqua-scripts/export.aqua: compilation OK (nothing to emit)
 ```
 
 You can further check the output directory, `compiled-aqua`, in our case, for the lack of output files. By corollary, `foo` cannot be imported from another files. For example:
 
-```text
+```python
 -- import.aqua
 
 import "export.aqua"
@@ -126,7 +126,7 @@ func wrapped_foo() -> string:
 
 Results in compile failure since `foo` is not visible to `import.aqua`:
 
-```text
+```python
 6 func wrapped_foo() -> string:
 7     res <- foo()
              ^^^==
@@ -136,7 +136,7 @@ Results in compile failure since `foo` is not visible to `import.aqua`:
 
 We can use `declares` to create visibility for a `module` namespace for **consuming** modules. For example,
 
-```text
+```python
 -- export.aqua
 module Export declares foo
 
@@ -150,7 +150,7 @@ func foo() -> string:
 
 in and by itself does not result in compiled Aqua:
 
-```text
+```bash
 aqua -i aqua-scripts -o compiled-aqua -a
 Aqua JS: node /Users/bebo/.nvm/versions/node/v14.16.0/lib/node_modules/@fluencelabs/aqua/aqua.js -i aqua-scripts -o compiled-aqua -a
 Aqua JS:
@@ -160,7 +160,7 @@ Aqua JS: 2021.09.08 13:36:17 [INFO] Aqua Compiler 0.3.0-222
 
 But once we link from another module, e.g.:
 
-```text
+```python
 import foo from "export.aqua"
 
 func foo_wrapper() -> string:
@@ -170,14 +170,14 @@ func foo_wrapper() -> string:
 
 We get the appropriate result:
 
-```text
+```bash
 2021.09.08 13:40:17 [INFO] Source /Users/bebo/localdev/aqua-245/documentation-examples/aqua-scripts/export.aqua: compilation OK (nothing to emit)
 2021.09.08 13:40:17 [INFO] Result /Users/bebo/localdev/aqua-245/documentation-examples/compiled-aqua/import.ts: compilation OK (1 functions)
 ```
 
 in form of  `import.ts`:
 
-```text
+```typescript
 // compiled-aqua/import.ts
 import { FluencePeer } from '@fluencelabs/fluence';
 import {
@@ -257,7 +257,7 @@ import {
 
 Of course, if we change `import.aqua` to include the private `bar`:
 
-```text
+```python
 import bar from "export.aqua"
 
 func bar_wrapper() -> string:
@@ -267,7 +267,7 @@ func bar_wrapper() -> string:
 
 We get the expected error:
 
-```text
+```python
 import bar from "export.aqua"
          ^^^===================
          Imported file declares [foo], no bar declared. Try adding `declares *` to that file.
@@ -281,7 +281,7 @@ We already encountered the `import` statement earlier. Using `import` with the f
 
 In addition to `import`, we also have the `use` keyword available to link and scope. The difference between`use` and `import` is that `use` brings in module namespaces declared in the referenced source file. For example:
 
-```text
+```python
 -- export.aqua
 module ExportModule declares foo
 
@@ -291,7 +291,7 @@ func foo() -> string:
 
 declares the `ExportModule` namespace and makes `foo` visible. We can now bring `foo` into scope by means of its module namespace `ExportModule` in our import file without having to \(re-\) declare anything:
 
-```text
+```python
 -- import.aqua
 use "export.aqua"
 
@@ -304,7 +304,7 @@ This example already illustrates the power of `use` as we now can declare a loca
 
 The default behavior for `use` is to use the dependent filename if no module declaration was provided. Moreover, we can use the `as` modifier to change the module namespace. Continuing with the above example:
 
-```text
+```python
 -- import.aqua
 use "export.aqua" as RenamedExport
 

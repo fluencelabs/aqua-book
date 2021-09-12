@@ -5,7 +5,7 @@ Both the Aqua compiler and support library can be installed natively with `npm`
 To install the compiler:
 
 ```bash
-npm -g install @fluencelabs/aqua-cli
+npm -g install @fluencelabs/aqua
 ```
 
 and to make the Aqua library available to Typescript applications:

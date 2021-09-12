@@ -47,7 +47,7 @@ The Aqua script essentially creates a workflow originating from our client peer 
 {% tabs %}
 {% tab title="Compile" %}
 ```bash
-aqua -i aqua-scripts -o air-scripts -a
+aqua-cli -i aqua-scripts -o air-scripts -a
 ```
 {% endtab %}
 

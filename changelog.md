@@ -7,6 +7,12 @@ Aqua compiler's versioning scheme is the following: `0.BREAKING.ENHANCING.RELEAS
 * `ENHANCING` part is incremented for every syntax addition
 * `RELEASE` is the release number, shows internal compiler changes, bugfixes that keep the language untouched
 
+### [0.3.1](https://github.com/fluencelabs/aqua/releases/tag/0.3.1) – September 13, 2021
+
+* Now `.aqua` extension in imports is optional: you may `import "file.aqua"` or just `import "file"` with the same effect \([\#292](https://github.com/fluencelabs/aqua/pull/292)\)
+* CLI improvements: `--dry` run \([\#290](https://github.com/fluencelabs/aqua/pull/290)\), output directory is created if not present \([\#287](https://github.com/fluencelabs/aqua/pull/287)\)
+* Many bugfixes: for imports \([\#289](https://github.com/fluencelabs/aqua/pull/289)\), TypeScript backend \([\#285](https://github.com/fluencelabs/aqua/pull/285), [\#294](https://github.com/fluencelabs/aqua/pull/294), [\#298](https://github.com/fluencelabs/aqua/pull/298)\), and language semantics \([\#275](https://github.com/fluencelabs/aqua/issues/275)\).
+
 ### [0.3.0](https://github.com/fluencelabs/aqua/releases/tag/0.3.0) – September 8, 2021
 
 * TypeScript output of the compiler now targets a completely rewritten [TypeScript SDK](https://doc.fluence.dev/docs/js-sdk) \([\#251](https://github.com/fluencelabs/aqua/pull/251)\)

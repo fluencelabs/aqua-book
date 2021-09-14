@@ -43,12 +43,16 @@ func foo():
 
 Aqua compiler takes a source directory and a list of import directories \(usually with `node_modules` as a default\). You can use relative paths to `.aqua` files, relatively to the current file's path, and to import folders.
 
+{% hint style="info" %}
+`.aqua` extension in `import` and `use` expressions can be ommited. So, `import "builtin.aqua"` does exactly the same as `import "builtin"`.
+{% endhint %}
+
 Everything defined in the file is imported into the current namespace.
 
 You can cherry-pick and rename imports using `import ... from` expression:
 
 ```python
-import Op as Noop from "@fluencelabs/aqua-lib/builtin.aqua"
+import Op as Noop from "@fluencelabs/aqua-lib/builtin"
 
 func foo():
   Noop.noop()
@@ -59,7 +63,7 @@ func foo():
 The `use` expression makes it possible to import a file into a named scope.
 
 ```python
-use Op from "@fluencelabs/aqua-lib/builtin.aqua" as BuiltIn
+use Op from "@fluencelabs/aqua-lib/builtin" as BuiltIn
 
 func foo():
   BuiltIn.Op.noop()
@@ -84,7 +88,7 @@ Another problem is libraries distribution. If a developer wants to deliver an `.
 `export` lets a developer decide what exactly is going to be exported, including imported functions.
 
 ```python
-import bar from "lib.aqua"
+import bar from "lib"
 
 -- Exported functions and services will be compiled for the host language
 -- You can use several `export` expressions

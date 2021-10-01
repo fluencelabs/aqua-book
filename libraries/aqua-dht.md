@@ -16,7 +16,6 @@ For the API reference, take a look at [pubsub.aqua](https://github.com/fluencela
 
 ## Terminology
 
-* **@fluencelabs/aqua-dht-ts** - TypeScript/JS library on NPM. Provides a precompiled TS/JS PubSub API. Suits basic use-cases, easy to start with.
 * **@fluencelabs/aqua-dht** - Aqua library on NPM. Provides high level and low-level APIs to develop custom Aqua scripts. Suits more advanced use-cases.
 
 {% hint style="success" %}
@@ -51,7 +50,7 @@ In that case `subscribe` must be called with the`relay_id`, so other peers can r
 ## How To Use Aqua-DHT
 
 {% hint style="info" %}
-There are [several simple examples](https://github.com/fluencelabs/aqua-dht/tree/9a729611c6da4930b5f145696bfdc975d1227e77#how-to-use) in the fluencelabs/aqua-dht repo, give them a look.
+There are [several simple examples](https://github.com/fluencelabs/aqua-dht/tree/3598c9044b90845a69c8f1c3306409a41d49e7e3#how-to-use) in the fluencelabs/aqua-dht repo, give them a look.
 {% endhint %}
 
 ### Create A Topic
@@ -67,19 +66,6 @@ type PeerId: string
 
 func my_function(relay: PeerId, topic: string):
     initTopic(relay, topic)
-```
-
-In TypeScript, you would do:
-
-```typescript
-import { initTopic } from "@fluencelabs/aqua-dht-ts";
-import { createClient } from "@fluencelabs/fluence";
-import { krasnodar } from "@fluencelabs/fluence-network-environment";
-
-// connect to the Fluence network
-const client = await createClient(krasnodar[1]);
-let topic = "myTopic";
-await initTopic(client, client.relayPeerId!, "myTopic");
 ```
 
 ### Subscribe To A Topic
@@ -106,30 +92,50 @@ These two subscribe the **caller** of a script to a topic. `initTopicAndSubscrib
 
 Here's how you could use it in TypeScript:
 
+{% hint style="info" %}
+You first need to have `export.aqua` file and compile it to TypeScript, see [here](./#in-typescript-and-javascript)
+{% endhint %}
+
 ```typescript
-import { initTopicAndSubscribe, subscribe, findSubscribers } from "@fluencelabs/aqua-dht-ts";
-import { createClient } from "@fluencelabs/fluence";
+import { FluencePeer } from "@fluencelabs/fluence";
 import { krasnodar } from "@fluencelabs/fluence-network-environment";
+import { initTopicAndSubscribeBlocking, findSubscribers, subscribe } from "./generated/export";
 
 const relayA = krasnodar[1];
-// connect to the Fluence network
-const clientA = await createClient(relayA);
+// create the first peer and connect it to the network
+const peerA = new FluencePeer();
+await peerA.start({ connectTo: relayA });
+
 let topic = "myTopic";
 let value = "put anything useful here";
 let serviceId = "Foo";
 // create topic and subscribe to it
-await initTopicAndSubscribe(clientA, relayA, topic, value, relayA, serviceId);
-// this will contain clientA's subscription
-var subscribers = await findSubscribers(client, relayA, topic);
+await initTopicAndSubscribeBlocking(
+    peerA,
+    topic, value, relayA, serviceId, 
+    (s) => console.log(`node ${s} saved the record`)
+);
+// this will contain peerA's subscription
+var subscribers = await findSubscribers(peerA, topic);
 
-// now, let's create a second client
 const relayB = krasnodar[2];
-const clientB = await createClient(relayB);
+// now, let's create the second peer and connect to the network
+const peerB = new FluencePeer();
+await peerB.start({ connectTo: relayB });
+
 // and subscribe it to the same topic
-await subscribe(clientB, relayB, topic);
-// this will contain both clientA and clientB subscriptions
-subscribers = await findSubscribers(client, relayA, topic);
+await subscribe(peerB, topic);
+// this will contain both peerA and peerB subscriptions
+subscribers = await findSubscribers(peerB, topic);
 ```
+
+{% hint style="info" %}
+There is`initTopicAndSubscribeBlocking and initTopicAndSubscribe.` 
+
+`Blocking` version waits until at least a single write is done. The latter version is "fire and forget": it `awaits`instantly, but doesn't guarantee that write has happened.
+{% endhint %}
+
+
 
 #### `initTopicAndSubscribeNode` & `subscribeNode`
 
@@ -221,34 +227,41 @@ Let's take the  `SubscriberAPI` from the previous example and extend it a little
 data Event:
     value: string
     
-data SubscriberAPI:
+service SubscriberAPI:
     -- receive an event
     receive_event(event: Event)
     -- do something and return data
-    do_something(value: string) -> string
+    do_something(value: string) -> u64
 
 ```
 
-Here's how to define such an API in TS:
+Let's save this file to `subscriber_api.aqua` and compile it
+
+```text
+npx aqua -i . -o src/generated
+```
 
 ```typescript
-import { createClient, registerServiceFunction } from "@fluencelabs/fluence";
+import { Fluence } from "@fluencelabs/fluence";
 import { krasnodar } from "@fluencelabs/fluence-network-environment";
+import { registerSubscriberAPI, SubscriberAPIDef } from "./generated/subscriber_api"
 
-const client = await createClient(krasnodar[1]);
+await Fluence.start({ connectTo: krasnodar[2] });
 
 let service_id = 'api';
+let counter = 0;
 
-registerServiceFunction(client, service_id, 'receive_event', args => {
-    let [event] = args;
-    console.log("event received! {}", event);
+await registerSubscriberAPI(service_id, {
+    receive_event: (event: any) => {
+        console.log("event received!", event);
+    },
+    do_something: (value: any) => {
+        counter += 1;
+        console.log("doing logging!", value, counter);
+        return counter;
+    }
 });
 
-registerServiceFunction(client, service_id, 'do_something', args => {
-    let [value] = args;
-    console.log("doing logging! {}", value);
-    return "OK";
-});
 ```
 
 ### Overcome The Subscriber Limit

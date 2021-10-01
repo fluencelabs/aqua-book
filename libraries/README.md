@@ -2,19 +2,11 @@
 
 `import` declaration allows to use functions, services and data types defined in another module on the file system. While it's a very simple mechanic, together with NPM flexibility it enables full-blown package management in Aqua.
 
-As Aqua is itself compiled to TypeScript, there are usually two kinds of libraries:
-
-* With TypeScript API. Such libraries contain TS precompiled from Aqua, use them when you just want to call functions from TypeScript.
-* With Aqua API. You want to use them when writing your own Aqua scripts.
-
 ## Available Aqua Libraries
 
 * Builtin services API: [@fluencelabs/aqua-lib](aqua-lib.md) \(see on [NPM](https://www.npmjs.com/package/@fluencelabs/aqua-lib)\)
 * PubSub & DHT: [@fluencelabs/aqua-dht](aqua-dht.md) \(see on [NPM](https://www.npmjs.com/package/@fluencelabs/aqua-dht)\)
 * IPFS API: [@fluencelabs/aqua-ipfs](aqua-ipfs.md) \(see on [NPM](https://www.npmjs.com/package/@fluencelabs/aqua-ipfs)\)
-
-To use library precompiled to TypeScript/JS, add `-ts` suffix, for example:  
-`@fluencelabs/aqua-dht` =&gt; `@fluencelabs/aqua-dht-ts` 
 
 ## How To Use Aqua Libraries
 
@@ -42,7 +34,7 @@ After running `npm i`, you will have `@fluencelabs/aqua-lib` in `node_modules`
 
 ### In Aqua
 
-After the library is downloaded, you can import it in your `.aqua` script as documented in [Imports And Exports](https://fluence.gitbook.io/aqua-book/imports-exports):
+After the library is downloaded, you can import it in your `.aqua` script as documented in [Imports And Exports](../language/header/):
 
 ```javascript
 import "@fluencelabs/aqua-lib/builtin.aqua"
@@ -52,38 +44,51 @@ Check out corresponding subpages for the API of available libraries.
 
 ### In TypeScript and JavaScript
 
-{% hint style="info" %}
-For this example, we'll use  `@fluencelabs/aqua-dht-ts`
-
-\(note the `-ts` suffix, we're using the library with TS/JS API\)
-{% endhint %}
-
 To execute Aqua functions, you need to be connected to the Fluence network. The easiest way is to add JS SDK to `dependencies`:
 
 ```javascript
   "dependencies": {
-    "@fluencelabs/aqua-dht-ts": "0.1.0",
-    "@fluencelabs/fluence": "0.9.53",
+    "@fluencelabs/aqua-dht": "0.2.4",
+    "@fluencelabs/fluence": "0.13.0",
     "@fluencelabs/fluence-network-environment": "1.0.10"
   }
 ```
 
-After executing `npm install`, the libraries are downloaded for immediate use in TS/JS code:
+After executing `npm install`, the Aqua API is ready to use. Now you need to export `aqua-dht` functions to TypeScript, that's easy. Create a file `export.aqua`:
+
+```python
+import initTopicAndSubscribeBlocking, findSubscribers from "@fluencelabs/aqua-dht/pubsub.aqua"
+
+export initTopicAndSubscribeBlocking, findSubscribers
+```
+
+Now, install Aqua compiler and compile your Aqua code to TypeScript: 
+
+```bash
+npm install --save-dev @fluencelabs/aqua
+npx aqua -i . -o src/generated/
+```
+
+That's it. Now let's call some functions on the AquaDHT service:
 
 ```typescript
-import { initTopicAndSubscribe, findSubscribers } from "@fluencelabs/aqua-dht-ts";
-import { createClient } from "@fluencelabs/fluence";
+import { Fluence } from "@fluencelabs/fluence";
 import { krasnodar } from "@fluencelabs/fluence-network-environment";
+import { initTopicAndSubscribeBlocking, findSubscribers } from "./generated/export";
 
 async function main() {
     // connect to the Fluence network
-    const client = await createClient(krasnodar[1]);
+    await Fluence.start({ connectTo: krasnodar[1] });
     let topic = "myTopic";
     let value = "myValue";
+    let relay = Fluence.getStatus().relayPeerId;
     // create topic (if not exists) and subscribe on it
-    await initTopicAndSubscribe(client, client.relayPeerId!, topic, value, client.relayPeerId!, null);
+    await initTopicAndSubscribeBlocking(
+      topic, value, relay, null, 
+      (s) => console.log(`node ${s} saved the record`)
+    );
     // find other peers subscribed to that topic
-    let subscribers = await findSubscribers(client, client.relayPeerId!, topic);
+    let subscribers = await findSubscribers(topic);
     console.log("found subscribers:", subscribers);
 }
 ```

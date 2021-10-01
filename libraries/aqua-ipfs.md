@@ -33,13 +33,7 @@ service Ipfs("ipfs-adapter"):
 
 ## Terminology
 
-* **@fluencelabs/aqua-ipfs-ts** - TypeScript/JS library on NPM. Provides a precompiled TS/JS API. Suits basic use-cases, easy to start with.
 * **@fluencelabs/aqua-ipfs** - Aqua library on NPM. Provide IPFS API to develop custom Aqua scripts. Suits more advanced use-cases.
-
-{% hint style="success" %}
-Both **aqua-ipfs** and **aqua-ipfs-ts** can be used with TypeScript and JavaScript
-{% endhint %}
-
 * **ipfs-adapter** - WebAssembly service. Predeployed to all Fluence nodes, but it's possible to deploy your own if you need it.
 * **particle file vault** - a special temporary directory that is shared between services participating in an Aqua script execution. That directory is local to each peer \(i.e., it's not shared between services on different peers\). It's accessible inside services by path `/tmp/vault/$particle-id`.
 * **particle** - signed network packets that contain script and data. Each script execution produces a single particle with unique `particle id`

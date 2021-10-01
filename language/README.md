@@ -1,6 +1,8 @@
 # Language
 
-Aqua is an opinionated domain-specific language. It's structured with significant indentation.
+Aqua is a language for distributed workflow coordination in p2p networks.
+
+It's structured with significant indentation.
 
 ```haskell
 -- Comments begin with double-dash and end with the line (inline)

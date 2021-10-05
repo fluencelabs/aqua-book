@@ -166,7 +166,7 @@ data MyServiceType:
   flag: bool
 ```
 
-See [Imports and Exports](header/#module) for module declarations.
+See [Imports and Exports](header.md#module) for module declarations.
 
 {% embed url="https://github.com/fluencelabs/aqua/blob/main/types/src/main/scala/aqua/types/Type.scala" caption="See the types system implementation" %}
 

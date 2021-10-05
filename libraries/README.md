@@ -34,7 +34,7 @@ After running `npm i`, you will have `@fluencelabs/aqua-lib` in `node_modules`
 
 ### In Aqua
 
-After the library is downloaded, you can import it in your `.aqua` script as documented in [Imports And Exports](../language/header.md):
+After the library is downloaded, you can import it in your `.aqua` script as documented in [Imports And Exports](../language/header/):
 
 ```javascript
 import "@fluencelabs/aqua-lib/builtin.aqua"

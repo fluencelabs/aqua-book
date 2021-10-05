@@ -6,7 +6,7 @@ In Aqua, an ordinary value is a name that points to a single result:
 value <- foo()
 ```
 
-A stream , on the other hand, is a name that points to zero or more results:
+A stream, on the other hand, is a name that points to zero or more results:
 
 ```haskell
 values: *string
@@ -51,38 +51,56 @@ A stream's lifecycle can be separated into three stages:
 Consider the following example:
 
 ```haskell
-func foo(peers: []string) -> string:
-  resp: *string
+alias PeerId: string
+
+func foo(peers: []PeerId) -> string:
+  -- Store a list of peer IDs collected from somewhere
+  -- This is a stream (denoted by *, which means "0 or more values")
+  resp: *PeerId
 
   -- Will go to all peers in parallel
   for p <- peers par:
+    -- Move execution flow to the peer p
     on p:
-      -- Do something
+      -- Get a peer ID from a service call (called on p)
       resp <- Srv.call()
 
-  resp2: *string    
+  -- You can think of resp2 as a locally consistent lazy list
+  resp2: *PeerId    
 
-  -- What is resp at this point?
+  -- What is the value of resp at this point?
+  -- Keep an eye on the `par` there: actually, it's FORKing execution
+  -- to several branches on different peers.
   for r <- resp par:
+    -- Move execution to peer r
     on r:
+      -- Call Srv locally
       resp2 <- Srv.call()
 
-  -- Wait for 6 responses        
+  -- Wait for 6 responses on resp2: it's JOIN       
   Op.identity(resp2!5)
   -- Once we have 5 responses, merge them
+  -- Function treats resp2 as an array of strings, and concatenates all
+  -- of them into a single string.
+  -- This function call "fixes" the content of resp2, making a single observation.
+  -- This is a "stream canonicalization" event: values, order, and length
+  -- is fixed at the moment of first function call, function will not be called
+  -- again, with different data.
   r <- Srv.concat(resp2)
+  -- You can keep writing to a stream after it's value is used
+  
   <- r
 ```
 
-In this case, for each peer in peers, something is going to be written into `resp` stream.
+In this case, for each peer `p` in `peers`, a new `PeerID` is going to be obtained from the `Srv.call`  and written into the `resp` stream.
 
 Every peer `p` in peers does not know anything about how the other iterations proceed.
 
-Once something is written to the `resp` stream, the second for is triggered. This is the mapping stage.
+Once `PeerId` is written to the `resp` stream, the second `for` is triggered. This is the mapping stage.
 
 And then the results are sent to the first peer, to call Op.identity there. This Op.identity waits until element number 5 is defined on `resp2` stream.
 
 When the join is complete, the stream is consumed by the concatenation service to produce a scalar value, which is returned.
 
-During execution, involved peers have different views on the state of execution: each of the `for` parallel branches have no view or access to the other branches' data and eventually, the execution flows to the initial peer. The initial peer then merges writes to the `resp` stream and to the `resp2` stream, respectively. These writes are done in conflict-free fashion. Furthermore, the respective heads of the `resp`, `resp2` streams will not change from each peer's point of view as they are immutable and new values can only be appended. However, different peers may have a different order of the stream values depending on the order of receiving these values.
+During execution, involved peers have different views on the state of execution: each of the `for` parallel branches has no view or access to the other branches' data and eventually, the execution flows to the initial peer. The initial peer then merges writes to the `resp` stream and to the `resp2` stream, respectively. These writes are done in a conflict-free fashion. Furthermore, the respective heads of the `resp`, `resp2` streams will not change from each peer's point of view as they are immutable and new values can only be appended. However, different peers may have a different order of the stream values depending on the order of receiving these values.
 

@@ -15,6 +15,7 @@
     * [Iterative](language/flow/iterative.md)
   * [Abilities & Services](language/abilities-and-services.md)
   * [CRDT Streams](language/crdt-streams.md)
+  * [Closures](language/closures.md)
   * [Imports And Exports](language/header/README.md)
     * [Control, Scope And Visibility](language/header/control-scope-and-visibility.md)
   * [Expressions](language/expressions/README.md)
@@ -28,4 +29,3 @@
   * [@fluencelabs/aqua-dht](libraries/aqua-dht.md)
   * [@fluencelabs/aqua-ipfs](libraries/aqua-ipfs.md)
 * [Changelog](changelog.md)
-

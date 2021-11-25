@@ -44,7 +44,7 @@ But the most powerful use of streams pertains to their use with parallel executi
 
 A stream's lifecycle can be separated into three stages:
 
-* Source: \(Parallel\) Writes to a stream
+* Source: (Parallel) Writes to a stream
 * Map: Handles the stream values
 * Sink: Converts the resulting stream into a scalar
 
@@ -104,3 +104,34 @@ When the join is complete, the stream is consumed by the concatenation service t
 
 During execution, involved peers have different views on the state of execution: each of the `for` parallel branches has no view or access to the other branches' data and eventually, the execution flows to the initial peer. The initial peer then merges writes to the `resp` stream and to the `resp2` stream, respectively. These writes are done in a conflict-free fashion. Furthermore, the respective heads of the `resp`, `resp2` streams will not change from each peer's point of view as they are immutable and new values can only be appended. However, different peers may have a different order of the stream values depending on the order of receiving these values.
 
+### Stream restrictions
+
+Restriction is a part of π calculus that bounds (restricts) a name to a scope. For Aqua streams it means that the stream is not accessible outside of definition scope, and the stream is always fresh when execution enters the scope.
+
+These behaviors are introduced in [Aqua 0.5](https://github.com/fluencelabs/aqua/releases/tag/0.5.0).
+
+```python
+-- Note: returns []string (immutable, readonly collection), not *string
+func smth(xs: []string) -> []string:
+  -- This stream is available within the function, and is empty
+  outside: *string
+  for x <- xs:
+    -- This stream is empty at the beginning of each iteration
+    inside: *string
+    
+    -- We can manipulate the inside stream within the scope
+    if x == "ok"
+      inside <<- "ok"
+    else:
+      inside <<- "not ok"
+    
+    -- Read the value    
+    if inside! == "ok":
+      outside <<- "result"  
+  
+  -- outside stream is not escaping this function scope:
+  -- it is converted to an array (canonicalized) and cannot be appended after that        
+  <- outside    
+```
+
+You still can keep streams as streams by using them as `*string` arguments, or by returning them as `*string`.&#x20;

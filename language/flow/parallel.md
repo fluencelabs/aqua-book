@@ -4,7 +4,7 @@ Parallel execution is where Aqua fully shines.
 
 ## Contract
 
-* Parallel arms have no access to each other's data. Sync points must be explicit \(see [Join behavior](parallel.md#join-behavior)\).
+* Parallel arms have no access to each other's data. Sync points must be explicit (see [Join behavior](parallel.md#join-behavior)).
 * If any arm is executed successfully, the flow execution continues.
 * All the data defined in parallel arms is available in the subsequent code.
 
@@ -15,7 +15,7 @@ Parallel execution has some implementation limitations:
 * Parallel means independent execution on different peers
 * No parallelism when executing a script on a single peer
 * No concurrency in services: every service instance does only one job simultaneously.
-* Keep services small in terms of computation and memory \(WebAssembly limitation\)
+* Keep services small in terms of computation and memory (WebAssembly limitation)
 
 These limitations might be overcome in future Aqua updates. But for now, plan your application design having this in mind.
 
@@ -81,7 +81,7 @@ bax(x)
 
 ## Join behavior
 
-Join means that data was created by different parallel execution flows and then used on a single peer to perform computations. It works the same way for any parallel blocks, be it `par`, `co` or something else \(`for par`\).
+Join means that data was created by different parallel execution flows and then used on a single peer to perform computations. It works the same way for any parallel blocks, be it `par`, `co` or something else (`for par`).
 
 In Aqua, you can refer to previously defined variables. In case of sequential computations, they are available, if execution not failed:
 
@@ -129,7 +129,7 @@ When execution will get to `baz` for the first time, Aqua VM will realize that i
 
 After the second branch executes, VM will be woken up again, reach the same piece of code and realize that now it has enough data to proceed.
 
-This way you can express race \(see [Collection types](../types.md#collection-types) and [Conditional return](conditional.md#conditional-return) for other uses of this pattern\):
+This way you can express race (see [Collection types](../types.md#collection-types) and [Conditional return](conditional.md#conditional-return) for other uses of this pattern):
 
 ```haskell
 -- Initiate a stream to write into it several times
@@ -145,3 +145,57 @@ par on peer2:
 baz(results!0)
 ```
 
+## Timeout and race patterns
+
+To limit the execution time of some part of an Aqua script, you can use a pattern that's often called "race". Execute a function in parallel with `Peer.timeout`, and take results from the first one to complete.&#x20;
+
+This way, you're racing your function against `timeout`. If `timeout` is the first one to complete, consider your function "timed out".
+
+`Peer.timeout` is defined in [`aqua-lib`](https://github.com/fluencelabs/aqua-lib/blob/1193236/builtin.aqua#L135).
+
+For this pattern to work, it is important to keep an eye on where exactly the timeout is scheduled and executed. One caveat is that you cannot timeout the unreachable peer by calling a timeout on that peer.
+
+Here's an example of how to put a timeout on peer traversal:
+
+```haskell
+-- Peer.timeout comes from the standard library
+import "@fluencelabs/aqua-lib/builtin"
+
+func traverse_peers(peers: []string) -> []string:
+    -- go through the array of peers and collect acknowledgments
+    acks: *string
+    for peer <- peers par:
+        on peer:
+            acks <- Service.long_task()
+    
+    maybeAck: *string
+    -- if 10 acks collected or 1 second passed, return acks
+    maybeAck <<- acks!10
+    par Peer.timeout(1000, "timeout")
+    <- acks
+```
+
+And here's how to approach error handling when using `Peer.timeout`
+
+```haskell
+-- Peer.timeout comes from the standard library
+import "@fluencelabs/aqua-lib/builtin"
+
+func getOrNot() -> string:
+  status: *string
+  res: *string
+  -- Move execution to another peer
+  on "other peer":
+    res <- Srv.someFunction()
+    status <<- "ok"
+  -- In parallel with the previous on, run timeout on this peer  
+  par status <- Peer.timeout(1000, "timeout") 
+  
+  -- status! waits for the first write to happen
+  if status! == "timeout":
+    -- Now we know that "other peer" was not able to respond within a second
+    -- Do some failover
+    res <<- "providing a local failover value"
+    
+  <- res!  
+```

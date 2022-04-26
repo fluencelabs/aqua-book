@@ -67,7 +67,7 @@ func hello(name: string, node:string, sid: string) -> string:
 We instantiate our aqua client peer:
 
 ```bash
-aqua run --addr /dns4/.../wss/p2p/12D3 ...aoHI --input some-dir/hello.aqua --func 'hello("reader", "peer id", "service id")'
+aqua run --addr /dns4/.../wss/p2p/12D3 ...aoHI --input some-dir/hello.aqua --func 'hello("reader", "peer id", ["service id1", "service id2"])'
 ```
 
 The `aqua run` command provides additional features such as:

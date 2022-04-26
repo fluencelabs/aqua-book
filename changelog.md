@@ -7,6 +7,16 @@ Aqua compiler's versioning scheme is the following: `0.BREAKING.ENHANCING.RELEAS
 * `ENHANCING` part is incremented for every syntax addition
 * `RELEASE` is the release number, shows internal compiler changes, bugfixes that keep the language untouched
 
+### [0.7.2](https://github.com/fluencelabs/aqua/releases/tag/0.7.2) – March 25, 2022
+
+* FluenceJS was updated to 0.23.0 ([#503](https://github.com/fluencelabs/aqua/pull/503))
+* `noXor`, `noRelay`, `const` and `verbose` options in `aqua run (`[#473](https://github.com/fluencelabs/aqua/issues/473) [#475](https://github.com/fluencelabs/aqua/issues/475))
+* `aqua run` functions can now handle arrays as arguments ([#497](https://github.com/fluencelabs/aqua/pull/497))
+* `aqua run` will match JSON arguments with given types ([#492](https://github.com/fluencelabs/aqua/pull/492))
+* aqua fully supports mathematical expressions ([#476](https://github.com/fluencelabs/aqua/pull/476))
+* A lot of help and error messages were rewritten ([#494](https://github.com/fluencelabs/aqua/pull/494))
+* A lot of bug fixes: ([#499](https://github.com/fluencelabs/aqua/issues/499) [#463](https://github.com/fluencelabs/aqua/issues/463) [#85](https://github.com/fluencelabs/aqua/issues/85) [#166](https://github.com/fluencelabs/aqua/issues/166) [#435](https://github.com/fluencelabs/aqua/issues/435) [#460](https://github.com/fluencelabs/aqua/issues/460) [#473](https://github.com/fluencelabs/aqua/issues/473) [#478](https://github.com/fluencelabs/aqua/issues/478) [#385](https://github.com/fluencelabs/aqua/issues/385))
+
 ### [0.7.1](https://github.com/fluencelabs/aqua/releases/tag/0.7.1) – March 25, 2022
 
 * Now Aqua supports [arithmetic operators](language/variables.md#arithmetic-operators) (e.g. `1 + x`), arrow calls in any place (e.g. `for x <- foo(3 + bar()) par`...) and simple comparison (e.g. `if a > 3`) ([#461](https://github.com/fluencelabs/aqua/pull/461) -> [#410](https://github.com/fluencelabs/aqua/issues/410))

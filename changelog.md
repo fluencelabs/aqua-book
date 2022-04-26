@@ -7,7 +7,7 @@ Aqua compiler's versioning scheme is the following: `0.BREAKING.ENHANCING.RELEAS
 * `ENHANCING` part is incremented for every syntax addition
 * `RELEASE` is the release number, shows internal compiler changes, bugfixes that keep the language untouched
 
-### [0.7.2](https://github.com/fluencelabs/aqua/releases/tag/0.7.2) – March 25, 2022
+### [0.7.2](https://github.com/fluencelabs/aqua/releases/tag/0.7.2) – April 26, 2022
 
 * FluenceJS was updated to 0.23.0 ([#503](https://github.com/fluencelabs/aqua/pull/503))
 * `noXor`, `noRelay`, `const` and `verbose` options in `aqua run (`[#473](https://github.com/fluencelabs/aqua/issues/473) [#475](https://github.com/fluencelabs/aqua/issues/475))

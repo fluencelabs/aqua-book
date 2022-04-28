@@ -7,7 +7,7 @@ The `aqua remote deploy_service` command allows you to deploy Wasm modules and a
 ```
 aqua remote deploy_service \
 --addr multiaddr  \
---data-path configs/service_config.json \
+--config-path configs/service_config.json \
 --service service_name \
 --sk your_secret_key
 ```

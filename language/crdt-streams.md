@@ -31,8 +31,8 @@ func foo(peer: string, relay: ?string):
 
 func bar(peer: string, relay: string):
   relayMaybe: *string
-  if peer != %init_peer_id%:
-    -- Wwrite into a stream
+  if peer != INIT_PEER_ID:
+    -- Write into a stream
     relayMaybe <<- relay
   -- Pass a stream as an optional value  
   foo(peer, relayMaybe)
@@ -79,7 +79,7 @@ func foo(peers: []PeerId) -> string:
 
   -- Wait for 6 responses on resp2: it's JOIN       
   Op.identity(resp2!5)
-  -- Once we have 5 responses, merge them
+  -- Once we have 6 responses, merge them
   -- Function treats resp2 as an array of strings, and concatenates all
   -- of them into a single string.
   -- This function call "fixes" the content of resp2, making a single observation.

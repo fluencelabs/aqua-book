@@ -120,14 +120,12 @@ func foo(a: i32, b: i32) -> i32:
   f = e / d
   -- power 3: unsigned number expected
   g = f ** 3
-  -- remain
+  -- remainder
   e = g % f
   
   -- Can use arithmetics anywhere
   -- Better use brackets to enforce ordering
   <- (a + b) - (c + d * (e - 6 ))
-
-
 ```
 
 ## Collections
@@ -167,7 +165,7 @@ As of Aqua `0.6.3`, it is not possible to get an element by index directly from 
 
 ## Getters
 
-In Aqua, you can use a getter to peak into a field of a product or indexed element in an array.
+In Aqua, you can use a getter to peek into a field of a product or indexed element in an array.
 
 ```haskell
 data Sub:

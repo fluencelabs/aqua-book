@@ -129,7 +129,7 @@ foo3: u16 -> u16
 -- Will not work
 bar(foo3)  
 
-foo4: u16 -> u64
+foo4: u64 -> u16
 
 -- Works
 bar(foo4)

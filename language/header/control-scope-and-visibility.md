@@ -111,7 +111,7 @@ nothing gets compiled as expected:
 2021.09.02 11:31:42 [INFO] Source /Users/bebo/localdev/aqua-245/documentation-examples/aqua-scripts/export.aqua: compilation OK (nothing to emit)
 ```
 
-You can further check the output directory, `compiled-aqua`, in our case, for the lack of output files. By corollary, `foo` cannot be imported from another files. For example:
+You can further check the output directory, `compiled-aqua`, in our case, for the lack of output files. Consequently, `foo` cannot be imported from other files. For example:
 
 ```python
 -- import.aqua

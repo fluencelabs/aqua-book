@@ -186,7 +186,7 @@ Functions that capture the topologic context of the definition site are planned,
 ```haskell
 func baz():
   foo = do (x: u32):
-    -- Executed there, where foo is called
+    -- Executed on the peer calling foo
     Srv.call(x)
     <- x
   -- When foo is called, it will get back to this context

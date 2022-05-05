@@ -55,7 +55,7 @@ par hello(y)
 
 ### co
 
-`co` , short for `coroutine`, prefixes an operation to send it to the background. From π-calculus perspective, it's the same as `A | null`, where `null`-process is the one that does nothing and completes instantly.
+`co` , short for `coroutine`, prefixes an operation to send it to the background. From π-calculus perspective, it's the same as `A | null`, where `null`-process is the one that does nothing and completes immediately.
 
 ```haskell
 -- Let's send foo to background and continue
@@ -184,7 +184,7 @@ To eliminate the need for such workarounds, Aqua has the `join` expression that 
 
 You can use any number of arguments to `join`, separating them with a comma. `join` is executed on a particular node – so `join` respects the `on` scopes it's in.
 
-```python
+```
 func getTwo(peerA: string, peerB: string) -> string, string:
   co on peerA:
     a <- foo()

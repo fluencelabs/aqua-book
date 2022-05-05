@@ -63,7 +63,7 @@ The contract is changed as in [Conditional](conditional.md#contract) flow.
 
 The way to export data from `for` is the same as in [Conditional return](conditional.md#conditional-return) and [Race patterns](parallel.md#join-behavior).
 
-```haskell
+```
 xs: []string
 return: *string
 

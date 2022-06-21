@@ -7,6 +7,13 @@ Aqua compiler's versioning scheme is the following: `0.BREAKING.ENHANCING.RELEAS
 * `ENHANCING` part is incremented for every syntax addition
 * `RELEASE` is the release number, shows internal compiler changes, bugfixes that keep the language untouched
 
+### [0.7.3](https://github.com/fluencelabs/aqua/releases/tag/0.7.2) – June 10, 2022
+
+* Language server for VSCode ([#512](https://github.com/fluencelabs/aqua/pull/512))
+* Go-to definitions for VSCode ([#514](https://github.com/fluencelabs/aqua/pull/514) [#516](https://github.com/fluencelabs/aqua/pull/516))
+* `PARTICLE_TTL` and `PARTICLE_TIMESTAMP` constants ([#505](https://github.com/fluencelabs/aqua/pull/505))
+* Bug fix: [#519](https://github.com/fluencelabs/aqua/pull/519) [#518](https://github.com/fluencelabs/aqua/pull/518) [#509](https://github.com/fluencelabs/aqua/pull/509) [#507](https://github.com/fluencelabs/aqua/pull/507) [#508](https://github.com/fluencelabs/aqua/pull/508) [#510](https://github.com/fluencelabs/aqua/pull/510) [#513](https://github.com/fluencelabs/aqua/pull/513) [#504](https://github.com/fluencelabs/aqua/pull/504)
+
 ### [0.7.2](https://github.com/fluencelabs/aqua/releases/tag/0.7.2) – April 26, 2022
 
 * FluenceJS was updated to 0.23.0 ([#503](https://github.com/fluencelabs/aqua/pull/503))

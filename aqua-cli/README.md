@@ -67,7 +67,7 @@ func hello(name: string, node:string, sid: string) -> string:
 We instantiate our aqua client peer:
 
 ```bash
-aqua run --addr /dns4/.../wss/p2p/12D3 ...aoHI --input some-dir/hello.aqua --func 'hello("reader", "peer id", "service id")'
+aqua run --addr /dns4/.../wss/p2p/12D3 ...aoHI --input some-dir/hello.aqua --func 'hello("reader", "peer id", ["service id1", "service id2"])'
 ```
 
 The `aqua run` command provides additional features such as:
@@ -83,6 +83,31 @@ The `aqua run` command provides additional features such as:
     aqua run --addr /dns4/.../wss/p2p/12D3 ... oHI --input my_code.aqua --func 'my_aqua_func(a, b)' --data '{"a": "some_string", "b": 123}'
     ```
 * `--data-path` or `p` allows you to specify data arguments, see `--data`, as a file. _Note that `--data` and `--data-path` are mutually exclusive._
+* `--json-service` or `-j` allows you to describe a service that will return a JSON. This service must be described in Aqua. There can be multiple functions strictly without any arguments. Also, you can use this flag multiple times targeting multiple services in different files. There is an example of a service description in Aqua and JSON:
+
+```
+-- aqua file
+data SomeResult:
+  field1: string
+  num2: i32
+
+service ServiceName("some id"):
+  funcName: -> SomeResult
+```
+
+```
+{
+  "name": "ServiceName",
+  "serviceId": "some id",
+  "functions": [{
+    "name": "funcName",
+    "result": {
+      "field1": "result 1",
+      "num2": 5
+    }
+  }]
+}
+```
 
 Use `aqua run --help` for a complete listing of available flags and explanations.
 

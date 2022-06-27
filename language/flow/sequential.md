@@ -4,10 +4,17 @@ By default, Aqua code is executed line by line, sequentially.
 
 ## Contract
 
-* Data from the first arm is available in the second branch.
-* The second arm is executed if and only if the first arm succeeded.
-* If any arm failed, then the whole sequence is failed.
-* If all arms are executed successfully, then the whole sequence is executed successfully.
+* Data from the first line is available on the second line
+* A second line will be executed only if the first line succeeded
+* If any line failed, then the whole block is failed
+* If all lines succeeded, then the whole block is succeeded
+
+```
+f <- first() -- first line
+second(f)    -- second line 
+```
+
+_A block of code is any number of lines on the same indentation level or deeper._
 
 ## Sequential operations
 

@@ -5,9 +5,15 @@ Aqua compiler's versioning scheme is the following: `0.BREAKING.ENHANCING.RELEAS
 * `0` shows that Aqua does not meet its vision yet, so syntax and semantics can change quickly
 * `BREAKING` part is incremented for each breaking change when old `.aqua` files need to be updated to compile with the new version
 * `ENHANCING` part is incremented for every syntax addition
-* `RELEASE` is the release number, shows internal compiler changes, bugfixes that keep the language untouched
+* `RELEASE` is the release number, shows internal compiler changes, bugfixes that keep the language untouched\
 
-### [0.7.3](https://github.com/fluencelabs/aqua/releases/tag/0.7.2) – June 10, 2022
+
+### [0.7.4](https://github.com/fluencelabs/aqua/releases/tag/0.7.4) – June 24, 2022
+
+* JSON services for `aqua run.` Read [here](https://doc.fluence.dev/aqua-book/aqua-cli#aqua-run) for more details. ([#520](https://github.com/fluencelabs/aqua/pull/520)).&#x20;
+* Use JSON for arguments in `aqua run` without extra brackets for optional fields ([#517](https://github.com/fluencelabs/aqua/pull/517))
+
+### [0.7.3](https://github.com/fluencelabs/aqua/releases/tag/0.7.3) – June 10, 2022
 
 * Language server for VSCode ([#512](https://github.com/fluencelabs/aqua/pull/512))
 * Go-to definitions for VSCode ([#514](https://github.com/fluencelabs/aqua/pull/514) [#516](https://github.com/fluencelabs/aqua/pull/516))

@@ -4,10 +4,12 @@ Aqua supports branching: you can return one value or another, recover from the e
 
 ## Contract
 
-* The second arm of the conditional operator is executed if and only if the first arm failed.
-* The second arm has no access to the first arm's data.
-* A conditional block is considered "executed" if and only if any arm was executed successfully.
-* A conditional block is considered "failed" if and only if the second (recovery) arm fails to execute.
+* The second branch of the conditional operator is executed if and only if the first block failed.
+* The second block has no access to the first block's data.
+* A conditional block is considered "executed" if and only if any inner block was executed successfully.
+* A conditional block is considered "failed" if and only if the second (recovery) block fails to execute.
+
+_Block of code is any number of lines on the same indentation level or deeper_
 
 ## Conditional operations
 

@@ -93,7 +93,7 @@ Aqua compiler's versioning scheme is the following: `0.BREAKING.ENHANCING.RELEAS
 * CLI: Add log level, print generated AIR ([#368](https://github.com/fluencelabs/aqua/pull/368))
 * Improved topology calculation in `par` blocks ([#369](https://github.com/fluencelabs/aqua/pull/369))
 * JAR file is not pushed to releases anymore. JS is the sole compilation target now
-* CLI: path to [@fluencelabs/aqua-lib](https://doc.fluence.dev/aqua-book/libraries/aqua-lib) is provided as an imports folder by default. `import "@fluencelabs/aqua-lib/builtins"` should always work now, even outside of an NPM project ([#384](https://github.com/fluencelabs/aqua/pull/384))
+* CLI: path to [@fluencelabs/aqua-lib](https://doc.fluence.dev/aqua-book/libraries/aqua-lib) is provided as an imports folder by default. `import "@fluencelabs/aqua-lib/builtin.aqua"` should always work now, even outside of an NPM project ([#384](https://github.com/fluencelabs/aqua/pull/384))
 * CLI: Pass arguments to `aqua run` as JSON via `--data` or `--data-path` flag ([#386](https://github.com/fluencelabs/aqua/pull/386))
 
 ### [0.5.0](https://github.com/fluencelabs/aqua/releases/tag/0.5.0) – November 24, 2021

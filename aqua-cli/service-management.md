@@ -26,16 +26,16 @@ Consider the following service configuration JSON template:
         "name": "module_name",
         "path": "/path/to/wasm",
         "mounted_binaries": [["command_line_tool", "/path/to/command_line_tool"]],
-        "logger_enabled": [true]
+        "logger_enabled": true
       },
       {
         "name": "second_module_name",
         "path": "path/to/second_module.wasm",
-        "logger_enabled": [true],
+        "logger_enabled": true,
         "mapped_dirs": [["/path/to/dir"]],
-        "preopened_files": [["/path/to/file"]],
+        "preopened_files": ["/path/to/file"],
         "envs": [["env1", "env2"]],
-        "max_heap_size": ["100Mb"]
+        "max_heap_size": "100Mb"
       }
     ]
   },
@@ -44,7 +44,7 @@ Consider the following service configuration JSON template:
       {
 	"name": "third_module",      
         "path": "./artifacts/mean_service.wasm",
-        "logger_enabled": [true]
+        "logger_enabled": true
       }
     ]
   }
